@@ -32,7 +32,7 @@ export default AskScreen;
 
 const styles = StyleSheet.create({
   title: {
-	flex: 0.1,
+	flex: 0.15,
 	justifyContent: 'center',
 	fontSize: 40,
 	margin: 10

@@ -6,6 +6,7 @@ import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 class HomeScreen extends React.Component {
   render() {
+    console.disableYellowBox = true;
     return (
       <View style={styles.container}>
         <View style={styles.banner}>
