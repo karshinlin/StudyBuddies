@@ -7,10 +7,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "braces": "^2.3.1",
+    "handlebars": "^4.1.2",
+    "lodash": "^4.17.13",
+    "mem": "^4.0.0",
     "react": "16.8.3",
     "react-native": "0.59.4",
     "react-native-gesture-handler": "^1.1.0",
-    "react-navigation": "^3.8.1"
+    "react-navigation": "^3.8.1",
+    "ws": "^3.3.1"
   },
   "devDependencies": {
     "@babel/core": "7.4.3",
