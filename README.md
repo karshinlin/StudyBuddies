@@ -1,5 +1,28 @@
 # StudyBuddies
 
+Setup:
+- `git clone https://github.com/karshinlin/StudyBuddies.git` to clone the repo
+- `git checkout dev` to work on the dev branch
+- `npm install` to install all the dependencies that the branch has that you don't have locally
+- `npm audit fix` to fix all the vulnerabilities (if it tells you to)
+- `npm install -g @aws-amplify/cli` to install the amplify CLI (https://aws-amplify.github.io/docs/)
+- Get a high level overview of what amplify does for you (https://aws-amplify.github.io/). It basically connects our javascript code in the mobile app to AWS.
+- `amplify configure` to configure amplify on your machine
+	- Follow the guided setup
+		- Login with the studybuddies@gbes.com account when needed (creds: https://docs.google.com/document/d/13ZkJTIyT691eqgtspVc9zZuUpPt2k8JRnEBu61GQCzA/edit?usp=sharing)
+		- Eventually, you'll need to make an IAM user to connect your terminal to amplify. A browser will pop up for this...just follow all the defaults.
+			- After all the steps, you'll see a table with the user you just created. Your terminal will ask you for the access key and secret access key from that table.
+			- Name this user `amplify` when prompted (it shoes `default` by default)
+- `amplify init` to boot up the amplify configurations from the `/amplify` folder
+	- use an existing environment when prompted (it's name is `dev`)
+- `npm install -g yarn`
+- `npm install -g expo-cli` (not sure if this is needed but that's what we did)
+- `yarn add expo`
+- close out of all terminals and emulators relating to this app
+- open up a terminal again and navigate to the app folder (`/StuddyBuddiesApp`)
+- `yarn run ios` 
+
+
 Dependencies and node modules are not pushed to Git. 
 - To install the required dependencies from package.json, run `npm install`
 - When adding new dependencies, add them with `npm install ______ --save`
