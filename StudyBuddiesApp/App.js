@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import { createStackNavigator, createAppContainer, NavigationActions, withNavigation } from "react-navigation";
+import { createAppContainer, NavigationActions, withNavigation } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import Amplify from 'aws-amplify';
+import awsConfig from './aws-exports';
+import { Auth } from 'aws-amplify';
+
+Amplify.configure(awsConfig);
+
+import { withAuthenticator } from 'aws-amplify-react-native';
 
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
+import { auth0SignInButton } from '@aws-amplify/ui';
 class HomeScreen extends React.Component {
   render() {
     console.disableYellowBox = true;
@@ -33,6 +42,14 @@ class HomeScreen extends React.Component {
           </HomeTile>
           <HomeTile
             tileName="Leaderboard" desiredFontSize="25">
+          </HomeTile>
+        </View>
+        <View style={styles.tileRow}>
+            <HomeTile
+            tileName="Logout" desiredFontSize="25" onPress={ async () => {
+              await Auth.signOut()
+              this.props.rerender()
+            }}>
           </HomeTile>
         </View>
         <View style={styles.banner}>
@@ -65,10 +82,28 @@ const AppNavigator = createStackNavigator({
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return <AppContainer persistenceKey={"NavigationKey"} />;
   }
+}
+
+export default props =>  {
+  const AppComponent = withAuthenticator(App, {
+    signUpConfig: {
+      hiddenDefaults: ["email"],
+      signUpFields: [
+        { label: "Full Name", key: "name", required: true, type: "email", displayOrder: 1 },
+        { label: "Email", key: "username", required: true, type: "email", displayOrder: 2 },
+        { label: "Password", key: "password", required: true, type: "password", displayOrder: 3 },
+        { label: "Phone Number", key: "phone_number", required: true, type: "phone", displayOrder: 4 },
+        { label: "Address", key: "address", required: true, type: "string", displayOrder: 5 },
+        { label: "City", key: "city", required: true, type: "string", displayOrder: 6 },
+        { label: "State", key: "state", required: true, type: "string", displayOrder: 7 },
+        { label: "Zip", key: "zip", required: true, type: "string", displayOrder: 8 },
+      ]
+  }})
+  return <AppComponent {...props} />
 }
 
 const styles = StyleSheet.create({

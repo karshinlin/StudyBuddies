@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, TextInput, Button, Alert, View} from 'react-native';
-import { createStackNavigator, createAppContainer, NavigationActions, withNavigation } from "react-navigation";
+import { createAppContainer, NavigationActions, withNavigation } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
 import HomeTile from "./HomeTile.js";
 
