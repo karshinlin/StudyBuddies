@@ -1,36 +1,36 @@
 {
 	"providers": {
 		"awscloudformation": {
-			"AuthRoleName": "studybuddiesapp-dev-20190905234236-authRole",
-			"UnauthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190905234236-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190905234236-authRole",
+			"AuthRoleName": "studybuddiesapp-dev-20190908124421-authRole",
+			"UnauthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-authRole",
 			"Region": "us-east-1",
-			"DeploymentBucketName": "studybuddiesapp-dev-20190905234236-deployment",
-			"UnauthRoleName": "studybuddiesapp-dev-20190905234236-unauthRole",
-			"StackName": "studybuddiesapp-dev-20190905234236",
-			"StackId": "arn:aws:cloudformation:us-east-1:743690469842:stack/studybuddiesapp-dev-20190905234236/5f2f36e0-d058-11e9-b182-0e1e9f06bbc4"
+			"DeploymentBucketName": "studybuddiesapp-dev-20190908124421-deployment",
+			"UnauthRoleName": "studybuddiesapp-dev-20190908124421-unauthRole",
+			"StackName": "studybuddiesapp-dev-20190908124421",
+			"StackId": "arn:aws:cloudformation:us-east-1:743690469842:stack/studybuddiesapp-dev-20190908124421/e8b16b80-d257-11e9-b819-0e94a1882570"
 		}
 	},
 	"auth": {
-		"studybuddiesapp628a1497": {
+		"studybuddiesapp3d4f0df8": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [],
 			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190905234236-deployment/amplify-cfn-templates/auth/studybuddiesapp628a1497-cloudformation-template.yml",
-				"logicalId": "authstudybuddiesapp628a1497"
+				"s3TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190908124421-deployment/amplify-cfn-templates/auth/studybuddiesapp3d4f0df8-cloudformation-template.yml",
+				"logicalId": "authstudybuddiesapp3d4f0df8"
 			},
-			"lastPushTimeStamp": "2019-09-06T03:51:19.569Z",
+			"lastPushTimeStamp": "2019-09-08T16:55:07.242Z",
 			"output": {
-				"AppClientSecret": "1cbam5ss3hn3muhjd7b44ld63krort9diidih0pc4p37pqfbneqt",
-				"UserPoolId": "us-east-1_17p7tjq0V",
-				"AppClientIDWeb": "5vr59bpjur826vgpqqi4h5ot1g",
-				"AppClientID": "5a08ck08j6vdrm65p52tofk2t2",
-				"IdentityPoolId": "us-east-1:198b4e6c-54b4-4a58-84c4-558de89695aa",
-				"IdentityPoolName": "studybuddiesapp628a1497_identitypool_628a1497__dev",
-				"UserPoolName": "studybuddiesapp628a1497_userpool_628a1497"
+				"AppClientSecret": "1g78185p7g0etdr1l89cokhr9j7sivh2rcc8n5j0d3nugt5ijqi",
+				"UserPoolId": "us-east-1_GEjkJTFdi",
+				"AppClientIDWeb": "7ppfog2chn8eoj7lr6ecc17t4h",
+				"AppClientID": "7hd3sr1spkeipkvitus3o8par0",
+				"IdentityPoolId": "us-east-1:1918db0d-482e-4da3-9d6d-f2a09b01eb93",
+				"IdentityPoolName": "studybuddiesapp3d4f0df8_identitypool_3d4f0df8__dev",
+				"UserPoolName": "studybuddiesapp3d4f0df8_userpool_3d4f0df8"
 			},
-			"lastPushDirHash": "WxzYssxIkQ12wC7xer8E0H0TGG8="
+			"lastPushDirHash": "biYHCrJjZFRJvMnxg5Dg2bGZE14="
 		}
 	}
 }

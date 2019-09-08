@@ -5,7 +5,7 @@
     "javascript": {
         "framework": "react-native",
         "config": {
-            "SourceDir": "/Users/karanachtani/NoSync/StudyBuddiesApp",
+            "SourceDir": "/Users/karanachtani/NoSync/StudyBuddies/StudyBuddiesApp",
             "DistributionDir": "/",
             "BuildCommand": "npm run-script build",
             "StartCommand": "npm run-script start"

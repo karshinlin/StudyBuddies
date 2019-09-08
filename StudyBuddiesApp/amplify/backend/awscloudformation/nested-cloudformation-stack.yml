@@ -68,15 +68,15 @@
 				}
 			}
 		},
-		"authstudybuddiesapp628a1497": {
+		"authstudybuddiesapp3d4f0df8": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190905234236-deployment/amplify-cfn-templates/auth/studybuddiesapp628a1497-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190908124421-deployment/amplify-cfn-templates/auth/studybuddiesapp3d4f0df8-cloudformation-template.yml",
 				"Parameters": {
-					"identityPoolName": "studybuddiesapp628a1497_identitypool_628a1497",
+					"identityPoolName": "studybuddiesapp3d4f0df8_identitypool_3d4f0df8",
 					"allowUnauthenticatedIdentities": false,
-					"resourceNameTruncated": "studyb628a1497",
-					"userPoolName": "studybuddiesapp628a1497_userpool_628a1497",
+					"resourceNameTruncated": "studyb3d4f0df8",
+					"userPoolName": "studybuddiesapp3d4f0df8_userpool_3d4f0df8",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OFF",
 					"mfaTypes": "SMS Text Message",
@@ -92,9 +92,9 @@
 					"userpoolClientRefreshTokenValidity": 30,
 					"userpoolClientWriteAttributes": "email",
 					"userpoolClientReadAttributes": "email",
-					"userpoolClientLambdaRole": "studyb628a1497_userpoolclient_lambda_role",
+					"userpoolClientLambdaRole": "studyb3d4f0df8_userpoolclient_lambda_role",
 					"userpoolClientSetAttributes": false,
-					"resourceName": "studybuddiesapp628a1497",
+					"resourceName": "studybuddiesapp3d4f0df8",
 					"authSelections": "identityPoolAndUserPool",
 					"authRoleArn": {
 						"Fn::GetAtt": [
@@ -124,7 +124,7 @@
 			"DependsOn": [
 				"AuthRole",
 				"UnauthRole",
-				"authstudybuddiesapp628a1497"
+				"authstudybuddiesapp3d4f0df8"
 			],
 			"Type": "AWS::Lambda::Function",
 			"Properties": {
@@ -208,7 +208,7 @@
 				},
 				"idpId": {
 					"Fn::GetAtt": [
-						"authstudybuddiesapp628a1497",
+						"authstudybuddiesapp3d4f0df8",
 						"Outputs.IdentityPoolId"
 					]
 				},

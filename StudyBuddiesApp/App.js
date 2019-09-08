@@ -93,14 +93,14 @@ export default props =>  {
     signUpConfig: {
       hiddenDefaults: ["email"],
       signUpFields: [
-        { label: "Full Name", key: "name", required: true, type: "email", displayOrder: 1 },
+        { label: "Full Name", key: "name", required: true, type: "string", displayOrder: 1 },
         { label: "Email", key: "username", required: true, type: "email", displayOrder: 2 },
         { label: "Password", key: "password", required: true, type: "password", displayOrder: 3 },
         { label: "Phone Number", key: "phone_number", required: true, type: "phone", displayOrder: 4 },
         { label: "Address", key: "address", required: true, type: "string", displayOrder: 5 },
-        { label: "City", key: "city", required: true, type: "string", displayOrder: 6 },
-        { label: "State", key: "state", required: true, type: "string", displayOrder: 7 },
-        { label: "Zip", key: "zip", required: true, type: "string", displayOrder: 8 },
+        { label: "City", key: "custom:city", required: true, type: "string", displayOrder: 6 },
+        { label: "State", key: "custom:state", required: true, type: "string", displayOrder: 7 },
+        { label: "Zip", key: "custom:zip", required: true, type: "string", displayOrder: 8 },
       ]
   }})
   return <AppComponent {...props} />
