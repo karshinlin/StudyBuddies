@@ -12,7 +12,7 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
-import { auth0SignInButton } from '@aws-amplify/ui';
+
 class HomeScreen extends React.Component {
   render() {
     console.disableYellowBox = true;
