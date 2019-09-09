@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {Platform, StyleSheet, Picker, Button, Text, TextInput, View, TouchableHighlight, Dimensions} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
-class QuestionareScreen extends React.Component {
-    constructor(){
-        super();
+class QuestionnaireScreen extends React.Component {
+    constructor(props){
+        super(props);
         this.state={
             exam: ' ',
             date: ' '
@@ -63,7 +63,7 @@ class QuestionareScreen extends React.Component {
     }
 }
 
-export default QuestionareScreen;
+export default QuestionnaireScreen;
 
 const styles = StyleSheet.create({
     title: {

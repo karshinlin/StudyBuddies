@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { createAppContainer, NavigationActions, withNavigation } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Amplify from 'aws-amplify';
@@ -14,7 +14,7 @@ import { Authenticator, Greetings } from 'aws-amplify-react-native';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
-import QuestionareScreen from "./Questionare.js";
+import QuestionnaireScreen from "./Questionnaire.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
 
 <Authenticator hideDefault={true}>
@@ -32,7 +32,9 @@ class HomeScreen extends React.Component {
     this.params = this.props.params;
     this.state = {
       surveyFilled: false,
-      email: ""
+      email: "",
+      isLoading: true,
+      error: false
     };
     this.fetchSurveyStatus();
   }
@@ -51,14 +53,16 @@ class HomeScreen extends React.Component {
   }
 
   fetchSurveyStatus() {
-    var url = global.url + "surveyStatus?email=" + Auth.user.attributes.email;
+    var url = global.url + "surveyStatus?userId=" + Auth.user.attributes.sub;
     console.log("url:" + url);
     return fetch(url)
         .then((response) => response.json())
         .then((response) => {
           this.setState({
-            surveyFilled: response['surveyFilled'],
-            email: response['email']
+            surveyFilled: response['surveyStatus'] === "True",
+            email: response['email'], 
+            isLoading: false,
+            error: false
           }, function () {
             console.log("state: " + this.state['email']);
           });
@@ -66,15 +70,27 @@ class HomeScreen extends React.Component {
         .catch((error) => {
             this.setState({
               surveyFilled: false,
-              email: response['email']
+              email: "",
+              isLoading: true,
+              error: true
             })
         });
   }
   render() {
-    if (this.state.surveyFilled == false) {
-      console.log("render state: " + this.state.email);
-      //this.props.navigation.navigate('Questionnaire');
+    console.log("loading:" + this.state.isLoading);
+    if (this.state.isLoading) {
+      return (
+          <View style={{ flex: 1, paddingTop: 25 }}>
+              <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+      );
     }
+    console.log("surveyFilled " + this.state.surveyFilled + " " + (!this.state.surveyFilled))
+    if (!this.state.surveyFilled) {
+      console.log("render state: " + this.state.email);
+      this.props.navigation.navigate('Survey');
+    }
+    console.log("json state" + JSON.stringify(this.state));
     console.disableYellowBox = true;
     return (
       <View style={styles.container}>   
@@ -110,22 +126,16 @@ class HomeScreen extends React.Component {
 }
 
 const AppNavigator = createStackNavigator({
-  Questionare: QuestionareScreen,
 	Home: {
     screen: HomeScreen,
     navigationOptions: {
-      headerLeft: null,
-      headerRight: null,
-      headerStyle: {
-        backgroundColor: '#F5FCFF',
-        elevation: 0,
-        shadowOpacity: 0,
-        paddingTop: 15
-      },
-      headerLeftContainerStyle: {
-        marginLeft: 5,
-      },
-      headerTintColor: 'white',
+      header: null
+    }
+  },
+  Survey: {
+    screen: QuestionnaireScreen,
+    navigationOptions: {
+      header: null
     }
   },
 	Ask: AskScreen,
@@ -147,6 +157,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    alignContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
