@@ -16,8 +16,30 @@ import { withAuthenticator, Greetings } from 'aws-amplify-react-native';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
+import QuestionareScreen from "./Questionare.js"
 import { auth0SignInButton } from '@aws-amplify/ui';
 
+const AppNavigator = createStackNavigator({
+  Questionare: QuestionareScreen,
+	Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      headerLeft: null,
+      headerRight: null,
+      headerStyle: {
+        backgroundColor: '#F5FCFF',
+        elevation: 0,
+        shadowOpacity: 0,
+        paddingTop: 15
+      },
+      headerLeftContainerStyle: {
+        marginLeft: 5,
+      },
+      headerTintColor: 'white',
+    }
+  },
+	Ask: AskScreen,
+});
 // class AppWithAuth extends React.Component {
 //   constructor(props, context) {
 //     super(props, context);
