@@ -17,3 +17,6 @@ class DB:
 
     def retrieve_all_exams(self):
         return self.retrieve('select * from Exams;')
+
+    def is_survey_filled(self, user_id):
+        return self.retrieve("select * from UserExamInfo where userID = '{}';".format(user_id))

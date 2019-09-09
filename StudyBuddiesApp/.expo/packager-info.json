@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 10145,
   "expoServerNgrokUrl": "https://9g-9dj.anonymous.studybuddiesapp.exp.direct",
   "packagerNgrokUrl": "https://packager.9g-9dj.anonymous.studybuddiesapp.exp.direct",
-  "ngrokPid": 5690
+  "ngrokPid": 10163
 }
