@@ -14,6 +14,7 @@ import { Authenticator, Greetings } from 'aws-amplify-react-native';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
+import QuestionareScreen from "./Questionare.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
 
 <Authenticator hideDefault={true}>
@@ -109,6 +110,7 @@ class HomeScreen extends React.Component {
 }
 
 const AppNavigator = createStackNavigator({
+  Questionare: QuestionareScreen,
 	Home: {
     screen: HomeScreen,
     navigationOptions: {

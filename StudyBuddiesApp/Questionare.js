@@ -56,7 +56,7 @@ class QuestionareScreen extends React.Component {
                     onDateChange={(date) => {this.setState({date: date})}}/>
                 </View>    
                 <View style = {styles.button}>
-                    <Button style={styles.button} title="Continue" onPress={() => {this.props.navigation.navigate('App')}}></Button>
+                    <Button style={styles.button} title="Continue" onPress={() => {this.props.navigation.navigate('Home')}}></Button>
                 </View>          
             </View>
         );
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignContent: "space-around",
         marginTop: 50,
-        top: 350
+        top: 300
     }
   });
