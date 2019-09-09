@@ -17,16 +17,23 @@ import AskScreen from "./Ask.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
 
 <Authenticator hideDefault={true}>
-    <Greetings />
+    <Greetings
+        inGreeting={(username) => "Hello"}
+        outGreeting="Please sign in..."
+    />
 </Authenticator>
 
 class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.fetchApi = this.fetchApi.bind(this);
+    this.fetchSurveyStatus = this.fetchSurveyStatus.bind(this);
     this.params = this.props.params;
-    this.fetchApi();
+    this.state = {
+      surveyFilled: false,
+      email: ""
+    };
+    this.fetchSurveyStatus();
   }
 
   componentDidMount() {
@@ -35,32 +42,39 @@ class HomeScreen extends React.Component {
     Auth.currentAuthenticatedUser().then(user => {
       console.log(user);
       console.log("authuser:" + JSON.stringify(Auth.user.attributes.name));
-      this.setState({authState: 'signIn'});
+      //this.setState({authState: 'signIn'});
     }).catch(e => {
       console.log("error:" + e);
-      this.setState({authState: 'signIn'});
+      //this.setState({authState: 'signIn'});
     });
   }
 
-  fetchApi() {
-    var url = global.url;
+  fetchSurveyStatus() {
+    var url = global.url + "surveyStatus?email=" + Auth.user.attributes.email;
     console.log("url:" + url);
     return fetch(url)
         .then((response) => response.json())
         .then((response) => {
-          console.log("response: " + response);
+          this.setState({
+            surveyFilled: response['surveyFilled'],
+            email: response['email']
+          }, function () {
+            console.log("state: " + this.state['email']);
+          });
         })
         .catch((error) => {
             this.setState({
-                isLoading: false,
-                error: true
+              surveyFilled: false,
+              email: response['email']
             })
         });
   }
   render() {
+    if (this.state.surveyFilled == false) {
+      console.log("render state: " + this.state.email);
+      //this.props.navigation.navigate('Questionnaire');
+    }
     console.disableYellowBox = true;
-
-    if (Auth.)
     return (
       <View style={styles.container}>   
         <View style={styles.tileRow}>
@@ -85,15 +99,6 @@ class HomeScreen extends React.Component {
           </HomeTile>
           <HomeTile
             tileName="Leaderboard" desiredFontSize="25">
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Sign Out" desiredFontSize="25" onPress={() => {
-              Auth.signOut()
-              .then(data => console.log(data))
-              .catch(err => console.log(err));
-            }}>
           </HomeTile>
         </View>
         <View style={styles.banner}>

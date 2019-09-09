@@ -17,7 +17,6 @@ import './global.js'
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
-import CustomGreetings from './Greetings';
 
 // class AppWithAuth extends React.Component {
 //   constructor(props, context) {

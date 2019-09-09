@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, request, json
 import db
 
 # print a nice greeting.
@@ -35,6 +35,11 @@ app.add_url_rule('/<username>', 'hello', (lambda username:
 @app.route('/get_all_exams')
 def get_all_exams():
     return db.retrieve_all_exams()['exam'].to_json()
+
+@app.route('/surveyStatus', methods=["GET"])
+def surveyStatus():
+	email = request.args.get('email', default = "", type = str)
+	return json.jsonify({'surveyFilled':1, 'success': False, 'email': email})
 
 # run the app.
 if __name__ == "__main__":
