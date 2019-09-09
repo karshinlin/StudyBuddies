@@ -5,60 +5,19 @@ import { createStackNavigator } from "react-navigation-stack";
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import { Auth } from 'aws-amplify';
+//import CustomGreetings from './Greetings.js';
+import App from './HomeView.js';
+import { ConfirmSignIn, ConfirmSignUp, ForgotPassword, VerifyContact, SignIn, SignUp } from 'aws-amplify-react-native';
 
-Amplify.configure(awsConfig);
+//Amplify.configure(awsConfig);
 
-import { withAuthenticator } from 'aws-amplify-react-native';
+import { withAuthenticator, Greetings } from 'aws-amplify-react-native';
 
+import './global.js'
 import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 import QuestionareScreen from "./Questionare.js"
 import { auth0SignInButton } from '@aws-amplify/ui';
-class HomeScreen extends React.Component {
-  render() {
-    console.disableYellowBox = true;
-    return (
-      <View style={styles.container}>
-        <View style={styles.banner}>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Chat" desiredFontSize="50">
-          </HomeTile>
-          <HomeTile
-            tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Answer" desiredFontSize="30">
-          </HomeTile>
-          <HomeTile
-            tileName="Challenge" desiredFontSize="30">
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Question History" desiredFontSize="25">
-          </HomeTile>
-          <HomeTile
-            tileName="Leaderboard" desiredFontSize="25">
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-            <HomeTile
-            tileName="Logout" desiredFontSize="25" onPress={ async () => {
-              await Auth.signOut()
-              this.props.rerender()
-            }}>
-          </HomeTile>
-        </View>
-        <View style={styles.banner}>
-        </View>
-      </View>
-    );
-  }
-}
 
 const AppNavigator = createStackNavigator({
   Questionare: QuestionareScreen,
@@ -81,17 +40,67 @@ const AppNavigator = createStackNavigator({
   },
 	Ask: AskScreen,
 });
+// class AppWithAuth extends React.Component {
+//   constructor(props, context) {
+//     super(props, context);
+//   }
 
-const AppContainer = createAppContainer(AppNavigator);
+//   render() {
+//     return (
+//       <View>
+//         <Authenticator
+//             // Optionally hard-code an initial state
+//             authState="signIn"
+//             // Pass in an already authenticated CognitoUser or FederatedUser object
+//             ////authData={CognitoUser | 'username'} 
+//             // Fired when Authentication State changes
+//             onStateChange={(authState) => console.log(authState)} 
+//             // An object referencing federation and/or social providers 
+//             // The federation here means federation with the Cognito Identity Pool Service
+//             // *** Only supported on React/Web (Not React Native) ***
+//             // For React Native use the API Auth.federatedSignIn()
+//             ////federated={myFederatedConfig}
+//             // A theme object to override the UI / styling
+//             ////theme={myCustomTheme} 
+//             // Hide specific components within the Authenticator
+//             // *** Only supported on React/Web (Not React Native)  ***
+//             hide={ 
+//                 [
+//                     Greetings,
+//                     SignIn,
+//                     ConfirmSignIn,
+//                     SignUp,
+//                     ConfirmSignUp,
+//                     VerifyContact,
+//                     ForgotPassword
+//                 ]
+//             }
+//             // or hide all the default components
+//             hideDefault={true}
+//             // Pass in an aws-exports configuration
+//             amplifyConfig={awsConfig}
+//             // Pass in a message map for error strings
+//             ////errorMessage={myMessageMap}
+//         >
+//             <SignIn/>
+//             <ConfirmSignIn/>
+//             <SignUp/>
+//             <ConfirmSignUp/>
+//             <VerifyContact/>
+//             <ForgotPassword/>
+//             <App />
+//         </Authenticator>
+//       </View>
+//     );
+//   }
+// }
 
-class App extends React.Component {
-  render() {
-    return <AppContainer persistenceKey={"NavigationKey"} />;
-  }
-}
+// export default AppWithAuth;
 
+//new default export for withAuthenticator (this is to receive props & force the rerender)
 export default props =>  {
   const AppComponent = withAuthenticator(App, {
+    includeGreetings: true,
     signUpConfig: {
       hiddenDefaults: ["email"],
       signUpFields: [
@@ -104,7 +113,7 @@ export default props =>  {
         { label: "State", key: "custom:state", required: true, type: "string", displayOrder: 7 },
         { label: "Zip", key: "custom:zip", required: true, type: "string", displayOrder: 8 },
       ]
-  }})
+  }});
   return <AppComponent {...props} />
 }
 
