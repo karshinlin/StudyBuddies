@@ -1,0 +1,1 @@
+global.url = 'https://xh2vosyg2d.execute-api.us-east-2.amazonaws.com/beta'
