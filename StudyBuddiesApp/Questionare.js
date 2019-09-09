@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, Picker, Button, Text, TextInput, View, TouchableHighlight, Dimensions} from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import { createAppContainer, NavigationActions, withNavigation } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-
-import HomeScreen from "./App.js"
 
 class QuestionareScreen extends React.Component {
     constructor(){
