@@ -1,5 +1,6 @@
 from flask import Flask, request, json
 import db
+import json
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -27,19 +28,17 @@ db = db.DB(app)
 app.add_url_rule('/', 'index', (lambda: header_text +
     say_hello() + instructions + footer_text))
 
-# add a rule when the page is accessed with a name appended to the site
-# URL.
-app.add_url_rule('/<username>', 'hello', (lambda username:
-    header_text + say_hello(username) + home_link + footer_text))
-
-@app.route('/get_all_exams')
+@app.route('/get_all_exams', methods=["GET"])
 def get_all_exams():
     return db.retrieve_all_exams()['exam'].to_json()
 
 @app.route('/surveyStatus', methods=["GET"])
-def surveyStatus():
-	email = request.args.get('email', default = "", type = str)
-	return json.jsonify({'surveyFilled':1, 'success': False, 'email': email})
+def survey_status():
+    user_id = request.args.get('userId', default = "", type = str)
+    is_filled = db.is_survey_filled(user_id)
+    is_filled =  is_filled['userID'].count() > 0
+    response = {"surveyStatus": str(is_filled)}
+    return json.dumps(response)
 
 # run the app.
 if __name__ == "__main__":
