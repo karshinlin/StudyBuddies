@@ -46,6 +46,23 @@ def get_group():
     group = db.retrieve_group(user_id)['groupID'][0]
     response = {"getGroup": str(group)}
     return json.dumps(response)
+    
+@app.route('/unansweredQuestions', methods=["GET"])
+def get_unanswered_questions(): 
+    user_id = request.args.get('userId', default = "", type = str)
+    questions = db.get_unanswered_questions(user_id)
+    print(questions)
+    response = []
+    for i in range(0, len(questions["questionID"])):
+        a_question = dict()
+        a_question["questionId"] = int(questions["questionID"][i])
+        a_question["askedBy"] = questions["askedBy"][i]
+        a_question["questionText"] = questions["questionText"][i]
+        a_question["askDate"] = str(questions["askDate"][i])
+        response.append(a_question)
+    
+    response = {"questions": response, "success": 0, "userId": user_id}
+    return json.dumps(response)
 
 
 

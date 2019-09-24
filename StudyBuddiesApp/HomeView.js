@@ -5,6 +5,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import { Auth } from 'aws-amplify';
+
 //import CustomGreetings from './Greetings.js';
 
 Amplify.configure(awsConfig);
@@ -16,6 +17,7 @@ import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 import QuestionnaireScreen from "./Questionnaire.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
+import AnswerScreen from './Answer.js';
 
 <Authenticator hideDefault={true}>
     <Greetings
@@ -104,7 +106,7 @@ class HomeScreen extends React.Component {
         </View>
         <View style={styles.tileRow}>
           <HomeTile
-            tileName="Answer" desiredFontSize="30">
+            tileName="Answer" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
           </HomeTile>
           <HomeTile
             tileName="Challenge" desiredFontSize="30">
@@ -138,7 +140,15 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
-	Ask: AskScreen,
+  Ask: AskScreen,
+  Answer: {
+    screen: AnswerScreen,
+    navigationOptions: {
+      headerStyle: {
+        height: 20,
+      },
+    },
+  }
 });
 
 const AppContainer = createAppContainer(AppNavigator);

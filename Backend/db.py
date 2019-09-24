@@ -23,3 +23,15 @@ class DB:
 
     def retrieve_group(self, user_id):
         return self.retrieve("select groupID from User where userID = '{}';".format(user_id))
+    
+    def get_unanswered_questions(self, user_id):
+        return self.retrieve('''
+            select * from 
+                (select * from Question where askedBy in 
+                    (select userId from User where groupId in 
+                        (select groupId from User where userId = '{}'))
+                ) as questions where questionId 
+            not in 
+            (select distinct questionId from Answer);
+            '''
+        .format(user_id))
