@@ -19,4 +19,7 @@ class DB:
         return self.retrieve('select * from Exams;')
 
     def is_survey_filled(self, user_id):
-        return self.retrieve("select * from UserExamInfo where userID = '{}';".format(user_id))
+        return self.retrieve("select * from User where userID = '{}';".format(user_id))
+
+    def retrieve_group(self, user_id):
+        return self.retrieve("select groupID from User where userID = '{}';".format(user_id))

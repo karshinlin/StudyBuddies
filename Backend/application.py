@@ -40,6 +40,13 @@ def survey_status():
     response = {"surveyStatus": str(is_filled)}
     return json.dumps(response)
 
+@app.route('/getGroup', methods=["GET"])
+def get_group():
+    user_id = request.args.get('userId', default = "", type = str)
+    group = db.retrieve_group(user_id)
+    response = {"getGroup": str(group)}
+    return json.dumps(response)
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
