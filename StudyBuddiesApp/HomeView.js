@@ -32,9 +32,11 @@ class HomeScreen extends React.Component {
     this.params = this.props.params;
     this.state = {
       surveyFilled: false,
-      email: ""
+      email: "",
+      groupId: null
     };
     this.fetchSurveyStatus();
+    this.fetchMatchingStatus();
   }
 
   componentDidMount() {
@@ -48,6 +50,18 @@ class HomeScreen extends React.Component {
       console.log("error:" + e);
       //this.setState({authState: 'signIn'});
     });
+  }
+
+  fetchMatchingStatus() {
+    var url = global.url + "fetchMatchingStatus?userId=" + Auth.user.attributes.name;
+    console.log("url:" + url);
+    return fetch(url)
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          groupId = response['groupId']
+        })
+      })
   }
 
   fetchSurveyStatus() {
@@ -70,42 +84,49 @@ class HomeScreen extends React.Component {
             })
         });
   }
+
+
   render() {
     if (this.state.surveyFilled == false) {
       console.log("render state: " + this.state.email);
       //this.props.navigation.navigate('Questionnaire');
     }
     console.disableYellowBox = true;
-    return (
-      <View style={styles.container}>   
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Chat" desiredFontSize="50">
-          </HomeTile>
-          <HomeTile
-            tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
-          </HomeTile>
+
+    if (this.state.groupId == null) {
+      return (<Text>You're not in a group yet. Hang tight!</Text>);
+    } else {
+      return (
+        <View style={styles.container}>   
+          <View style={styles.tileRow}>
+            <HomeTile
+              tileName="Chat" desiredFontSize="50">
+            </HomeTile>
+            <HomeTile
+              tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
+            </HomeTile>
+          </View>
+          <View style={styles.tileRow}>
+            <HomeTile
+              tileName="Answer" desiredFontSize="30">
+            </HomeTile>
+            <HomeTile
+              tileName="Challenge" desiredFontSize="30">
+            </HomeTile>
+          </View>
+          <View style={styles.tileRow}>
+            <HomeTile
+              tileName="Question History" desiredFontSize="25">
+            </HomeTile>
+            <HomeTile
+              tileName="Leaderboard" desiredFontSize="25">
+            </HomeTile>
+          </View>
+          <View style={styles.banner}>
+          </View>
         </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Answer" desiredFontSize="30">
-          </HomeTile>
-          <HomeTile
-            tileName="Challenge" desiredFontSize="30">
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Question History" desiredFontSize="25">
-          </HomeTile>
-          <HomeTile
-            tileName="Leaderboard" desiredFontSize="25">
-          </HomeTile>
-        </View>
-        <View style={styles.banner}>
-        </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

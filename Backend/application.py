@@ -40,6 +40,17 @@ def survey_status():
     response = {"surveyStatus": str(is_filled)}
     return json.dumps(response)
 
+@app.route('/fillSurvey', methods=["POST"])
+def fill_survey():
+    survey = {
+        "userId": request.args.get('userId', default = "", type = str),
+        "exam": request.args.get('exam', default = "", type = str),
+        "month": request.args.get('month', default = "", type = str),
+        "year": request.args.get('year', default = "", type = str)
+    }
+    db.insert_survey_results(survey)
+    return True
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
