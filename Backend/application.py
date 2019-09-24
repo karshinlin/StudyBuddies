@@ -43,9 +43,11 @@ def survey_status():
 @app.route('/getGroup', methods=["GET"])
 def get_group():
     user_id = request.args.get('userId', default = "", type = str)
-    group = db.retrieve_group(user_id)
+    group = db.retrieve_group(user_id)['groupID'][0]
     response = {"getGroup": str(group)}
     return json.dumps(response)
+
+
 
 # run the app.
 if __name__ == "__main__":
