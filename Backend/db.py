@@ -1,7 +1,7 @@
 import pandas as pd
 import pymysql as db
 import pymysql.cursors
-
+from datetime import datetime
 
 class DB:
     def __init__(self, app):
@@ -76,6 +76,13 @@ class DB:
             (select distinct questionId from Answer);
             '''
                              .format(user_id))
+
+    def answer_question(self, user_id, question_id, answer_text):
+        now = datetime.now()
+        dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
+        print (dt_string)
+        return self.write("INSERT INTO Answer (answerText, questionID, answeredBy, answerDateTime) VALUES ('{}',{},'{}','{}')"
+            .format(answer_text, question_id, user_id, dt_string))
 
     def put_user_in_group(self, user_id, group_id):
         return self.write("UPDATE User SET groupID = '{}' where userID = '{}';".format(group_id, user_id))

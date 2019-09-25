@@ -3,6 +3,7 @@ import {
     View, Platform, TouchableHighlight, Image, TextInput, Text, StyleSheet } from 'react-native';
 import { cDarkBlue, cLightBlue, cWhite } from "./App";
 import { Button } from 'react-native-elements';
+import { Auth } from 'aws-amplify';
 
 const wrapperWidth = 405;
 
@@ -17,7 +18,44 @@ export default class QuestionCard extends Component {
 	}
 
 	submitAnswer() {
-		console.log(this.state.id + " id; answer: " + this.state.answer);
+        console.log(this.state.id + " id; answer: " + this.state.answer);
+        console.log(JSON.stringify({
+            "userId": Auth.user.attributes.sub.toString(),
+            "questionId": parseInt(this.state.id),
+            "answerText": this.state.answer.toString(),
+        }));
+        var url = global.url + "answerQuestion";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: Auth.user.attributes.sub.toString(),
+                questionId: parseInt(this.state.id),
+                answerText: this.state.answer.toString(),
+            }),
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            this.setState({answer:''})
+            // this.setState({
+            // questions: response['questions'], 
+            // isLoading: false,
+            // error: false
+            // }, function () {
+            // console.log("questions: " + JSON.stringify(this.state['questions']));
+            // });
+            console.log(JSON.stringify(response))
+        })
+        .catch((error) => {
+            // this.setState({
+            //     questions: "",
+            //     isLoading: true,
+            //     error: true
+            // })
+        });
 	}
     render () {
         let {onPress, isRipple, rippleColor, children, style} = this.props;
@@ -37,7 +75,8 @@ export default class QuestionCard extends Component {
                             </View> 
                             <View style={{width: '100%', flexDirection: 'column'}}>
 								<TextInput style={styles.questionAnswer} placeholder="Can you answer this question?" 
-									multiline={true}
+                                    multiline={true}
+                                    value={this.state.answer}
 									onChangeText={(text) => this.setState({answer: text})}>
 								</TextInput>
 								<Button onPress={() => this.submitAnswer()} title='Submit Answer'>
