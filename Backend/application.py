@@ -55,20 +55,51 @@ def fill_survey():
 def get_group():
     user_id = request.args.get('userId', default = "", type = str)
     group_id = db.retrieve_group(user_id)
-    group_id = group_id['groupID'][0]
-    if group_id == None:
-        group_id = tryToAddToGroup(user_id)
-
-    print(group_id)
-    response = {"groupId": group_id}
+    if len(group_id['groupID']) > 0:
+        group_id = group_id['groupID'][0]
+        if group_id is None:
+            group_id = tryToAddToGroup(user_id)
+        response = {"groupId": str(group_id)}
+        return json.dumps(response)
+    else: 
+        return json.dumps({"error": "user not found"}), 400
+    
+def tryToAddToGroup(user_id):
+    # try to add to existing group
+    groups = db.retrieve_potential_groups_for_unmatched_user(user_id)
+    if len(groups["groupID"]) > 0:
+        group_to_add_to = int(groups["groupID"][0])
+        db.put_user_in_group(user_id, group_to_add_to)
+        return group_to_add_to
+    
+    # try to create new group
+    users = db.retrieve_all_potential_matches_for_user(user_id)
+    if len(users['userID']) >= 2:
+        created_group = db.create_group(user_id)
+        for user_id in users['userID']:
+            db.put_user_in_group(user_id, created_group)
+        return created_group
+    
+    # cannot match
+    return None
+    
+@app.route('/unansweredQuestions', methods=["GET"])
+def get_unanswered_questions(): 
+    user_id = request.args.get('userId', default = "", type = str)
+    questions = db.get_unanswered_questions(user_id)
+    print(questions)
+    response = []
+    for i in range(0, len(questions["questionID"])):
+        a_question = dict()
+        a_question["questionId"] = int(questions["questionID"][i])
+        a_question["askedBy"] = questions["askedBy"][i]
+        a_question["questionText"] = questions["questionText"][i]
+        a_question["askDate"] = str(questions["askDate"][i])
+        response.append(a_question)
+    
+    response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
-
-def tryToAddToGroup(user_id) {
-    groups = db.retrieve_potential_groups_for_unmatched_user(user_id)
-    group_to_add_to = groups['groupID'][0]
-    groups = db.put_user_in_group(user_id, group_to_add_to)
-}
 
 # run the app.
 if __name__ == "__main__":

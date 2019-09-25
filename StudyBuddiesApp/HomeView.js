@@ -5,6 +5,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import { Auth } from 'aws-amplify';
+
 //import CustomGreetings from './Greetings.js';
 
 Amplify.configure(awsConfig);
@@ -16,6 +17,7 @@ import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 import QuestionnaireScreen from "./Questionnaire.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
+import AnswerScreen from './Answer.js';
 
 <Authenticator hideDefault={true}>
     <Greetings
@@ -108,6 +110,7 @@ class HomeScreen extends React.Component {
     }
     console.log("json state" + JSON.stringify(this.state));
     console.disableYellowBox = true;
+<<<<<<< HEAD
 
     if (this.state.groupId == null) {
       return (<Text>You're not in a group yet. Hang tight!</Text>);
@@ -140,6 +143,35 @@ class HomeScreen extends React.Component {
           </View>
           <View style={styles.banner}>
           </View>
+=======
+    return (
+      <View style={styles.container}>   
+        <View style={styles.tileRow}>
+          <HomeTile
+            tileName="Chat" desiredFontSize="50">
+          </HomeTile>
+          <HomeTile
+            tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
+          </HomeTile>
+        </View>
+        <View style={styles.tileRow}>
+          <HomeTile
+            tileName="Answer" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
+          </HomeTile>
+          <HomeTile
+            tileName="Challenge" desiredFontSize="30">
+          </HomeTile>
+        </View>
+        <View style={styles.tileRow}>
+          <HomeTile
+            tileName="Question History" desiredFontSize="25">
+          </HomeTile>
+          <HomeTile
+            tileName="Leaderboard" desiredFontSize="25">
+          </HomeTile>
+        </View>
+        <View style={styles.banner}>
+>>>>>>> a2356c2ec9c44d74a334daf21c60e3d74cdf00e3
         </View>
       );
     }
@@ -159,7 +191,15 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
-	Ask: AskScreen,
+  Ask: AskScreen,
+  Answer: {
+    screen: AnswerScreen,
+    navigationOptions: {
+      headerStyle: {
+        height: 20,
+      },
+    },
+  }
 });
 
 const AppContainer = createAppContainer(AppNavigator);

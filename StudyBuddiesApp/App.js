@@ -18,6 +18,13 @@ import HomeTile from "./HomeTile.js";
 import AskScreen from "./Ask.js";
 import { auth0SignInButton } from '@aws-amplify/ui';
 
+export const cBlack = '#3D3D3D';
+export const cDarkBlue = "#1D71F3";
+export const cLightBlue = "#3EAAFA";
+export const cRed = "#ED6A5A";
+export const cOrange = "#FAA916";
+export const cWhite = "#FFFFFF";
+
 // class AppWithAuth extends React.Component {
 //   constructor(props, context) {
 //     super(props, context);

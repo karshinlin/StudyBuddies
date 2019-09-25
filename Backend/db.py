@@ -2,6 +2,7 @@ import pandas as pd
 import pymysql as db
 import pymysql.cursors
 
+
 class DB:
     def __init__(self, app):
         self.host = app.config['DB_HOST']
@@ -20,7 +21,7 @@ class DB:
         conn.close()
         return results_df
 
-    def call_proc(self, proc_name, args = None):
+    def call_proc(self, proc_name, args=None):
         conn = self.db_conn()
         try:
             with conn.cursor() as cursor:
@@ -34,14 +35,17 @@ class DB:
 
         return results_df
 
-    def insert(self, sql):
+    def write(self, sql):
         conn = self.db_conn()
         try:
             with conn.cursor() as cursor:
                 cursor.execute(sql)
+                id = cursor.lastrowid
             conn.commit()
         finally:
             conn.close()
+
+        return id
 
     def retrieve_all_exams(self):
         return self.retrieve('select * from Exams;')
@@ -55,10 +59,51 @@ class DB:
         month = results['examMonth']
         year = results['examYear']
 
-        return self.insert("INSERT INTO User VALUES ('{}','{}','{}','{}');".format(userId, exam, month, year))
+        return self.write("INSERT INTO User VALUES ('{}','{}','{}','{}');".format(userId, exam, month, year))
 
     def retrieve_group(self, user_id):
         return self.retrieve("select groupID from User where userID = '{}';".format(user_id))
 
+    def get_unanswered_questions(self, user_id):
+        return self.retrieve('''
+            select * from 
+                (select * from Question where askedBy in 
+                    (select userId from User where groupId in 
+                        (select groupId from User where userId = '{}'))
+                ) as questions where questionId 
+            not in 
+            (select distinct questionId from Answer);
+            '''
+                             .format(user_id))
+
+    def put_user_in_group(self, user_id, group_id):
+        return self.write("UPDATE User SET groupID = '{}' where userID = '{}';".format(group_id, user_id))
+
+    def retrieve_all_potential_matches_for_user(self, user_id):
+        df = self.retrieve(
+            '''
+            SELECT u2.userID 
+            FROM User u1, User u2 
+            WHERE u1.userID = '{}' and u2.exam = u1.exam
+            '''
+                .format(user_id))
+        print(df)
+        return df
+
+    def create_group(self, user_id):
+        user = self.retrieve("SELECT exam FROM User WHERE userID = '{}';".format(user_id))
+        exam = user['exam'][0]
+        group_id = self.write("INSERT INTO StudyGroup(exam) VALUES ('{}');".format(exam))
+        return group_id
+
     def retrieve_potential_groups_for_unmatched_user(self, user_id):
-        return self.call_proc('getAvailableGroupsForUser', ['user_id', self.MAX_GROUP_SIZE])
+        return self.retrieve(
+            '''
+                SELECT gcv.groupID 
+                FROM GroupCountView gcv, User u 
+                WHERE u.userId = '{}' 
+                    and gcv.exam = u.exam 
+                    and groupCount < {}
+            '''
+            .format(user_id, self.MAX_GROUP_SIZE)
+        )
