@@ -1,24 +1,56 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, Picker, Button, Text, TextInput, View, TouchableHighlight, Dimensions} from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import { Auth } from 'aws-amplify';
 
 class QuestionnaireScreen extends React.Component {
     constructor(props){
         super(props);
         this.state={
             exam: ' ',
-            date: ' '
+            date: new Date(),
+            exams: []
         }
     }
 
+    async fetchExams() {
+        var url = global.url + "get_all_exams";
+        console.log("url:" + url);
+        let response = await fetch(url)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                let exams = Object.values(response);
+                this.setState({
+                    exams: exams,
+                    exam: exams[0]
+                })
+            .catch(error => console.log(error))
+        })
+        return response;
+    }
+
+    getFillSurveyUrl(userId, exam, month, year) {
+        return global.url + "fillSurvey?userId=" + userId + "&month=" + month
+            + "&year=" + year + "&exam=" + exam;
+    }
+
+    fillSurvey() {
+        console.log(this.state);
+        let date = new Date(this.state.date)
+        console.log(date)
+        let month = date.getMonth()
+        let year = date.getFullYear()
+        let url = this.getFillSurveyUrl(Auth.user.attributes.sub, this.state.exam, month, year)
+        console.log(url)
+        return fetch(url, {method: 'POST'});
+    }
+
     componentDidMount() {
-        var date = new Date().getDate(); 
-        var month = new Date().getMonth() + 1; 
-        var year = new Date().getFullYear(); 
-        this.setState({   
-          date:
-            year + '-' + month + '-' + date,
+        this.setState({
+          date:new Date()
         });
+        this.fetchExams();
     }
 
     render() {
@@ -27,10 +59,9 @@ class QuestionnaireScreen extends React.Component {
                 <Text style={styles.title}>Questionnaire</Text>
                 <Picker selectedValue = {this.state.exam} 
                 style={{height: 50, width: 100}} 
-                onValueChange = {(itemValue, itemIndex) => this.setState({exam: itemValue})}>
-                    <Picker.Item label = "Exam1" value = "exam1" />
-                    <Picker.Item label = "Exam2" value = "exam2" />
-                    <Picker.Item label = "Exam3" value = "exam3" />
+                onValueChange = {itemValue => this.setState({exam: itemValue})}>
+                {this.state.exams.map(
+                    item => {return (<Picker.Item label={item} value={item} key={item}/>)})}
                 </Picker>
                 <View style = {styles.dateContainer}>
                     <DatePicker
@@ -53,10 +84,13 @@ class QuestionnaireScreen extends React.Component {
                             marginLeft: 36
                         }
                     }}
-                    onDateChange={(date) => {this.setState({date: date})}}/>
+                    onDateChange={date => {this.setState({date: date})}}/>
                 </View>    
                 <View style = {styles.button}>
-                    <Button style={styles.button} title="Continue" onPress={() => {this.props.navigation.navigate('Home')}}></Button>
+                    <Button style={styles.button} title="Continue" onPress={() => {
+                        this.fillSurvey();
+                        this.props.navigation.navigate('Home');
+                        }}></Button>
                 </View>          
             </View>
         );

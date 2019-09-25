@@ -56,10 +56,11 @@ class DB:
     def insert_survey_results(self, results):
         userId = results['userId']
         exam = results['exam']
-        month = results['examMonth']
-        year = results['examYear']
-
-        return self.write("INSERT INTO User VALUES ('{}','{}','{}','{}');".format(userId, exam, month, year))
+        month = results['month']
+        year = results['year']
+        query = "INSERT INTO User(userID, exam, examMonth, examYear) VALUES ('{}','{}','{}','{}');".format(userId, exam, month, year)
+        print(query)
+        return self.write(query)
 
     def retrieve_group(self, user_id):
         return self.retrieve("select groupID from User where userID = '{}';".format(user_id))

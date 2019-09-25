@@ -49,7 +49,7 @@ def fill_survey():
         "year": request.args.get('year', default = "", type = str)
     }
     db.insert_survey_results(survey)
-    return True
+    return "", 204
 
 @app.route('/getGroup', methods=["GET"])
 def get_group():

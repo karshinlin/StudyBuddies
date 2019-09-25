@@ -57,13 +57,13 @@ class HomeScreen extends React.Component {
   }
 
   fetchMatchingStatus() {
-    var url = global.url + "fetchMatchingStatus?userId=" + Auth.user.attributes.name;
+    var url = global.url + "getGroup?userId=" + Auth.user.attributes.sub;
     console.log("url:" + url);
     return fetch(url)
       .then(response => response.json())
       .then(response => {
         this.setState({
-          groupId = response['groupId']
+          groupId: response['groupId']
         })
       })
   }
@@ -110,7 +110,6 @@ class HomeScreen extends React.Component {
     }
     console.log("json state" + JSON.stringify(this.state));
     console.disableYellowBox = true;
-<<<<<<< HEAD
 
     if (this.state.groupId == null) {
       return (<Text>You're not in a group yet. Hang tight!</Text>);
@@ -143,35 +142,6 @@ class HomeScreen extends React.Component {
           </View>
           <View style={styles.banner}>
           </View>
-=======
-    return (
-      <View style={styles.container}>   
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Chat" desiredFontSize="50">
-          </HomeTile>
-          <HomeTile
-            tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Answer" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
-          </HomeTile>
-          <HomeTile
-            tileName="Challenge" desiredFontSize="30">
-          </HomeTile>
-        </View>
-        <View style={styles.tileRow}>
-          <HomeTile
-            tileName="Question History" desiredFontSize="25">
-          </HomeTile>
-          <HomeTile
-            tileName="Leaderboard" desiredFontSize="25">
-          </HomeTile>
-        </View>
-        <View style={styles.banner}>
->>>>>>> a2356c2ec9c44d74a334daf21c60e3d74cdf00e3
         </View>
       );
     }
