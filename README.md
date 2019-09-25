@@ -27,9 +27,6 @@ Dependencies and node modules are not pushed to Git.
 - To install the required dependencies from package.json, run `npm install`
 - When adding new dependencies, add them with `npm install ______ --save`
 
-To run the iOS version of the application: 
-- Run `react-native run-ios`
-
 Backend Setup: 
 - [One Time] Within StudyBuddies/Backend directory, create a virtualenv: 
 	- Install virtualenv if you don't have it: `sudo pip3 install virtualenv`
@@ -38,6 +35,10 @@ Backend Setup:
 - [Every time] Load all dependencies for the Flask server:
 	- `source venv/bin/activate`
 	- `pip install -r requirements.txt`
+
+Access MySQL Database: 
+- Install MySQL Workbench (this should download MySQL)
+- Create a new connection to AWS RDS (credentials are in config.py)
 
 Deployment to AWS Elastic Beanstalk:
 - [One Time] Install EB CLI tools from https://github.com/aws/aws-elastic-beanstalk-cli-setup

@@ -51,6 +51,25 @@ def fill_survey():
     db.insert_survey_results(survey)
     return True
 
+@app.route('/getGroup', methods=["GET"])
+def get_group():
+    user_id = request.args.get('userId', default = "", type = str)
+    group_id = db.retrieve_group(user_id)
+    group_id = group_id['groupID'][0]
+    if group_id == None:
+        group_id = tryToAddToGroup(user_id)
+
+    print(group_id)
+    response = {"groupId": group_id}
+    return json.dumps(response)
+
+
+def tryToAddToGroup(user_id) {
+    groups = db.retrieve_potential_groups_for_unmatched_user(user_id)
+    group_to_add_to = groups['groupID'][0]
+    groups = db.put_user_in_group(user_id, group_to_add_to)
+}
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
