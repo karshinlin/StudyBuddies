@@ -100,6 +100,14 @@ def get_unanswered_questions():
     response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
+@app.route('/answerQuestion', methods=["POST"])
+def answer_question():
+    user_id = request.json['userId']
+    question_id = request.json['questionId']
+    answer_text = request.json['answerText']
+    print (db.answer_question(user_id, question_id, answer_text))
+    response = {"success": 0, "userId": user_id}
+    return json.dumps(response)
 
 # run the app.
 if __name__ == "__main__":

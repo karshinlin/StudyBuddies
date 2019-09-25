@@ -19,6 +19,8 @@ class AnswerScreen extends Component {
 	}
 
 	fetchQuestions() {
+		this.setState({refreshing: true})
+		this.props
 		var url = global.url + "unansweredQuestions?userId=" + Auth.user.attributes.sub;
 		console.log("url:" + url);
 		return fetch(url)
@@ -27,6 +29,7 @@ class AnswerScreen extends Component {
 			  this.setState({
 				questions: response['questions'], 
 				isLoading: false,
+				refreshing: false,
 				error: false
 			  }, function () {
 				console.log("questions: " + JSON.stringify(this.state['questions']));
@@ -36,10 +39,11 @@ class AnswerScreen extends Component {
 				this.setState({
 				  questions: "",
 				  isLoading: true,
+				  refreshing: false,
 				  error: true
 				})
 			});
-	  }
+	}
 
 	render() {
 		if (this.state.error) {
@@ -64,11 +68,12 @@ class AnswerScreen extends Component {
 			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 			data={this.state.questions}
 			renderItem={({ item: { questionId, questionText, askedDate } }) => (
-			  <QuestionCard questionText={questionText} askedDate={askedDate} id={questionId} />
+			  <QuestionCard questionText={questionText} askedDate={askedDate} id={questionId} clear={true} />
 			)}
+			onRefresh={() => this.fetchQuestions()}
+			keyboardShouldPersistTaps="always"
 			refreshing={this.state.refreshing}
 			keyExtractor={({item: questionId}) => questionId}
-			onRefresh={this.handleRefresh}
 			ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
 		  />
 		  </View>
