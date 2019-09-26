@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 		marginRight: 10,
         justifyContent: "center",
         position: "relative",
-        width: Platform.OS === 'ios' ? '100%' : wrapperWidth,
+        width: Platform.OS === 'ios' ? '100%' : '100%',
         borderWidth: 2, 
         borderColor: "#E6E6E6", 
 		borderRadius: 8,

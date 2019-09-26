@@ -110,16 +110,10 @@ class HomeScreen extends React.Component {
     }
     console.log("json state" + JSON.stringify(this.state));
     console.disableYellowBox = true;
-<<<<<<< HEAD
 
     if (this.state.groupId == null) {
       return (<Text>You're not in a group yet. Hang tight!</Text>);
     } else {
-=======
-    // if (this.state.groupId == null) {
-    //   return (<Text>You're not in a group yet. Hang tight!</Text>);
-    // } else {
->>>>>>> 87e99dfb2a45aabe99eee1d9f5832de9a8a347fc
       return (
         <View style={styles.container}>   
           <View style={styles.tileRow}>
@@ -150,7 +144,7 @@ class HomeScreen extends React.Component {
           </View>
         </View>
       );
-    // }
+    }
   }
 }
 
