@@ -82,7 +82,19 @@ def tryToAddToGroup(user_id):
     
     # cannot match
     return None
-    
+    group = db.retrieve_group(user_id)['groupID'][0]
+    response = {"getGroup": str(group)}
+    return json.dumps(response)
+
+@app.route('/setQuestion', methods=["POST"])
+def set_question():
+    question_id = request.json['questionId']
+    asked_by = request.json['askedBy']
+    question_text = request.json['questionText']
+    print (db.set_question(question_id,asked_by,question_text))
+    response = {"success": 0, "questionId": question_id}
+    return json.dumps(response)
+     
 @app.route('/unansweredQuestions', methods=["GET"])
 def get_unanswered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
@@ -94,7 +106,6 @@ def get_unanswered_questions():
         a_question["questionId"] = int(questions["questionID"][i])
         a_question["askedBy"] = questions["askedBy"][i]
         a_question["questionText"] = questions["questionText"][i]
-        a_question["askDate"] = str(questions["askDate"][i])
         response.append(a_question)
     
     response = {"questions": response, "success": 0, "userId": user_id}
