@@ -106,6 +106,7 @@ def get_unanswered_questions():
         a_question["questionId"] = int(questions["questionID"][i])
         a_question["askedBy"] = questions["askedBy"][i]
         a_question["questionText"] = questions["questionText"][i]
+        a_question["askDate"] = str(questions["askDate"][i])
         response.append(a_question)
     
     response = {"questions": response, "success": 0, "userId": user_id}
