@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import SignOutButton from './SignOutButton';
+import {NavigationEvents} from 'react-navigation';
 
 Amplify.configure(awsConfig);
 
@@ -13,20 +14,17 @@ export default class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.fetchSurveyStatus = this.fetchSurveyStatus.bind(this);
     this.params = this.props.params;
     this.state = {
-      surveyFilled: false,
       email: "",
       groupId: null,
       isLoading: true,
       error: false
     };
-    this.fetchSurveyStatus();
-    this.fetchMatchingStatus();
   }
-
+  
   componentDidMount() {
+    this.fetchMatchingStatus();
     console.log('on component mount');
     // check the current user when the App component is loaded
     Auth.currentAuthenticatedUser().then(user => {
@@ -47,36 +45,11 @@ export default class HomeScreen extends React.Component {
       .then(response => {
         console.log("groupId:" + response['groupId']);
         this.setState({
-          groupId: response['groupId']
+          groupId: response['groupId'],
+          isLoading: false
         });
       })
   }
-
-  fetchSurveyStatus() {
-    var url = global.url + "surveyStatus?userId=" + Auth.user.attributes.sub;
-    console.log("url:" + url);
-    return fetch(url)
-        .then((response) => response.json())
-        .then((response) => {
-          this.setState({
-            surveyFilled: response['surveyStatus'] === "True",
-            email: response['email'], 
-            isLoading: false,
-            error: false
-          }, function () {
-            console.log("state: " + this.state['email']);
-          });
-        })
-        .catch((error) => {
-            this.setState({
-              surveyFilled: false,
-              email: "",
-              isLoading: true,
-              error: true
-            })
-        });
-  }
-
 
   render() {
     console.log("loading:" + this.state.isLoading);
@@ -87,18 +60,14 @@ export default class HomeScreen extends React.Component {
           </View>
       );
     }
-    console.log("surveyFilled " + this.state.surveyFilled + " " + (!this.state.surveyFilled))
-    if (!this.state.surveyFilled) {
-      console.log("render state: " + this.state.email);
-      this.props.navigation.navigate('Survey');
-    }
     console.log("json state" + JSON.stringify(this.state));
     console.disableYellowBox = true;
 
-
-
     return (
       <View style={styles.container}> 
+      <NavigationEvents
+        onDidFocus={() => this.fetchMatchingStatus()}
+      />
         {this.state.groupId ? (
           <View >   
             <View style={styles.tileRow}>
@@ -129,7 +98,7 @@ export default class HomeScreen extends React.Component {
             </View>
           </View>
         ) :
-        <Text>You're not in a group yet. Hang tight!</Text> }
+        <Text style>You're not in a group yet. Hang tight!</Text> }
         <SignOutButton navigation={this.props.navigation}/>
       </View>);
     }
@@ -142,7 +111,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',

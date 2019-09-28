@@ -25,7 +25,7 @@ export default class SignIn extends React.Component {
             this.setState({
                 password: '',
                 showInvalidLogin: false});
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('Survey');
         })
         // On failure, display error in console
         .catch(err => {
@@ -46,6 +46,7 @@ export default class SignIn extends React.Component {
           <Input
             label="Email"
             leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+            value={this.state.email}
             onChangeText={
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ email: value.toLowerCase() })
@@ -54,6 +55,7 @@ export default class SignIn extends React.Component {
           />
           <Input
             label="Password"
+            value={this.state.password}
             leftIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={
               // Set this.state.email to the value in this Input box
@@ -67,7 +69,7 @@ export default class SignIn extends React.Component {
             onPress={ this.handleSignIn }
           />
           </View>
-          {this.state.showInvalidLogin ? <Text> "Incorrect username or password" </Text>: null}  
+          {this.state.showInvalidLogin ? <Text> Incorrect username or password. </Text>: null}  
         <Button 
             title="Sign Up" 
             onPress={() => this.props.navigation.navigate('SignUp')} />

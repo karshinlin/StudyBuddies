@@ -36,9 +36,6 @@ export default class SignUp extends React.Component {
   }
 
     handleSignUp = () => {
-        if (!this.runSubmitValidators()) {
-          return;
-        }
         // alert(JSON.stringify(this.state));
         const { name, email, password, confirmPassword, 
           phone, address, city, state, zip } = this.state;
@@ -70,7 +67,7 @@ export default class SignUp extends React.Component {
         Auth.confirmSignUp(email, confirmationCode, {})
           .then(() => {
             this.setState({ modalVisible: false });
-            this.props.navigation.navigate('SignIn')
+            this.props.navigation.navigate('SignIn');
           })
           .catch(err => console.log(err));
       }
@@ -80,13 +77,14 @@ export default class SignUp extends React.Component {
     return (<View style={styles.container}>
       <Input
             label="Full Name"
+            value={this.state.name}
             leftIcon={{ type: 'font-awesome', name: 'user-circle' }}
             onChangeText={ name => this.setState({ name })}
             placeholder="First Last"
           />
-      {this.state.name ? <Text>Invalid name.</Text> : null}
       <Input
             label="Email"
+            value={this.state.email}
             leftIcon={{ type: 'font-awesome', name: 'envelope' }}
             onChangeText={
               // Set this.state.email to the value in this Input box
@@ -96,6 +94,7 @@ export default class SignUp extends React.Component {
           />
           <Input
             label="Password"
+            value={this.state.password}
             leftIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={
               // Set this.state.email to the value in this Input box
@@ -106,6 +105,7 @@ export default class SignUp extends React.Component {
           />
           <Input
             label="Confirm Password"
+            value={this.state.confirmPassword}
             leftIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={
               // Set this.state.email to the value in this Input box
@@ -116,7 +116,7 @@ export default class SignUp extends React.Component {
           />
           <Input
           leftIcon={{ type: 'font-awesome', name: 'phone' }}
-            placeholder="Enter phone number"
+            placeholder="+17709999999"
             value={ this.state.phone }
             onChangeText={ (value) => this.setState({ phone: value }) } />
 

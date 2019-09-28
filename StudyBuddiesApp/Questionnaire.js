@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Picker, Button, Text, TextInput, View, TouchableHighlight, Dimensions} from 'react-native';
+import {StyleSheet, Picker, Button, Text, View, ActivityIndicator} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { Auth } from 'aws-amplify';
 
@@ -9,7 +9,8 @@ class QuestionnaireScreen extends React.Component {
         this.state={
             exam: ' ',
             date: new Date(),
-            exams: []
+            exams: [],
+            isLoading: true
         }
     }
 
@@ -30,6 +31,22 @@ class QuestionnaireScreen extends React.Component {
         return response;
     }
 
+    fetchSurveyStatus() {        
+        var url = global.url + "surveyStatus?userId=" + Auth.user.attributes.sub;
+        console.log("url:" + url);
+        return fetch(url)
+            .then((response) => response.json())
+            .then((response) => {
+                if (response['surveyStatus'] === "True") {
+                    this.props.navigation.navigate("Home");
+                } else {
+                    this.setState({isLoading: false});
+                }})
+            .catch((error) => {
+                this.setState({isLoading: false});
+            });
+      }
+
     getFillSurveyUrl(userId, exam, month, year) {
         return global.url + "fillSurvey?userId=" + userId + "&month=" + month
             + "&year=" + year + "&exam=" + exam;
@@ -47,23 +64,29 @@ class QuestionnaireScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-          date:new Date()
-        });
+        this.fetchSurveyStatus();
         this.fetchExams();
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, paddingTop: 25 }}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            );
+          }
+
         return (
             <View style = {styles.container} >
                 <Text style={styles.title}>Questionnaire</Text>
-                <Picker selectedValue = {this.state.exam} 
-                style={{height: 50, width: 100}} 
-                onValueChange = {itemValue => this.setState({exam: itemValue})}>
-                {this.state.exams.map(
-                    item => {return (<Picker.Item label={item} value={item} key={item}/>)})}
-                </Picker>
-                <View style = {styles.dateContainer}>
+                    <Picker 
+                        selectedValue = {this.state.exam} 
+                        onValueChange = {itemValue => this.setState({exam: itemValue})}
+                        style={{height: 100, width: 300}}>
+                        {this.state.exams.map(
+                            item => {return (<Picker.Item label={item} value={item} key={item}/>)})}
+                    </Picker>
                     <DatePicker
                         style={{width: 200}}
                         date={this.state.date}
@@ -73,25 +96,12 @@ class QuestionnaireScreen extends React.Component {
                         minDate= {this.state.date}
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
-                        customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    onDateChange={date => {this.setState({date: date})}}/>
-                </View>    
-                <View style = {styles.button}>
-                    <Button style={styles.button} title="Continue" onPress={() => {
-                        this.fillSurvey();
-                        this.props.navigation.navigate('Home');
-                        }}></Button>
-                </View>          
+                        onDateChange={date => {this.setState({date: date})}}/> 
+                <Button title="Continue" onPress={() => {
+                    this.fillSurvey();
+                    this.props.navigation.navigate('Home');
+                    }}/>
+                    <SignOutButton navigation={this.props.navigation}/>
             </View>
         );
     }
@@ -108,18 +118,9 @@ const styles = StyleSheet.create({
     },
     container: {
       flex: 1,
+      flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-evenly',
       backgroundColor: '#F5FCFF',
-    },
-    button: {
-        position: 'absolute',
-        bottom: 100
-    },
-    dateContainer: {
-        position: "absolute",
-        alignContent: "space-around",
-        marginTop: 50,
-        top: 300
     }
   });

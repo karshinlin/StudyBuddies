@@ -59,7 +59,10 @@ def get_group():
         group_id = group_id['groupID'][0]
         if group_id is None:
             group_id = tryToAddToGroup(user_id)
-        response = {"groupId": str(group_id)}
+        if group_id is not None:
+            group_id = str(group_id)
+
+        response = {"groupId": group_id}
         return json.dumps(response)
     else: 
         return json.dumps({"error": "user not found"}), 400
