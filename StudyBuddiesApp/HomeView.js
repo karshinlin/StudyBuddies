@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import SignOutButton from './SignOutButton';
-import {NavigationEvents} from 'react-navigation';
+import {NavigationEvents, withNavigation} from 'react-navigation';
 
 Amplify.configure(awsConfig);
 
@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
     console.log("loading:" + this.state.isLoading);
     if (this.state.isLoading) {
       return (
-          <View style={{ flex: 1, paddingTop: 25 }}>
+          <View style={{ paddingTop: 25 }}>
               <ActivityIndicator size="large" color="#0000ff" />
           </View>
       );
@@ -72,10 +72,10 @@ export default class HomeScreen extends React.Component {
           <View >   
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Chat" desiredFontSize="50">
+                tileName="Chat" desiredFontSize="30">
               </HomeTile>
               <HomeTile
-                tileName="Ask" desiredFontSize="50" onPress={() => {this.props.navigation.navigate('Ask')}}>
+                tileName="Ask" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Ask')}}>
               </HomeTile>
             </View>
             <View style={styles.tileRow}>
@@ -88,10 +88,10 @@ export default class HomeScreen extends React.Component {
             </View>
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Question History" desiredFontSize="25">
+                tileName="Question History" desiredFontSize="30">
               </HomeTile>
               <HomeTile
-                tileName="Leaderboard" desiredFontSize="25">
+                tileName="Leaderboard" desiredFontSize="30">
               </HomeTile>
             </View>
             <View style={styles.banner}>
@@ -99,10 +99,11 @@ export default class HomeScreen extends React.Component {
           </View>
         ) :
         <Text style>You're not in a group yet. Hang tight!</Text> }
-        <SignOutButton navigation={this.props.navigation}/>
       </View>);
     }
   }
+
+  const SignoutButtonNav = withNavigation(SignOutButton);
 
 const styles = StyleSheet.create({
   banner: {
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: 10
   },
   welcome: {
     fontSize: 20,
