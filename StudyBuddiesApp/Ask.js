@@ -4,29 +4,58 @@ import { createAppContainer, NavigationActions, withNavigation } from "react-nav
 import { createStackNavigator } from "react-navigation-stack";
 
 import HomeTile from "./HomeTile.js";
+import { Auth } from 'aws-amplify';
 
 class AskScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Ask</Text>
-		<Text style={styles.normal}>What's your question?</Text>
-		<TextInput
-		  style={styles.textbox}
-		  multiline = {true}
-		  numberOfLines = {4}
-          placeholder="Ask something here for your Study Buddies to answer!"
-          onChangeText={(text) => this.setState({text})}
-        />
-		<Button
-			onPress={() => {
-				Alert.alert('You just asked a question!');
-			}}
-			title="Submit"
-		/>
-      </View>
-    );
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			questionNumber: 8,
+			text: "",
+			user: "",
+		};
+		this.params = this.props.params;
+		this.askQuestion = this.askQuestion.bind(this);
+		this.askQuestion();
+	}
+
+	askQuestion() {
+		// this.setState({questionNumber: this.state.questionNumber + 1})
+		this.setState({user: Auth.user.attributes.sub})
+		this.props
+		var url = global.url + "setQuestion?userId=" + Auth.user.attributes.sub;
+		return fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({
+				questionId: "10",
+				askedBy: this.state.user,
+				questionText: this.state.text,
+			}),		
+		})
+	}
+	
+  	render() {
+		return (
+		<View style={styles.container}>
+			<Text style={styles.title}>Ask</Text>
+			<Text style={styles.normal}>What's your question?</Text>
+			<TextInput
+			style={styles.textbox}
+			multiline = {true}
+			numberOfLines = {4}
+			placeholder="Ask something here for your Study Buddies to answer!"
+			onChangeText={(text) => this.setState({text})}
+			/>
+			<Button
+				onPress={() => {
+					Alert.alert('You just asked a question!');
+					this.askQuestion();
+				}}
+				title="Submit"
+			/>
+		</View>
+		);
+	}
 }
 
 export default AskScreen;
