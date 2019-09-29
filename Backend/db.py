@@ -65,11 +65,11 @@ class DB:
     def retrieve_group(self, user_id):
         return self.retrieve("select groupID from User where userID = '{}';".format(user_id))
 
-    def set_question(self, question_id, asked_by, question_text):
+    def set_question(self, asked_by, question_text):
         now = datetime.now()
         dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
-        return self.write("insert into Question (questionID, askedBy, questionText, askDate) values('{}', '{}', '{}', '{}')"
-            .format(question_id, asked_by, question_text, dt_string))
+        return self.write("insert into Question (askedBy, questionText, askDate) values('{}', '{}', '{}')"
+            .format(asked_by, question_text, dt_string))
            
     def get_unanswered_questions(self, user_id):
         return self.retrieve('''
@@ -79,7 +79,7 @@ class DB:
                         (select groupId from User where userId = '{}'))
                 ) as questions where questionId 
             not in 
-            (select distinct questionId from Answer);
+            (select distinct questionId from Answer) order by askDate desc;
             '''
                              .format(user_id))
 

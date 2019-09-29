@@ -10,28 +10,34 @@ class AskScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			questionNumber: 8,
-			text: "",
-			user: "",
+			questionText: ""
 		};
 		this.params = this.props.params;
 		this.askQuestion = this.askQuestion.bind(this);
-		this.askQuestion();
 	}
 
 	askQuestion() {
-		// this.setState({questionNumber: this.state.questionNumber + 1})
-		this.setState({user: Auth.user.attributes.sub})
+		console.log(this.state.text)
 		this.props
-		var url = global.url + "setQuestion?userId=" + Auth.user.attributes.sub;
-		return fetch(url, {
+		var url = global.url + "setQuestion";
+		fetch(url, {
 			method: 'POST',
+			headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
 			body: JSON.stringify({
-				questionId: "10",
-				askedBy: this.state.user,
-				questionText: this.state.text,
+				askedBy: Auth.user.attributes.sub,
+				questionText: this.state.questionText,
 			}),		
 		})
+		.then((response) => response.json())
+        .then((response) => {
+            console.log(JSON.stringify(response))
+        })
+        .catch((error) => {
+
+        });
 	}
 	
   	render() {
@@ -44,7 +50,7 @@ class AskScreen extends React.Component {
 			multiline = {true}
 			numberOfLines = {4}
 			placeholder="Ask something here for your Study Buddies to answer!"
-			onChangeText={(text) => this.setState({text})}
+			onChangeText={(text) => this.setState({questionText : text})}
 			/>
 			<Button
 				onPress={() => {
