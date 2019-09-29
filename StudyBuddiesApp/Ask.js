@@ -4,29 +4,64 @@ import { createAppContainer, NavigationActions, withNavigation } from "react-nav
 import { createStackNavigator } from "react-navigation-stack";
 
 import HomeTile from "./HomeTile.js";
+import { Auth } from 'aws-amplify';
 
 class AskScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Ask</Text>
-		<Text style={styles.normal}>What's your question?</Text>
-		<TextInput
-		  style={styles.textbox}
-		  multiline = {true}
-		  numberOfLines = {4}
-          placeholder="Ask something here for your Study Buddies to answer!"
-          onChangeText={(text) => this.setState({text})}
-        />
-		<Button
-			onPress={() => {
-				Alert.alert('You just asked a question!');
-			}}
-			title="Submit"
-		/>
-      </View>
-    );
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			questionText: ""
+		};
+		this.params = this.props.params;
+		this.askQuestion = this.askQuestion.bind(this);
+	}
+
+	askQuestion() {
+		console.log(this.state.text)
+		this.props
+		var url = global.url + "setQuestion";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+			body: JSON.stringify({
+				askedBy: Auth.user.attributes.sub,
+				questionText: this.state.questionText,
+			}),		
+		})
+		.then((response) => response.json())
+        .then((response) => {
+            console.log(JSON.stringify(response))
+        })
+        .catch((error) => {
+
+        });
+	}
+	
+  	render() {
+		return (
+		<View style={styles.container}>
+			<Text style={styles.title}>Ask</Text>
+			<Text style={styles.normal}>What's your question?</Text>
+			<TextInput
+			style={styles.textbox}
+			multiline = {true}
+			numberOfLines = {4}
+			placeholder="Ask something here for your Study Buddies to answer!"
+			onChangeText={(text) => this.setState({questionText : text})}
+			/>
+			<Button
+				onPress={() => {
+					Alert.alert('You just asked a question!');
+					this.askQuestion();
+				}}
+				title="Submit"
+			/>
+		</View>
+		);
+	}
 }
 
 export default AskScreen;
