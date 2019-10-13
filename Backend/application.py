@@ -91,11 +91,11 @@ def tryToAddToGroup(user_id):
 
 @app.route('/setQuestion', methods=["POST"])
 def set_question():
-    question_id = request.json['questionId']
+    print(request.json)
     asked_by = request.json['askedBy']
     question_text = request.json['questionText']
-    print (db.set_question(question_id,asked_by,question_text))
-    response = {"success": 0, "questionId": question_id}
+    print (db.set_question(asked_by, question_text))
+    response = {"success": 0, "userId": asked_by}
     return json.dumps(response)
      
 @app.route('/unansweredQuestions', methods=["GET"])
