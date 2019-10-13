@@ -124,6 +124,17 @@ def answer_question():
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
+@app.route('/getPoints', methods=["GET"])
+def get_points():
+    user_id = request.args.get('userId', default = "", type = str)
+    points = db.retrieve_points(user_id)
+    if len(points['points']) == 1:
+        points = points['points'][0]
+        response = {"points": str(points)}
+        return json.dumps(response)
+    else: 
+        return json.dumps({"error": "user not found"}), 400
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be

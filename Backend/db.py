@@ -68,6 +68,7 @@ class DB:
     def set_question(self, question_id, asked_by, question_text):
         now = datetime.now()
         dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
+        self.add_n_points(asked_by, 3)
         return self.write("insert into Question (questionID, askedBy, questionText, askDate) values('{}', '{}', '{}', '{}')"
             .format(question_id, asked_by, question_text, dt_string))
            
@@ -87,6 +88,7 @@ class DB:
         now = datetime.now()
         dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
         print (dt_string)
+        self.add_n_points(user_id, 5)
         return self.write("INSERT INTO Answer (answerText, questionID, answeredBy, answerDateTime) VALUES ('{}',{},'{}','{}')"
             .format(answer_text, question_id, user_id, dt_string))
 
@@ -121,3 +123,20 @@ class DB:
             '''
             .format(user_id, self.MAX_GROUP_SIZE)
         )
+    
+    def retrieve_points(self, user_id):
+        return self.retrieve(
+            ''' SELECT points 
+                FROM User 
+                WHERE userID = '{}';
+            '''.format(user_id))
+
+    def add_n_points(self, user_id, n):
+        return self.write(
+            '''
+                UPDATE User
+                SET points = points + {}
+                WHERE userId = '{}'
+            '''.format(n, user_id)
+        )
+        

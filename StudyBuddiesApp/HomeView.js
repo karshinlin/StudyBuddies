@@ -19,12 +19,14 @@ export default class HomeScreen extends React.Component {
       email: "",
       groupId: null,
       isLoading: true,
-      error: false
+      error: false,
+      points: 0
     };
   }
   
   componentDidMount() {
     this.fetchMatchingStatus();
+    this.fetchPoints();
     console.log('on component mount');
     // check the current user when the App component is loaded
     Auth.currentAuthenticatedUser().then(user => {
@@ -47,6 +49,19 @@ export default class HomeScreen extends React.Component {
         this.setState({
           groupId: response['groupId'],
           isLoading: false
+        });
+      })
+  }
+
+  fetchPoints() {
+    var url = global.url + "getPoints?userId=" + Auth.user.attributes.sub;
+    console.log("url:" + url);
+    return fetch(url)
+      .then(response => response.json())
+      .then(response => {
+        console.log("points:" + response['points']);
+        this.setState({
+          points: response['points']
         });
       })
   }
@@ -94,6 +109,7 @@ export default class HomeScreen extends React.Component {
                 tileName="Leaderboard" desiredFontSize="25">
               </HomeTile>
             </View>
+            <Text>Points: {this.state.points} </Text>
             <View style={styles.banner}>
             </View>
           </View>
