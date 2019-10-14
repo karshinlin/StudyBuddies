@@ -55,10 +55,14 @@ class DB:
 
     def insert_survey_results(self, results):
         userId = results['userId']
+        name = results['name']
         exam = results['exam']
         month = results['month']
         year = results['year']
-        query = "INSERT INTO User(userID, exam, examMonth, examYear) VALUES ('{}','{}','{}','{}');".format(userId, exam, month, year)
+        query = '''
+            INSERT INTO User(userID, name, exam, examMonth, examYear) 
+            VALUES ('{}','{}','{}','{}','{}');
+            '''.format(userId, name, exam, month, year)
         print(query)
         return self.write(query)
 
@@ -139,4 +143,16 @@ class DB:
                 WHERE userId = '{}'
             '''.format(n, user_id)
         )
+    
+    def retrieve_leaderboard(self, user_id):
+        return self.retrieve(
+            ''' SELECT name, points 
+                FROM User 
+                WHERE groupId in (
+                    SELECT groupId
+                    FROM User
+                    WHERE userId = '{}'
+                )
+                ORDER BY points DESC;
+            '''.format(user_id))
         

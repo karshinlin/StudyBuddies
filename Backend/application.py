@@ -44,6 +44,7 @@ def survey_status():
 def fill_survey():
     survey = {
         "userId": request.args.get('userId', default = "", type = str),
+        "name": request.args.get('name', default = "", type = str),
         "exam": request.args.get('exam', default = "", type = str),
         "month": request.args.get('month', default = "", type = str),
         "year": request.args.get('year', default = "", type = str)
@@ -134,6 +135,12 @@ def get_points():
         return json.dumps(response)
     else: 
         return json.dumps({"error": "user not found"}), 400
+
+@app.route('/getLeaderboard', methods=["GET"])
+def get_leaderboard():
+    user_id = request.args.get('userId', default = "", type = str)
+    leaderboard_df = db.retrieve_leaderboard(user_id)
+    return leaderboard_df.to_json()
 
 # run the app.
 if __name__ == "__main__":

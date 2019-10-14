@@ -47,9 +47,9 @@ class QuestionnaireScreen extends React.Component {
             });
       }
 
-    getFillSurveyUrl(userId, exam, month, year) {
-        return global.url + "fillSurvey?userId=" + userId + "&month=" + month
-            + "&year=" + year + "&exam=" + exam;
+    getFillSurveyUrl(userId, name, exam, month, year) {
+        return global.url + "fillSurvey?userId=" + userId + "&name=" + name
+            + "&month=" + month + "&year=" + year + "&exam=" + exam;
     }
 
     fillSurvey() {
@@ -58,7 +58,8 @@ class QuestionnaireScreen extends React.Component {
         console.log(date)
         let month = date.getMonth()
         let year = date.getFullYear()
-        let url = this.getFillSurveyUrl(Auth.user.attributes.sub, this.state.exam, month, year)
+        let url = this.getFillSurveyUrl(Auth.user.attributes.sub,
+            Auth.user.attributes.name, this.state.exam, month, year)
         console.log(url)
         return fetch(url, {method: 'POST'});
     }

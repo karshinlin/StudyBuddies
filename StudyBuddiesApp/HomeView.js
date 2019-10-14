@@ -81,7 +81,10 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}> 
       <NavigationEvents
-        onDidFocus={() => this.fetchMatchingStatus()}
+        onDidFocus={() => {
+          this.fetchMatchingStatus();
+          this.fetchPoints();
+        }}
       />
         {this.state.groupId ? (
           <View >   
@@ -106,7 +109,7 @@ export default class HomeScreen extends React.Component {
                 tileName="Question History" desiredFontSize="30">
               </HomeTile>
               <HomeTile
-                tileName="Leaderboard" desiredFontSize="30">
+                tileName="Leaderboard" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Leaderboard')}}>
               </HomeTile>
             </View>
             <Text>Points: {this.state.points} </Text>

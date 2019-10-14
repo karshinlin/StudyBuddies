@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, TextInput, Button, Alert, View} from 'react-native';
-import { createAppContainer, NavigationActions, withNavigation } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
 
-import HomeTile from "./HomeTile.js";
 import { Auth } from 'aws-amplify';
 
 class AskScreen extends React.Component {
