@@ -155,4 +155,16 @@ class DB:
                 )
                 ORDER BY points DESC;
             '''.format(user_id))
-        
+
+    def get_challenge_questions(self, user_id):
+        return self.retrieve(
+            '''  
+                 SELECT questionId, question, answer
+                    FROM Challenge
+                    WHERE exam in (
+                        SELECT exam
+                        FROM User
+                        WHERE userId = '{}'
+                    )      
+            ''' .format(user_id)
+        )

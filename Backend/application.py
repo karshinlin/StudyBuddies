@@ -127,7 +127,7 @@ def answer_question():
 
 @app.route('/getPoints', methods=["GET"])
 def get_points():
-    user_id = request.args.get('userId', default = "", type = str)
+    user_id = request.args.get('userId', default="", type = str)
     points = db.retrieve_points(user_id)
     if len(points['points']) == 1:
         points = points['points'][0]
@@ -138,9 +138,24 @@ def get_points():
 
 @app.route('/getLeaderboard', methods=["GET"])
 def get_leaderboard():
-    user_id = request.args.get('userId', default = "", type = str)
+    user_id = request.args.get('userId', default="", type = str)
     leaderboard_df = db.retrieve_leaderboard(user_id)
     return leaderboard_df.to_json()
+
+@app.route('/getChallengeQuestions', methods=["GET"])
+def get_challenge_questions():
+    user_id = request.args.get('userId', type=str)
+    questions = db.get_challenge_questions(user_id)
+    response = []
+    for i in range(0, len(questions["questionId"])):
+        question_answer_pair = dict()
+        question_answer_pair["questionId"] = int(questions["questionId"][i])
+        question_answer_pair["question"] = str(questions["question"][i])
+        question_answer_pair["answer"] = str(questions["answer"][i])
+        response.append(question_answer_pair)
+
+    response = {"questions": response, "success": 0, "userId": user_id}
+    return json.dumps(response)
 
 # run the app.
 if __name__ == "__main__":
