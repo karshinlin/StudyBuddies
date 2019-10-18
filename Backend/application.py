@@ -116,6 +116,23 @@ def get_unanswered_questions():
     response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
+@app.route('/answeredQuestions', methods=["GET"])
+def get_answered_questions(): 
+    user_id = request.args.get('userId', default = "", type = str)
+    questions = db.get_answered_questions(user_id)
+    print(questions)
+    response = []
+    for i in range(0, len(questions["questionID"])):
+        a_question = dict()
+        a_question["questionId"] = int(questions["questionID"][i])
+        a_question["askedBy"] = questions["askedBy"][i]
+        a_question["questionText"] = questions["questionText"][i]
+        a_question["askDate"] = str(questions["askDate"][i])
+        response.append(a_question)
+    
+    response = {"questions": response, "success": 0, "userId": user_id}
+    return json.dumps(response)
+
 @app.route('/answerQuestion', methods=["POST"])
 def answer_question():
     user_id = request.json['userId']
