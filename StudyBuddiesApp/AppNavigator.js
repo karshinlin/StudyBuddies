@@ -10,6 +10,7 @@ import SignUp from './SignUp.js';
 import SignOutButton from './SignOutButton.js';
 import HomeButton from './HomeButton';
 import React from 'react';
+import ChallengeScreen from './Challenge.js';
 
 const SignoutButtonNav = withNavigation(SignOutButton);
 const HomeButtonNav = withNavigation(HomeButton);
@@ -46,6 +47,13 @@ const AppNavigator = createStackNavigator({
   },
   Leaderboard: {
     screen: LeaderboardScreen,
+    navigationOptions: {
+      headerRight: <SignoutButtonNav />,
+      headerLeft: <HomeButtonNav />
+    }
+  },
+  Challenge: {
+    screen: ChallengeScreen,
     navigationOptions: {
       headerRight: <SignoutButtonNav />,
       headerLeft: <HomeButtonNav />
