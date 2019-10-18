@@ -128,6 +128,7 @@ def get_answered_questions():
         a_question["askedBy"] = questions["askedBy"][i]
         a_question["questionText"] = questions["questionText"][i]
         a_question["askDate"] = str(questions["askDate"][i])
+        a_question["answerText"] = str(questions["answerText"][i])
         response.append(a_question)
     
     response = {"questions": response, "success": 0, "userId": user_id}
