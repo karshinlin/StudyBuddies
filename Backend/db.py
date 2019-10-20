@@ -155,4 +155,12 @@ class DB:
                 )
                 ORDER BY points DESC;
             '''.format(user_id))
+
+    def mark_challenge_history(self, user_id, question_id, is_correct):
+        return self.write(
+            '''
+                INSERT INTO ChallengeHistory(userId, questionId, isCorrect, timestamp)
+                VALUES ('{}',{},{}, NOW());
+            '''.format(user_id, question_id, is_correct)
+        )
         

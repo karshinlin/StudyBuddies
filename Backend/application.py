@@ -142,6 +142,16 @@ def get_leaderboard():
     leaderboard_df = db.retrieve_leaderboard(user_id)
     return leaderboard_df.to_json()
 
+@app.route('/answerChallenge', methods=["POST"])
+def answer_challenge():
+    user_id = request.json['userId']
+    question_id = request.json['questionId']
+    is_correct = request.json['isCorrect']
+    is_correct = (is_correct == 'true')
+    print (db.mark_challenge_history(user_id, question_id, is_correct))
+    response = {"success": 0, "userId": user_id}
+    return json.dumps(response)
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
