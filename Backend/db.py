@@ -82,9 +82,24 @@ class DB:
                 (select * from Question where askedBy in 
                     (select userId from User where groupId in 
                         (select groupId from User where userId = '{}'))
-                ) as questions where questionId 
-            not in 
+                ) as questions where questionId not in 
             (select distinct questionId from Answer) order by askDate desc;
+            '''
+                             .format(user_id))
+
+    def get_answered_questions(self, user_id):
+        return self.retrieve('''
+            select questions.questionID, questions.askedBy, questions.questionText, questions.askDate, Answer.answerText from (                 
+		        select * from Question where askedBy in (                     
+			        select userId from User where groupId in (                         
+				        select groupId from User where userId = '1851bed0-a642-49e0-8db4-3f6888c479e9'                     
+			        )                 
+		        )             
+	        ) as questions
+        join Answer on questions.questionID = Answer.questionID
+            where questions.questionId in
+                (select distinct questions.questionId from Answer)
+        order by askDate desc LIMIT 0, 1000
             '''
                              .format(user_id))
 
@@ -164,3 +179,15 @@ class DB:
             '''.format(user_id, question_id, is_correct)
         )
         
+    def get_challenge_questions(self, user_id):
+        return self.retrieve(
+            '''  
+                 SELECT questionId, question, answer
+                    FROM Challenge
+                    WHERE exam in (
+                        SELECT exam
+                        FROM User
+                        WHERE userId = '{}'
+                    )      
+            ''' .format(user_id)
+        )

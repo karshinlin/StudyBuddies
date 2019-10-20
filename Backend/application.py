@@ -116,6 +116,24 @@ def get_unanswered_questions():
     response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
+@app.route('/answeredQuestions', methods=["GET"])
+def get_answered_questions(): 
+    user_id = request.args.get('userId', default = "", type = str)
+    questions = db.get_answered_questions(user_id)
+    print(questions)
+    response = []
+    for i in range(0, len(questions["questionID"])):
+        a_question = dict()
+        a_question["questionId"] = int(questions["questionID"][i])
+        a_question["askedBy"] = questions["askedBy"][i]
+        a_question["questionText"] = questions["questionText"][i]
+        a_question["askDate"] = str(questions["askDate"][i])
+        a_question["answerText"] = str(questions["answerText"][i])
+        response.append(a_question)
+    
+    response = {"questions": response, "success": 0, "userId": user_id}
+    return json.dumps(response)
+
 @app.route('/answerQuestion', methods=["POST"])
 def answer_question():
     user_id = request.json['userId']
@@ -127,7 +145,7 @@ def answer_question():
 
 @app.route('/getPoints', methods=["GET"])
 def get_points():
-    user_id = request.args.get('userId', default = "", type = str)
+    user_id = request.args.get('userId', default="", type = str)
     points = db.retrieve_points(user_id)
     if len(points['points']) == 1:
         points = points['points'][0]
@@ -138,7 +156,7 @@ def get_points():
 
 @app.route('/getLeaderboard', methods=["GET"])
 def get_leaderboard():
-    user_id = request.args.get('userId', default = "", type = str)
+    user_id = request.args.get('userId', default="", type = str)
     leaderboard_df = db.retrieve_leaderboard(user_id)
     return leaderboard_df.to_json()
 
@@ -150,6 +168,21 @@ def answer_challenge():
     is_correct = (is_correct == 'true')
     print (db.mark_challenge_history(user_id, question_id, is_correct))
     response = {"success": 0, "userId": user_id}
+    return json.dumps(response)
+
+@app.route('/getChallengeQuestions', methods=["GET"])
+def get_challenge_questions():
+    user_id = request.args.get('userId', type=str)
+    questions = db.get_challenge_questions(user_id)
+    response = []
+    for i in range(0, len(questions["questionId"])):
+        question_answer_pair = dict()
+        question_answer_pair["questionId"] = int(questions["questionId"][i])
+        question_answer_pair["question"] = str(questions["question"][i])
+        question_answer_pair["answer"] = str(questions["answer"][i])
+        response.append(question_answer_pair)
+
+    response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
 # run the app.
