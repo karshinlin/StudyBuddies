@@ -165,7 +165,6 @@ def answer_challenge():
     user_id = request.json['userId']
     question_id = request.json['questionId']
     is_correct = request.json['isCorrect']
-    is_correct = (is_correct == 'true')
     print (db.mark_challenge_history(user_id, question_id, is_correct))
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
@@ -173,17 +172,8 @@ def answer_challenge():
 @app.route('/getChallengeQuestions', methods=["GET"])
 def get_challenge_questions():
     user_id = request.args.get('userId', type=str)
-    questions = db.get_challenge_questions(user_id)
-    response = []
-    for i in range(0, len(questions["questionId"])):
-        question_answer_pair = dict()
-        question_answer_pair["questionId"] = int(questions["questionId"][i])
-        question_answer_pair["question"] = str(questions["question"][i])
-        question_answer_pair["answer"] = str(questions["answer"][i])
-        response.append(question_answer_pair)
-
-    response = {"questions": response, "success": 0, "userId": user_id}
-    return json.dumps(response)
+    questions_df = db.get_challenge_questions(user_id)
+    return questions_df.to_json()
 
 # run the app.
 if __name__ == "__main__":
