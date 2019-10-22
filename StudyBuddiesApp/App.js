@@ -23,8 +23,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    // TODO: UNCOMMENT TO DISABLE WARNINGS
-    console.disableYellowBox = true;
     return (
       <AppContainer/>
     );

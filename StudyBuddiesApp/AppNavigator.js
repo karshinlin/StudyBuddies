@@ -11,6 +11,8 @@ import SignOutButton from './SignOutButton.js';
 import HomeButton from './HomeButton';
 import React from 'react';
 import Conversation from './src/Conversation.js';
+import ChallengeScreen from './Challenge.js';
+import QuestionHistoryScreen from './QuestionHistory.js';
 
 const SignoutButtonNav = withNavigation(SignOutButton);
 const HomeButtonNav = withNavigation(HomeButton);
@@ -53,7 +55,21 @@ const AppNavigator = createStackNavigator({
     }
   },
   Chat: {
-    screen: Conversation,
+    screen: Conversation
+  },
+  Challenge: {
+    screen: ChallengeScreen,
+    navigationOptions: {
+      headerRight: <SignoutButtonNav />,
+      headerLeft: <HomeButtonNav />
+    }
+  }, 
+  QuestionHistory: {
+    screen: QuestionHistoryScreen,
+    navigationOptions: {
+      headerRight: <SignoutButtonNav />,
+      headerLeft: <HomeButtonNav />
+    }
   }
 });
 
