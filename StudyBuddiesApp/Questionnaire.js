@@ -102,7 +102,6 @@ class QuestionnaireScreen extends React.Component {
                     this.fillSurvey();
                     this.props.navigation.navigate('Home');
                     }}/>
-                    {/* <SignOutButton navigation={this.props.navigation}/> */}
             </View>
         );
     }

@@ -94,20 +94,7 @@ class DB:
                              .format(user_id))
 
     def get_answered_questions(self, user_id):
-        return self.retrieve('''
-            select questions.questionID, questions.askedBy, questions.questionText, questions.askDate, Answer.answerText from (                 
-		        select * from Question where askedBy in (                     
-			        select userId from User where groupId in (                         
-				        select groupId from User where userId = '1851bed0-a642-49e0-8db4-3f6888c479e9'                     
-			        )                 
-		        )             
-	        ) as questions
-        join Answer on questions.questionID = Answer.questionID
-            where questions.questionId in
-                (select distinct questions.questionId from Answer)
-        order by askDate desc LIMIT 0, 1000
-            '''
-                             .format(user_id))
+        return self.retrieve("call get_questions_for_my_group('{}')".format(user_id))
 
     def answer_question(self, user_id, question_id, answer_text):
         now = datetime.now()
