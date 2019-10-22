@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, StyleSheet, ActivityIndicator, Button, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
-import QuestionCard from './QuestionCard';
+import AnsweredQuestionCard from './AnsweredQuestionCard';
+
 
 class QuestionHistoryScreen extends Component {
 	constructor(props) {
@@ -67,8 +68,8 @@ class QuestionHistoryScreen extends Component {
 			<FlatList
 			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 			data={this.state.questions}
-			renderItem={({ item: { questionId, questionText, askedDate } }) => (
-			  <QuestionCard questionText={questionText} askedDate={askedDate} id={questionId} clear={true} />
+			renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
+			  <AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
 			)}
 			onRefresh={() => this.fetchQuestions()}
 			keyboardShouldPersistTaps="always"

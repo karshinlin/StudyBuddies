@@ -1,10 +1,10 @@
 {
-    "devToolsPort": 19003,
-    "expoServerPort": 19000,
-    "packagerPort": 19002,
-    "packagerPid": 12972,
-    "expoServerNgrokUrl": "https://t3-nj6.anonymous.studybuddiesapp.exp.direct",
-    "packagerNgrokUrl": "https://packager.t3-nj6.anonymous.studybuddiesapp.exp.direct",
-    "ngrokPid": 12988,
-    "webpackServerPort": null
-  }
+  "devToolsPort": 19003,
+  "expoServerPort": 19000,
+  "packagerPort": 19002,
+  "packagerPid": 16185,
+  "expoServerNgrokUrl": "https://t3-nj6.anonymous.studybuddiesapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.t3-nj6.anonymous.studybuddiesapp.exp.direct",
+  "ngrokPid": 16202,
+  "webpackServerPort": null
+}
