@@ -182,12 +182,8 @@ class DB:
     def get_challenge_questions(self, user_id):
         return self.retrieve(
             '''  
-                 SELECT questionId, question, answer
-                    FROM Challenge
-                    WHERE exam in (
-                        SELECT exam
-                        FROM User
-                        WHERE userId = '{}'
-                    )      
+                SELECT *
+                FROM ChallegeHistoryUserCountView
+                WHERE userId = '{}'      
             ''' .format(user_id)
         )
