@@ -1,36 +1,54 @@
 {
-	"providers": {
-		"awscloudformation": {
-			"AuthRoleName": "studybuddiesapp-dev-20190908124421-authRole",
-			"UnauthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-authRole",
-			"Region": "us-east-1",
-			"DeploymentBucketName": "studybuddiesapp-dev-20190908124421-deployment",
-			"UnauthRoleName": "studybuddiesapp-dev-20190908124421-unauthRole",
-			"StackName": "studybuddiesapp-dev-20190908124421",
-			"StackId": "arn:aws:cloudformation:us-east-1:743690469842:stack/studybuddiesapp-dev-20190908124421/e8b16b80-d257-11e9-b819-0e94a1882570"
-		}
-	},
-	"auth": {
-		"studybuddiesapp3d4f0df8": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190908124421-deployment/amplify-cfn-templates/auth/studybuddiesapp3d4f0df8-cloudformation-template.yml",
-				"logicalId": "authstudybuddiesapp3d4f0df8"
-			},
-			"lastPushTimeStamp": "2019-09-08T16:55:07.242Z",
-			"output": {
-				"AppClientSecret": "1g78185p7g0etdr1l89cokhr9j7sivh2rcc8n5j0d3nugt5ijqi",
-				"UserPoolId": "us-east-1_GEjkJTFdi",
-				"AppClientIDWeb": "7ppfog2chn8eoj7lr6ecc17t4h",
-				"AppClientID": "7hd3sr1spkeipkvitus3o8par0",
-				"IdentityPoolId": "us-east-1:1918db0d-482e-4da3-9d6d-f2a09b01eb93",
-				"IdentityPoolName": "studybuddiesapp3d4f0df8_identitypool_3d4f0df8__dev",
-				"UserPoolName": "studybuddiesapp3d4f0df8_userpool_3d4f0df8"
-			},
-			"lastPushDirHash": "biYHCrJjZFRJvMnxg5Dg2bGZE14="
-		}
-	}
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "studybuddiesapp-dev-20190908124421-authRole",
+      "UnauthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "studybuddiesapp-dev-20190908124421-deployment",
+      "UnauthRoleName": "studybuddiesapp-dev-20190908124421-unauthRole",
+      "StackName": "studybuddiesapp-dev-20190908124421",
+      "StackId": "arn:aws:cloudformation:us-east-1:743690469842:stack/studybuddiesapp-dev-20190908124421/e8b16b80-d257-11e9-b819-0e94a1882570"
+    },
+    "categories": {
+      "auth": {
+        "studybuddiesapp3d4f0df8": {}
+      }
+    }
+  },
+  "auth": {
+    "studybuddiesapp3d4f0df8": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "AppClientSecret": "1g78185p7g0etdr1l89cokhr9j7sivh2rcc8n5j0d3nugt5ijqi",
+        "UserPoolId": "us-east-1_GEjkJTFdi",
+        "AppClientIDWeb": "7ppfog2chn8eoj7lr6ecc17t4h",
+        "AppClientID": "7hd3sr1spkeipkvitus3o8par0",
+        "IdentityPoolId": "us-east-1:1918db0d-482e-4da3-9d6d-f2a09b01eb93",
+        "IdentityPoolName": "studybuddiesapp3d4f0df8_identitypool_3d4f0df8__dev",
+        "UserPoolName": "studybuddiesapp3d4f0df8_userpool_3d4f0df8"
+      },
+      "lastPushTimeStamp": "2019-10-17T17:50:08.343Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/studybuddiesapp-dev-20190908124421-deployment/amplify-cfn-templates/auth/studybuddiesapp3d4f0df8-cloudformation-template.yml",
+        "logicalId": "authstudybuddiesapp3d4f0df8"
+      }
+    }
+  },
+  "api": {
+    "StudyBuddiesChat": {
+      "service": "AppSync",
+      "output": {
+        "securityType": "AMAZON_COGNITO_USER_POOLS",
+        "GraphQLAPIIdOutput": "2eyqlppo55evvnsusqsqkpfiha",
+        "GraphQLAPIEndpointOutput": "https://s3a6c37osba7bmaaxadd4jvlza.appsync-api.us-east-1.amazonaws.com/graphql",
+        "additionalAuthenticationProviders": [],
+        "name": "StudyBuddiesChat",
+        "region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2019-10-17T20:10:20.226Z"
+    }
+  }
 }

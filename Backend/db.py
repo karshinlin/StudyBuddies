@@ -69,6 +69,12 @@ class DB:
     def retrieve_group(self, user_id):
         return self.retrieve("select groupID from User where userID = '{}';".format(user_id))
 
+    def retrieve_convo_id(self, group_id):
+        return self.retrieve("select conversationID from StudyGroup where groupID = '{}';".format(group_id))
+
+    def retrieve_convo_id_for_user(self, user_id):
+        return self.retrieve("SELECT conversationID FROM StudyGroup WHERE groupID IN (SELECT groupID FROM User WHERE userID = '{}');".format(user_id))
+
     def set_question(self, asked_by, question_text):
         now = datetime.now()
         dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
@@ -125,10 +131,14 @@ class DB:
         print(df)
         return df
 
-    def create_group(self, user_id):
+    def create_group(self, user_id, conversation_id):
         user = self.retrieve("SELECT exam FROM User WHERE userID = '{}';".format(user_id))
         exam = user['exam'][0]
-        group_id = self.write("INSERT INTO StudyGroup(exam) VALUES ('{}');".format(exam))
+        group_id = self.write("INSERT INTO StudyGroup(exam, conversationID) VALUES ('{}','{}');".format(exam, conversation_id))
+        return group_id
+
+    def update_conversation_id(self, group_id, conversation_id):
+        group_id = self.write("UPDATE StudyGroup SET conversationID = '{}' WHERE groupID = '{}'".format(conversation_id, group_id))
         return group_id
 
     def retrieve_potential_groups_for_unmatched_user(self, user_id):

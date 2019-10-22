@@ -1,6 +1,10 @@
 from flask import Flask, request, json
 import db
 import json
+import botocore.vendored.requests
+import graphql
+import uuid
+from datetime import datetime
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -62,6 +66,14 @@ def get_group():
             group_id = tryToAddToGroup(user_id)
         if group_id is not None:
             group_id = str(group_id)
+            convo_id = db.retrieve_convo_id(group_id)
+            # backfilling conversations and groups
+            # if convo_id is None: 
+            #     now = datetime.now()
+            #     dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
+            #     convo_id = uuid.uuid4()
+            #     print(execute_gql(graphql.createConversation, {"id": convo_id, "createdAt": dt_string, "name": "StudyBuddies Group"}).json())
+            #     db.update_conversation_id(group_id, convo_id)
 
         response = {"groupId": group_id}
         return json.dumps(response)
@@ -73,13 +85,26 @@ def tryToAddToGroup(user_id):
     groups = db.retrieve_potential_groups_for_unmatched_user(user_id)
     if len(groups["groupID"]) > 0:
         group_to_add_to = int(groups["groupID"][0])
+        convo_id = db.retrieve_convo_id(group_to_add_to)['conversationID'][0]
+        if convo_id is None: 
+            now = datetime.now()
+            dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
+            convo_id = str(uuid.uuid4())
+            print(execute_gql(graphql.createConversation, {"id": convo_id, "createdAt": dt_string, "name": "StudyBuddies Group"}).json())
+            db.update_conversation_id(group_to_add_to, convo_id)
         db.put_user_in_group(user_id, group_to_add_to)
         return group_to_add_to
     
     # try to create new group
     users = db.retrieve_all_potential_matches_for_user(user_id)
     if len(users['userID']) >= 2:
-        created_group = db.create_group(user_id)
+        # create chatroom conversation for group
+        now = datetime.now()
+        dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
+        convo_id = str(uuid.uuid4())
+        print(execute_gql(graphql.createConversation, {"id": convo_id, "createdAt": dt_string, "name": "StudyBuddies Group"}).json())
+        created_group = db.create_group(user_id, convo_id)
+
         for user_id in users['userID']:
             db.put_user_in_group(user_id, created_group)
         return created_group
@@ -89,6 +114,20 @@ def tryToAddToGroup(user_id):
     group = db.retrieve_group(user_id)['groupID'][0]
     response = {"getGroup": str(group)}
     return json.dumps(response)
+
+def execute_gql(query, variables):
+    headers = {
+    'Content-Type': "application/graphql",
+    'x-api-key': app.config["APPSYNC_API_KEY"],
+    'cache-control': "no-cache",
+    }
+    payload_obj = {
+        "query": query, 
+        "variables": variables
+    }
+    payload = json.dumps(payload_obj)
+    response = botocore.vendored.requests.request("POST", app.config["APPSYNC_API_ENDPOINT_URL"], data=payload, headers=headers)
+    return response
 
 @app.route('/setQuestion', methods=["POST"])
 def set_question():
@@ -159,6 +198,13 @@ def get_leaderboard():
     user_id = request.args.get('userId', default="", type = str)
     leaderboard_df = db.retrieve_leaderboard(user_id)
     return leaderboard_df.to_json()
+
+@app.route('/getConversationId', methods=["GET"])
+def get_conversation_id():
+    user_id = request.args.get('userId', default = "", type = str)
+    convo_id = db.retrieve_convo_id_for_user(user_id)['conversationID'][0]
+    response = {"success": 0, "userId": user_id, "conversationId": convo_id}
+    return json.dumps(response)
 
 @app.route('/answerChallenge', methods=["POST"])
 def answer_challenge():
