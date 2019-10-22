@@ -90,7 +90,7 @@ export default class HomeScreen extends React.Component {
           <View >   
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Chat" desiredFontSize="30">
+                tileName="Chat" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Chat')}}>
               </HomeTile>
               <HomeTile
                 tileName="Ask" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Ask')}}>

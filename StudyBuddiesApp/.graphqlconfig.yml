@@ -1,0 +1,14 @@
+projects:
+  StudyBuddiesChat:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - chatgraphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
+        region: us-east-1
+        maxDepth: 5
