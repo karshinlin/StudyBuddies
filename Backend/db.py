@@ -169,6 +169,8 @@ class DB:
             '''.format(user_id))
 
     def mark_challenge_history(self, user_id, question_id, is_correct):
+        if is_correct:
+            self.add_n_points(user_id, 1)
         return self.write(
             '''
                 INSERT INTO ChallengeHistory(userId, questionId, isCorrect, timestamp)
