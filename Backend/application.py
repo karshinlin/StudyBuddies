@@ -21,22 +21,22 @@ home_link = '<p><a href="/">Back</a></p>\n'
 footer_text = '</body>\n</html>'
 
 # EB looks for an 'application' callable by default.
-app = Flask(__name__)
+application = Flask(__name__)
 
 # get's configuration stuff
-app.config.from_pyfile('instance/config.py')
+application.config.from_pyfile('instance/config.py')
 
-db = db.DB(app)
+db = db.DB(application)
 
 # add a rule for the index page.
-app.add_url_rule('/', 'index', (lambda: header_text +
+application.add_url_rule('/', 'index', (lambda: header_text +
     say_hello() + instructions + footer_text))
 
-@app.route('/get_all_exams', methods=["GET"])
+@application.route('/get_all_exams', methods=["GET"])
 def get_all_exams():
     return db.retrieve_all_exams()['exam'].to_json()
 
-@app.route('/surveyStatus', methods=["GET"])
+@application.route('/surveyStatus', methods=["GET"])
 def survey_status():
     user_id = request.args.get('userId', default = "", type = str)
     is_filled = db.is_survey_filled(user_id)
@@ -44,7 +44,7 @@ def survey_status():
     response = {"surveyStatus": str(is_filled)}
     return json.dumps(response)
 
-@app.route('/fillSurvey', methods=["POST"])
+@application.route('/fillSurvey', methods=["POST"])
 def fill_survey():
     survey = {
         "userId": request.args.get('userId', default = "", type = str),
@@ -56,7 +56,7 @@ def fill_survey():
     db.insert_survey_results(survey)
     return "", 204
 
-@app.route('/getGroup', methods=["GET"])
+@application.route('/getGroup', methods=["GET"])
 def get_group():
     user_id = request.args.get('userId', default = "", type = str)
     group_id = db.retrieve_group(user_id)
@@ -118,7 +118,7 @@ def tryToAddToGroup(user_id):
 def execute_gql(query, variables):
     headers = {
     'Content-Type': "application/graphql",
-    'x-api-key': app.config["APPSYNC_API_KEY"],
+    'x-api-key': application.config["APPSYNC_API_KEY"],
     'cache-control': "no-cache",
     }
     payload_obj = {
@@ -126,10 +126,10 @@ def execute_gql(query, variables):
         "variables": variables
     }
     payload = json.dumps(payload_obj)
-    response = botocore.vendored.requests.request("POST", app.config["APPSYNC_API_ENDPOINT_URL"], data=payload, headers=headers)
+    response = botocore.vendored.requests.request("POST", application.config["APPSYNC_API_ENDPOINT_URL"], data=payload, headers=headers)
     return response
 
-@app.route('/setQuestion', methods=["POST"])
+@application.route('/setQuestion', methods=["POST"])
 def set_question():
     print(request.json)
     asked_by = request.json['askedBy']
@@ -138,7 +138,7 @@ def set_question():
     response = {"success": 0, "userId": asked_by}
     return json.dumps(response)
      
-@app.route('/unansweredQuestions', methods=["GET"])
+@application.route('/unansweredQuestions', methods=["GET"])
 def get_unanswered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
     questions = db.get_unanswered_questions(user_id)
@@ -155,7 +155,7 @@ def get_unanswered_questions():
     response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
-@app.route('/answeredQuestions', methods=["GET"])
+@application.route('/answeredQuestions', methods=["GET"])
 def get_answered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
     questions = db.get_answered_questions(user_id)
@@ -173,7 +173,7 @@ def get_answered_questions():
     response = {"questions": response, "success": 0, "userId": user_id}
     return json.dumps(response)
 
-@app.route('/answerQuestion', methods=["POST"])
+@application.route('/answerQuestion', methods=["POST"])
 def answer_question():
     user_id = request.json['userId']
     question_id = request.json['questionId']
@@ -182,7 +182,7 @@ def answer_question():
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
-@app.route('/getPoints', methods=["GET"])
+@application.route('/getPoints', methods=["GET"])
 def get_points():
     user_id = request.args.get('userId', default="", type = str)
     points = db.retrieve_points(user_id)
@@ -193,20 +193,20 @@ def get_points():
     else: 
         return json.dumps({"error": "user not found"}), 400
 
-@app.route('/getLeaderboard', methods=["GET"])
+@application.route('/getLeaderboard', methods=["GET"])
 def get_leaderboard():
     user_id = request.args.get('userId', default="", type = str)
     leaderboard_df = db.retrieve_leaderboard(user_id)
     return leaderboard_df.to_json()
 
-@app.route('/getConversationId', methods=["GET"])
+@application.route('/getConversationId', methods=["GET"])
 def get_conversation_id():
     user_id = request.args.get('userId', default = "", type = str)
     convo_id = db.retrieve_convo_id_for_user(user_id)['conversationID'][0]
     response = {"success": 0, "userId": user_id, "conversationId": convo_id}
     return json.dumps(response)
 
-@app.route('/answerChallenge', methods=["POST"])
+@application.route('/answerChallenge', methods=["POST"])
 def answer_challenge():
     user_id = request.json['userId']
     question_id = request.json['questionId']
@@ -215,7 +215,7 @@ def answer_challenge():
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
-@app.route('/getChallengeQuestions', methods=["GET"])
+@application.route('/getChallengeQuestions', methods=["GET"])
 def get_challenge_questions():
     user_id = request.args.get('userId', type=str)
     questions_df = db.get_challenge_questions(user_id)
@@ -225,5 +225,5 @@ def get_challenge_questions():
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    app.debug = True
-    app.run()
+    application.debug = True
+    application.run()
