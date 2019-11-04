@@ -74,7 +74,7 @@ export default class SignIn extends React.Component {
           <Text style={styles.noAccount}>
             Don't have an account?
           </Text>
-          <Button style={styles.buttons, {paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
+          <Button style={styles.buttons, {color: cWhite, paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
             title="Sign Up" 
             onPress={() => this.props.navigation.navigate('SignUp')} />
         </View>
@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
   buttons: {
     padding: 20,
     borderRadius: 8,
-    fontSize: 20
+    fontSize: 20,
+    color: cDarkBlue
   },
   incorrectPassword: {
     textAlign: 'left',

@@ -18,7 +18,12 @@ const SignoutButtonNav = withNavigation(SignOutButton);
 const HomeButtonNav = withNavigation(HomeButton);
 
 const AppNavigator = createStackNavigator({
-    SignIn: SignIn,
+    SignIn: {
+      screen: SignIn,
+      navigationOptions: {
+        header: null
+      }
+    },
     SignUp: SignUp,
 	Home: {
     screen: HomeScreen,

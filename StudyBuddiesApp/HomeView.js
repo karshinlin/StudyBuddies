@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import './global.js'
 import HomeTile from "./HomeTile.js";
 import SignOutButton from './SignOutButton';
+import {images} from "./images.js";
 import {NavigationEvents, withNavigation} from 'react-navigation';
 
 Amplify.configure(awsConfig);
@@ -90,15 +91,15 @@ export default class HomeScreen extends React.Component {
           <View >   
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Chat" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Chat')}}>
+                tileName="Chat" tilePic={images.chat_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Chat')}}>
               </HomeTile>
               <HomeTile
-                tileName="Ask" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Ask')}}>
+                tileName="Ask" tilePic={images.question_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Ask')}}>
               </HomeTile>
             </View>
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Answer" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
+                tileName="Answer" tilePic={images.point_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
               </HomeTile>
               <HomeTile
                 tileName="Challenge" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Challenge')}}>
@@ -109,7 +110,7 @@ export default class HomeScreen extends React.Component {
                 tileName="Question History" desiredFontSize="25" onPress={() => {this.props.navigation.navigate('QuestionHistory')}}>
               </HomeTile>
               <HomeTile
-                tileName="Leaderboard" desiredFontSize="25" onPress={() => {this.props.navigation.navigate('Leaderboard')}}>
+                tileName="Leaderboard" tilePic={images.leaderboard_icon} desiredFontSize="25" onPress={() => {this.props.navigation.navigate('Leaderboard')}}>
               </HomeTile>
             </View>
             <Text>Points: {this.state.points} </Text>
@@ -117,7 +118,7 @@ export default class HomeScreen extends React.Component {
             </View>
           </View>
         ) :
-        <Text style>You're not in a group yet. Hang tight!</Text> }
+        <Text style={styles.instructions}>You're not in a group yet. Hang tight!</Text> }
       </View>);
     }
   }
