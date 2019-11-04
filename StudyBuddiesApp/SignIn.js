@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 
@@ -41,48 +41,97 @@ export default class SignIn extends React.Component {
 
   render() {
     return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} enabled behavior={'padding'}>
+        <View style={[{flex: 0.2}, styles.titleHolder]}>
+          <Text style={styles.title}>Welcome to Study Buddies!</Text>
+        </View>
         <View>
-          <Input
-            label="Email"
-            leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          <TextInput
+            style={styles.textInput}
+            placeholder="Email"
             value={this.state.email}
             onChangeText={
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ email: value.toLowerCase() })
             }
-            placeholder="my@email.com"
           />
-          <Input
-            label="Password"
-            value={this.state.password}
-            leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          <TextInput
+            style={styles.textInput}
+            placeholder="Password"
+            secureTextEntry={true}
             onChangeText={
               // Set this.state.email to the value in this Input box
               (value) => this.setState({ password: value })
             }
-            placeholder="password"
             secureTextEntry
           />
-          <Button
-            title='Sign In'
-            onPress={ this.handleSignIn }
-          />
-          </View>
-          {this.state.showInvalidLogin ? <Text> Incorrect username or password. </Text>: null}  
-        <Button 
+          {this.state.showInvalidLogin ? <Text style={styles.incorrectPassword}> Incorrect username or password. </Text>: null}  
+        </View>
+        <View>
+          <Button style={styles.buttons}
+            title='Submit'
+            onPress={ this.handleSignIn } />
+          <Text style={styles.noAccount}>
+            Don't have an account?
+          </Text>
+          <Button style={styles.buttons, {paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
             title="Sign Up" 
             onPress={() => this.props.navigation.navigate('SignUp')} />
-      </View>
+        </View>
+      </KeyboardAvoidingView>
       );
   }
 }
 
+export const cBlack = '#3D3D3D';
+export const cDarkBlue = "#1D71F3";
+export const cLightBlue = "#3EAAFA";
+export const cRed = "#ED6A5A";
+export const cOrange = "#FAA916";
+export const cWhite = "#FFFFFF";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center'
-      },
+	  backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
+    padding: 30,
+    height: '100%',
+  },
+  titleHolder: {
+    justifyContent: "flex-end",
+    marginBottom: 50,
+  },
+  title: {
+    textAlign: 'left',
+    fontSize: 25,
+    fontFamily: "Arial",
+    color: cBlack,
+  },
+  textInput: {
+    borderRadius: 8,
+    backgroundColor: '#F2F2F2',
+    height: 75,
+    marginBottom: 20,
+    fontFamily: "Arial",
+    fontSize: 23,
+    padding: 20,
+  },
+  buttons: {
+    padding: 20,
+    borderRadius: 8,
+    fontSize: 20
+  },
+  incorrectPassword: {
+    textAlign: 'left',
+    fontSize: 20,
+    fontFamily: "Arial",
+    color: cRed
+  },
+  noAccount: {
+    textAlign: 'center',
+    fontSize: 15,
+    fontFamily: "Arial",
+    color: cBlack
+  }
 });
