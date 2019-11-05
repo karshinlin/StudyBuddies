@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator, Image} from 'react-native';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import { Auth } from 'aws-amplify';
@@ -71,7 +71,7 @@ export default class HomeScreen extends React.Component {
     console.log("loading:" + this.state.isLoading);
     if (this.state.isLoading) {
       return (
-          <View style={{ paddingTop: 25 }}>
+          <View style={{ paddingTop: 50, flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <ActivityIndicator size="large" color="#0000ff" />
           </View>
       );
@@ -88,7 +88,10 @@ export default class HomeScreen extends React.Component {
         }}
       />
         {this.state.groupId ? (
-          <View >   
+          <View style={{justifyContent: "flex-start", flexDirection: 'column', alignContent: 'flex-start'}}>
+            <View style={{ flexDirection: 'row', height: 200, justifyContent: 'center', alignItems: 'top', paddingBottom: 50, paddingTop: 0, marginTop: 0 }}>
+              <Image source={images.studybuddies_icon} style={{height: 200, width: 290}}></Image>
+            </View>   
             <View style={styles.tileRow}>
               <HomeTile
                 tileName="Chat" tilePic={images.chat_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Chat')}}>
@@ -107,7 +110,7 @@ export default class HomeScreen extends React.Component {
             </View>
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Question History" desiredFontSize="25" onPress={() => {this.props.navigation.navigate('QuestionHistory')}}>
+                tileName="Question History" tilePic={images.book_icon} desiredFontSize="25" onPress={() => {this.props.navigation.navigate('QuestionHistory')}}>
               </HomeTile>
               <HomeTile
                 tileName="Leaderboard" tilePic={images.leaderboard_icon} desiredFontSize="25" onPress={() => {this.props.navigation.navigate('Leaderboard')}}>
