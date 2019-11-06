@@ -124,34 +124,39 @@ export default class SignUp extends React.Component {
           placeholder="password"
           secureTextEntry />
         <Input
-          inputStyle={{padding: 10}}
+          inputStyle={styles.inputStyle}
+          label="Phone Number"
           leftIcon={{ type: 'font-awesome', name: 'phone' }}
           placeholder="+17709999999"
           value={ this.state.phone }
           onChangeText={ (value) => this.setState({ phone: value }) } />
         <Input
-          inputStyle={{padding: 10}}
+          inputStyle={styles.inputStyle}
+          label="Street Address"
           leftIcon={{ type: 'font-awesome', name: 'address-card' }}
-          placeholder="Address"
+          placeholder="123 Atlantic Dr"
           value={ this.state.address }
           onChangeText={ (value) => this.setState({ address: value }) } /> 
         <Input
-          inputStyle={{padding: 10}}
+          inputStyle={styles.inputStyle}
           leftIcon={{ type: 'font-awesome', name: 'address-card' }}
-          placeholder="City"
+          label="City"
+          placeholder="Atlanta"
           value={ this.state.city }
           onChangeText={ val => this.setState({ city: val }) } />    
         <Input
-          inputStyle={{padding: 10}}
+          inputStyle={styles.inputStyle}
           leftIcon={{ type: 'font-awesome', name: 'address-card' }}
-          placeholder="State"
+          label="State"
+          placeholder="GA"
           value={ this.state.state }
           onChangeText={ val => this.setState({ state: val }) } /> 
         <Input
-          inputStyle={{padding: 10}}
+          inputStyle={styles.inputStyle}
           leftIcon={{ type: 'font-awesome', name: 'address-card' }}
           keyboardType="number-pad"
-          placeholder="Zip"
+          label="Zip"
+          placeholder="30318"
           value={ this.state.zip }
           onChangeText={ val => this.setState({ zip: val }) } />    
         <Button
