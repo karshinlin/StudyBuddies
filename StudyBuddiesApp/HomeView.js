@@ -121,7 +121,11 @@ export default class HomeScreen extends React.Component {
             </View>
           </View>
         ) :
-        <Text style={styles.instructions}>You're not in a group yet. Hang tight!</Text> }
+        <View style={styles.container}>
+          <Image source={images.studybuddies_icon} />
+          <Text style={styles.title}>You're not in a group yet. Hang tight!</Text>
+        </View>
+         }
       </View>);
     }
   }
@@ -151,9 +155,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  title: {
+    fontSize: 25,
+    fontFamily: "Arial",
+    color: "black"
   },
 });
