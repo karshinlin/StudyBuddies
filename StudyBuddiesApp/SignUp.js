@@ -78,7 +78,7 @@ export default class SignUp extends React.Component {
   render() {
     return (
     <View styles={styles.container}>
-      <KeyboardAvoidingView enabled behavior={'padding'}>
+      <KeyboardAvoidingView enabled behavior='position'>
         <View style={[styles.titleHolder]}>
             <Text style={styles.title}>Make a new account</Text>
         </View>

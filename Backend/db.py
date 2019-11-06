@@ -186,3 +186,11 @@ class DB:
                 WHERE userId = '{}'      
             ''' .format(user_id)
         )
+
+    def get_group_members(self, user_id):
+        return self.retrieve(
+            '''
+                SELECT userID, name FROM User where groupID in 
+	                ( SELECT groupID FROM User where userID = '{}');
+            '''.format(user_id)
+        )

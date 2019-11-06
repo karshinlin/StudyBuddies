@@ -221,6 +221,15 @@ def get_challenge_questions():
     questions_df = db.get_challenge_questions(user_id)
     return questions_df.to_json()
 
+@application.route('/getGroupMemberNames', methods=["GET"])
+def get_group_members():
+    user_id = request.args.get('userId', type=str)
+    members = db.get_group_members(user_id)
+    response = dict()
+    for i in range(len(members['userID'])):
+        response[members['userID'][i]] = members['name'][i]
+    return json.dumps(response)
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
