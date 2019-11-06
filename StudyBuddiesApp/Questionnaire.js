@@ -26,7 +26,7 @@ class QuestionnaireScreen extends React.Component {
                     exams: exams,
                     exam: exams[0]
                 })
-            .catch(error => console.log(error))
+            .catch(error => console.log("error with get_all_exams: ", error))
         })
         return response;
     }

@@ -30,7 +30,8 @@ Dependencies and node modules are not pushed to Git.
 Backend Setup: 
 - [One Time] Within StudyBuddies/Backend directory, create a virtualenv: 
 	- Install virtualenv if you don't have it: `sudo pip3 install virtualenv`
-	- Create a virtualenv in the Backend directory and name it "venv": `virtualenv venv`
+	- Create a virtualenv in the Backend directory and name it "venv": `virtualenv -p python2.7 venv`
+	- NOTE: We use python2.7 to be compatible with AWS. You need python2.7 installed in your machine to create a virtual environment from it. 
 	- Activate the virtualenv: `source venv/bin/activate`
 - [Every time] Load all dependencies for the Flask server:
 	- `source venv/bin/activate`
@@ -48,5 +49,6 @@ Deployment to AWS Elastic Beanstalk:
        echo 'export PATH="/Users/karshinlin/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
     2. Zsh:
        echo 'export PATH="/Users/karshinlin/.ebcli-virtual-env/executables:$PATH"' >> ~/.zshenv && source ~/.zshenv
-	- Now you should be able to see options when running `eb`
+	- Now you should be able to see options when running `eb status`
+	- You may need to initialize your eb environment with `eb init`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory

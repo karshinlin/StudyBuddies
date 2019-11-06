@@ -114,7 +114,7 @@ export default class Conversation extends React.Component {
 		}
 		try {
 			const retrievedMessages = await API.graphql(graphqlOperation(GetMessages, {conversationId: this.convoId}))
-			console.log("retrievedMessages: ", retrievedMessages.data.allMessage)
+			console.log("retrievedMessages for " + this.convoId + ": ", retrievedMessages.data.allMessage)
 			if (retrievedMessages.data.allMessage) {
 				for (var i = 0; i < retrievedMessages.data.allMessage.length; i++) {
 					this.state.messages.push(retrievedMessages.data.allMessage[i])
