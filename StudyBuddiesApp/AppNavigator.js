@@ -13,18 +13,19 @@ import React from 'react';
 import Conversation from './src/Conversation.js';
 import ChallengeScreen from './Challenge.js';
 import QuestionHistoryScreen from './QuestionHistory.js';
+import ConfirmationCode from './ConfirmationCode.js';
 
 const SignoutButtonNav = withNavigation(SignOutButton);
 const HomeButtonNav = withNavigation(HomeButton);
 
 const AppNavigator = createStackNavigator({
-    SignIn: {
-      screen: SignIn,
-      navigationOptions: {
-        header: null
-      }
-    },
-    SignUp: SignUp,
+  SignIn: {
+    screen: SignIn,
+    navigationOptions: {
+      header: null
+    }
+  },
+  SignUp: SignUp,
 	Home: {
     screen: HomeScreen,
     navigationOptions: {
@@ -75,6 +76,9 @@ const AppNavigator = createStackNavigator({
       headerRight: <SignoutButtonNav />,
       headerLeft: <HomeButtonNav />
     }
+  },
+  ConfirmationCode: {
+    screen: ConfirmationCode
   }
 });
 

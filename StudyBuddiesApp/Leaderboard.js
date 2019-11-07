@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {ActivityIndicator, StyleSheet, Text, TextInput, Button, Alert, View} from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { Auth } from 'aws-amplify';
+import stylesheet from './styles.js';
 
 export default class LeaderboardScreen extends React.Component {
 	constructor(props) {
@@ -37,14 +38,15 @@ export default class LeaderboardScreen extends React.Component {
 	  }
 	
   	render() {
-		return (<View>
+		return (<View style={styles.container}>
+			<Text style={stylesheet.title}>Leaderboard</Text>
 			{!this.state.tableData ? 
 				<ActivityIndicator size="large" color="#0000ff" />
 			:
-				<View style={styles.container}>
+				<View>
 					<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
 						<Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
-						<Rows data={this.state.tableData} style={styles.head} textStyle={styles.text}/>
+						<Rows data={this.state.tableData} style={styles.data} textStyle={styles.text}/>
 					</Table>
 				</View>
 		}
@@ -57,5 +59,11 @@ const styles = StyleSheet.create({
 	container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
 	head: { height: 40, backgroundColor: '#f1f8ff' },
 	data: { height: 40, backgroundColor: 'white' },
-	text: { margin: 6 }
+	text: { margin: 6 },
+	title: {
+		flex: 0.15,
+		justifyContent: 'center',
+		fontSize: 40,
+		margin: 10
+	  }
   });

@@ -11,7 +11,6 @@ export default class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      modalVisible: false,
       showInvalidLogin: false
     };
   }
@@ -74,9 +73,15 @@ export default class SignIn extends React.Component {
           <Text style={styles.noAccount}>
             Don't have an account?
           </Text>
-          <Button style={styles.buttons, {color: cWhite, paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
+          <Button style={styles.buttons}
             title="Sign Up" 
             onPress={() => this.props.navigation.navigate('SignUp')} />
+          <Text style={styles.noAccount}>
+            Have a confirmation code?
+          </Text>
+          <Button style={styles.buttons}
+            title="Enter Code" 
+            onPress={() => this.props.navigation.navigate('ConfirmationCode')} />
         </View>
       </KeyboardAvoidingView>
       );
