@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     wrapper: {
         flexDirection: "column", 
         alignItems: 'center',
-        backgroundColor: "#42f5bc",
+        backgroundColor: "#F5FCFF",
         padding: 30,
         justifyContent: "center",
         ...Platform.select({

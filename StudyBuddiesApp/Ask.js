@@ -50,6 +50,7 @@ class AskScreen extends React.Component {
 			onChangeText={(text) => this.setState({questionText : text})}
 			/>
 			<Button
+			style={styles.submit}
 				onPress={() => {
 					Alert.alert('You just asked a question!');
 					this.askQuestion();
@@ -67,25 +68,34 @@ const styles = StyleSheet.create({
   title: {
 	flex: 0.15,
 	justifyContent: 'center',
-	fontSize: 40,
-	margin: 10
+	fontSize: 50,
+	margin: 10,
+	color: '#60A147',
+	fontFamily: 'Arial Rounded MT Bold'
   },
   normal: {
 	flex: 0.1,
-	fontSize: 30,
+	fontSize: 25,
 	margin: 10,
-	alignItems: 'center'
+	alignItems: 'center',
+	fontFamily: 'ArialMT'
   },
   container: {
     flex: 1,
 	alignItems: 'center',
 	justifyContent: 'flex-start',
-    backgroundColor: '#F5FCFF',
+   // backgroundColor: '#F5FCFF',
   },
   textbox: {
 	height: 200, 
 	width: '90%',
-	borderWidth: 1,
-	padding: 5
+	//borderWidth: 1,
+	padding: 5,
+	borderRadius: 25,
+	backgroundColor: '#F2F2F2', 
+	textAlign: 'center'
+  },
+  submit: {
+	  color: '#275DA7',  
   }
 });

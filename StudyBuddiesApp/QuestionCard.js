@@ -79,7 +79,9 @@ export default class QuestionCard extends Component {
                                     value={this.state.answer}
 									onChangeText={(text) => this.setState({answer: text})}>
 								</TextInput>
-								<Button onPress={() => this.submitAnswer()} title='Submit Answer'>
+                                <Button 
+                                style={styles.submit}
+                                onPress={() => this.submitAnswer()} title='Submit'>
 								</Button>
                             </View>                       
                         </View>
@@ -94,9 +96,10 @@ const styles = StyleSheet.create({
     wrapper: {
         flexDirection: "column", 
         alignItems: 'center',
-        backgroundColor: "#42f5bc",
+        backgroundColor: '#F2F2F2', 
         padding: 30,
         justifyContent: "center",
+        borderRadius: 25,
         ...Platform.select({
             ios: {
               
@@ -158,5 +161,13 @@ const styles = StyleSheet.create({
         opacity: 0.7,
         marginBottom: 5,
         marginLeft: 5,
+    },
+    submit: {
+        width: '50%', 
+        flexDirection: 'column',
+        justifyContent: 'center',
+        textAlign: "center",
+        borderRadius: 13,
+        color: '#275DA7', 
     }
 });

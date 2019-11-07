@@ -63,7 +63,8 @@ class AnswerScreen extends Component {
 		}
 		return (
 		  
-		  <View style={{ flex: 1, justifyContent: "center", alignContent:"center"}}>
+		  <View style={styles.container}>
+			<Text style={styles.title}>Answer</Text>
 			<FlatList
 			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 			data={this.state.questions}
@@ -83,3 +84,20 @@ class AnswerScreen extends Component {
 }
 
 export default AnswerScreen;
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  justifyContent: "center",
+	  alignContent: "center",
+	},
+	title: {
+	  flex: 0.15,
+	  justifyContent: 'center',
+	  fontSize: 50,
+	  margin: 10,
+	  color: '#60A147',
+	  fontFamily: 'Arial Rounded MT Bold',
+	  textAlign: 'center',
+	},
+});
