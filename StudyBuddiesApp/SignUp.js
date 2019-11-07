@@ -14,7 +14,6 @@ export default class SignUp extends React.Component {
       email: '',
       password: '',
       confirmPassword: '',
-      confirmationCode: '',
       phone: '',
       city: '',
       address: '',
@@ -32,8 +31,7 @@ export default class SignUp extends React.Component {
         state: true,
         zip: true,
         name: true,
-      }, 
-      modalVisible: false
+      }
     };
   }
 
@@ -55,25 +53,13 @@ export default class SignUp extends React.Component {
               'custom:state': state,
               'custom:zip': zip},
             })
-            // On success, show Confirmation Code Modal
-            .then(() => this.setState({ modalVisible: true }))
+            .then(() => this.props.navigation.navigate('ConfirmationCode'))
             // On failure, display error in console
             .catch(err => console.log(err));
         } else {
           alert('Passwords do not match.');
         }
     }
-
-    handleConfirmationCode = () => {
-        const { email, confirmationCode } = this.state;
-        Auth.confirmSignUp(email, confirmationCode, {})
-          .then(() => {
-            this.setState({ modalVisible: false });
-            this.props.navigation.navigate('SignIn');
-          })
-          .catch(err => console.log(err));
-      }
-  
 
   render() {
     return (
@@ -170,23 +156,6 @@ export default class SignUp extends React.Component {
           title='Sign in'
           onPress={() => this.props.navigation.navigate('SignIn')} />
       </KeyboardAvoidingView>
-      <Modal
-        visible={this.state.modalVisible}
-      >
-        <View style={styles.container}>
-          <Input
-            label="Confirmation Code"
-            leftIcon={{ type: 'font-awesome', name: 'lock' }}
-            onChangeText={
-              // Set this.state.confirmationCode to the value in this Input box
-              (value) => this.setState({ confirmationCode: value })
-            } />
-          <Button
-            title='Submit'
-            onPress={ this.handleConfirmationCode }
-          />
-        </View>
-      </Modal>
     </View>
     );
   }
