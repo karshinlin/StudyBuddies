@@ -41,7 +41,7 @@ export default class SignIn extends React.Component {
 
   render() {
     return (
-    <KeyboardAvoidingView style={styles.container} enabled behavior={'padding'}>
+    <KeyboardAvoidingView style={styles.container} enabled={false} behavior={'height'}>
         <View style={[{flex: 0.2}, styles.titleHolder]}>
           <Text style={styles.title}>Welcome to Study Buddies!</Text>
         </View>

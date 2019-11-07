@@ -35,7 +35,9 @@ export default class Conversation extends React.Component {
 		this.createUser = this.createUser.bind(this);
 		this.getMessages = this.getMessages.bind(this);
 		this.getConversationId = this.getConversationId.bind(this);
+		this.getGroupMembers = this.getGroupMembers.bind(this);
 		this.checkUserExists();
+		this.getGroupMembers();
 	}
 	componentDidMount() {
 		//this.scrollToBottom()
@@ -107,6 +109,19 @@ export default class Conversation extends React.Component {
 			});
 	}
 
+	async getGroupMembers() {
+		var url = global.url + "getGroupMemberNames?userId=" + Auth.user.attributes.sub;
+		console.log("url:" + url);
+		return await fetch(url)
+			.then(response => response.json())
+			.then(response => {
+				console.log("group members: ", response)
+				this.setState({groupMembers: response})
+			})
+			.catch((error) => {
+
+			});
+	}
 	async getMessages() {
 		if (!this.convoId) {
 			console.log("no convoId");
@@ -204,8 +219,11 @@ export default class Conversation extends React.Component {
 					messages.length == 0 ? <View></View> :
 					messages.map((m, i) => {
 					return (
-						<View key={i} style={[styles.message, checkSenderForMessageStyle(username, m)]}>
-						<Text style={[styles.messageText, checkSenderForTextStyle(username, m)]}>{m.content}</Text>
+						<View style={{ margin: 6}}>
+							<View key={i} style={[styles.message, checkSenderForMessageStyle(username, m)]}>
+								<Text style={[styles.messageText, checkSenderForTextStyle(username, m)]}>{m.content}</Text>
+							</View>
+							<Text style={styles.messageText, [{ paddingTop: 0, fontSize: 12 }, checkSenderForAlignment(username, m)]}>{ (new Date(parseInt(m.createdAt))).toLocaleString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit', hour:'numeric', minute:'numeric', hour12: true } ) }</Text>
 						</View>
 					)
 					})
@@ -245,6 +263,17 @@ function checkSenderForMessageStyle(username, message) {
 	  	return { marginRight: 50 }
 	}
 }
+
+function checkSenderForAlignment(username, message) {
+	if (username === message.sender) {
+		return {
+			marginLeft: 50, 
+			textAlign: 'right'
+		}
+	} else {
+	  	return { marginRight: 50, textAlign: 'left' }
+	}
+}
   
 function checkSenderForTextStyle(username, message) {
 	if (username === message.sender) {
@@ -275,7 +304,7 @@ const styles = {
 	message: {
 		backgroundColor: "#ededed",
 		borderRadius: 10,
-		margin: 10,
+		//margin: 10,
 		padding: 20
 	},
 	messageText: {

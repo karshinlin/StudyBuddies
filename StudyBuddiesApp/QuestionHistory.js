@@ -16,7 +16,10 @@ class QuestionHistoryScreen extends Component {
 	  };
 	  this.params = this.props.params;
 	  this.fetchQuestions = this.fetchQuestions.bind(this);
-	  this.fetchQuestions();
+	}
+
+	componentDidMount() {
+		this.fetchQuestions();
 	}
 
 	fetchQuestions() {
