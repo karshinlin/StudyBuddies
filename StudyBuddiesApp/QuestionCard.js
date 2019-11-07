@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-    View, Platform, TouchableHighlight, Image, TextInput, Text, StyleSheet } from 'react-native';
+    View, Button, Platform, TouchableHighlight, Image, TextInput, Text, StyleSheet } from 'react-native';
 import { cDarkBlue, cLightBlue, cWhite } from "./App";
-import { Button } from 'react-native-elements';
+//import { Button } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 
 const wrapperWidth = 405;
