@@ -65,25 +65,42 @@ class QuestionHistoryScreen extends Component {
 				</View>
 			);
 		}
+
 		return (
-		  
-		  <View style={{ flex: 1, justifyContent: "center", alignContent:"center"}}>
-			<FlatList
-			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
-			data={this.state.questions}
-			renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
-			  <AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
-			)}
-			onRefresh={() => this.fetchQuestions()}
-			keyboardShouldPersistTaps="always"
-			refreshing={this.state.refreshing}
-			keyExtractor={({item: questionId}) => questionId}
-			ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
-		  />
+			<View style={styles.container}>
+				<Text style={styles.title}>Question History</Text>
+				<FlatList
+					contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
+					data={this.state.questions}
+					renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
+						<AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
+					)}
+					onRefresh={() => this.fetchQuestions()}
+					keyboardShouldPersistTaps="always"
+					refreshing={this.state.refreshing}
+					keyExtractor={({item: questionId}) => questionId}
+					ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
+				/>
 		  </View>
 		);
 	  }
 }
 export default QuestionHistoryScreen;
 
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  justifyContent: "center",
+	  alignContent: "center",
+	},
+	title: {
+	  flex: 3,
+	  justifyContent: 'center',
+	  fontSize: 45,
+	  margin: 10,
+	  color: '#60A147',
+	  fontFamily: 'Arial Rounded MT Bold',
+	  textAlign: 'center',
+	},
+});
 
