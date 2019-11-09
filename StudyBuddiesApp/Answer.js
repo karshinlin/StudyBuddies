@@ -3,6 +3,7 @@ import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, StyleSheet,
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
 import QuestionCard from './QuestionCard';
+import stylesheet from './styles.js';
 
 class AnswerScreen extends Component {
 	constructor(props) {
@@ -63,8 +64,8 @@ class AnswerScreen extends Component {
 		}
 		return (
 		  
-		  <View style={styles.container}>
-			<Text style={styles.title}>Answer</Text>
+		  <View style={stylesheet.container}>
+			<Text style={stylesheet.title}>Answer</Text>
 			<FlatList
 			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 			data={this.state.questions}

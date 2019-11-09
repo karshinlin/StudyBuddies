@@ -43,12 +43,12 @@ export default class LeaderboardScreen extends React.Component {
 			{!this.state.tableData ? 
 				<ActivityIndicator size="large" color="#0000ff" />
 			:
-				<View>
-					<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-						<Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
-						<Rows data={this.state.tableData} style={styles.data} textStyle={styles.text}/>
-					</Table>
-				</View>
+			<View >
+				<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+					<Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+					<Rows data={this.state.tableData} style={styles.data} textStyle={styles.text}/>
+				</Table>
+			</View>
 		}
 
 		</View>)
@@ -60,10 +60,5 @@ const styles = StyleSheet.create({
 	head: { height: 40, backgroundColor: '#f1f8ff' },
 	data: { height: 40, backgroundColor: 'white' },
 	text: { margin: 6 },
-	title: {
-		flex: 0.15,
-		justifyContent: 'center',
-		fontSize: 40,
-		margin: 10
-	  }
+
   });

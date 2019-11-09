@@ -111,11 +111,6 @@ const styles = StyleSheet.create({
             },
           }),
     },
-    heroImg: {
-        width: Platform.OS === 'ios' ? '100%' : "100%",
-        height: 195,
-        borderRadius: 13,
-    },
     infoArea: {
         flexDirection: "row",
         width: Platform.OS === 'ios' ? '100%' : wrapperWidth,
@@ -126,32 +121,12 @@ const styles = StyleSheet.create({
     name_stars: {
         flexDirection: "column"
     },
-    price_area: {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignSelf: "flex-start",
-        marginTop: 5
-    },
     hotelName: {
         fontFamily: "Arial",
         fontSize: 21,
         color: "#363636",
         maxWidth: 230,
         marginTop: 4
-    },
-    hotelStars: {
-
-    },
-    price: {
-        fontSize: 27,
-        fontFamily: "Arial",
-        color: "#3EAAFA"
-    },
-    nightText: {
-        alignSelf: "flex-end",
-        marginTop: Platform.OS === 'ios' ? -2 : -6,
-        fontSize: 13,
-        opacity: 0.8
     },
     questionAnswer: {
         textAlign: "left",

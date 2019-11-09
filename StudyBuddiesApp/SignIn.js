@@ -9,8 +9,8 @@ export default class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'karachtani@gmail.com',
+      password: 'password',
       showInvalidLogin: false
     };
   }
@@ -56,7 +56,7 @@ export default class SignIn extends React.Component {
           />
           <TextInput
             style={styles.textInput}
-            placeholder="Password"
+            placeholder="********"
             secureTextEntry={true}
             onChangeText={
               // Set this.state.email to the value in this Input box
@@ -68,7 +68,7 @@ export default class SignIn extends React.Component {
         </View>
         <View>
           <Button style={styles.buttons}
-            title='Submit'
+            title='Log In'
             onPress={ this.handleSignIn } />
           <Text style={styles.noAccount}>
             Don't have an account?
