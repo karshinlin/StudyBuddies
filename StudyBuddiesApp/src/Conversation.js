@@ -1,7 +1,7 @@
 import React from 'react'
 
 import uuid from 'uuid/v4'
-import { TextInput, View, Text, SafeAreaView, Button, ScrollView, ActivityIndicator } from 'react-native'
+import { TextInput, View, Text, SafeAreaView, Button, ScrollView, ActivityIndicator, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { Auth, API, graphqlOperation} from 'aws-amplify'
 import { meQuery as Me, getMessages as GetMessages, createUserStatement as CreateUser, subscribeToNewMessages, createMessage, createUserConversation } from './graphql/usedStatements.js'
 
@@ -205,49 +205,60 @@ export default class Conversation extends React.Component {
 		const username = this.username;
 		messages = this.state.messages;
 		messages = messages.sort((a, b) => a.createdAt - b.createdAt)
+		lastSender = "";
 		return (
-		  <SafeAreaView style={styles.conversationPage}>
+		  <SafeAreaView style={styles.conversationPage} >
 			<View style={styles.conversationNameContainer}>
 			  <Text style={styles.conversationName}>{conversationName}</Text>
 			</View>
-			<View style={styles.messagesContainer}>
-				<ScrollView 
-				ref={(scroll) => {this.scroll = scroll;}}
-				onContentSizeChange={() => this.scroll.scrollToEnd()}
-				>
-				{
-					messages.length == 0 ? <View></View> :
-					messages.map((m, i) => {
-					return (
-						<View style={{ margin: 6}}>
-							<View key={i} style={[styles.message, checkSenderForMessageStyle(username, m)]}>
-								<Text style={[styles.messageText, checkSenderForTextStyle(username, m)]}>{m.content}</Text>
-							</View>
-							<Text style={styles.messageText, [{ paddingTop: 0, fontSize: 12 }, checkSenderForAlignment(username, m)]}>{ (new Date(parseInt(m.createdAt))).toLocaleString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit', hour:'numeric', minute:'numeric', hour12: true } ) }</Text>
-						</View>
-					)
-					})
-				}
-				</ScrollView>
-			</View>
-			
-			<View style={styles.inputContainer}>
-				<TextInput
-					style={styles.input}
-					placeholder='Message'
-					name='message'
-					multiline = {true}
-					numberOfLines = {4}
-					onChangeText={(text) => this.setState({message : text})}
-					value={this.state.message}
-				/>
-				<Button
-					onPress={() => {
-						this.createMessage();
-					}}
-					title="Send"
-				/>
-			</View>
+			<KeyboardAvoidingView style={{flex: 1, flexDirection: 'column'}} enabled behavior='padding'>
+				<View style={styles.messagesContainer} >
+					<ScrollView 
+					ref={(scroll) => {this.scroll = scroll;}}
+					onContentSizeChange={() => this.scroll.scrollToEnd()}
+					>
+					{
+						messages.length == 0 ? <View></View> :
+						messages.map((m, i) => {
+							var sameSender = false
+							var marginTopToUse = 6;
+							if (m.sender == lastSender) {
+								var marginTopToUse = 2;
+								sameSender = true;
+							}
+							lastSender = m.sender;
+							return (
+								<View style={{ margin: marginTopToUse}}>
+									{sameSender ? null : <Text style={styles.messageText, [{ paddingTop: 0, fontSize: 12 }, checkSenderForAlignment(username, m)]}>{this.state.groupMembers[m.sender]}</Text>}
+									<View key={i} style={[styles.message, checkSenderForMessageStyle(username, m)]}>
+										<Text style={[styles.messageText, checkSenderForTextStyle(username, m)]}>{m.content}</Text>
+									</View>
+									<Text style={styles.messageText, [{ paddingTop: 0, fontSize: 12 }, checkSenderForAlignment(username, m)]}>{ (new Date(parseInt(m.createdAt))).toLocaleString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit', hour:'numeric', minute:'numeric', hour12: true } ) }</Text>
+								</View>
+							)
+						})
+					}
+					</ScrollView>
+				</View>
+				
+				<View style={styles.inputContainer} >
+					<TextInput
+						style={styles.input}
+						placeholder='Message'
+						name='message'
+						multiline = {true}
+						numberOfLines = {4}
+						onChangeText={(text) => this.setState({message : text})}
+						value={this.state.message}
+					/>
+					<Button
+						onPress={() => {
+							this.createMessage();
+						}}
+						title="Send"
+					/>
+				</View>
+			</KeyboardAvoidingView>
 		  </SafeAreaView>
 		)
 	}
@@ -299,7 +310,7 @@ const styles = {
 		fontWeight: "500"
 	},
 	messagesContainer: {
-		flex: .8
+		flex: .9
 	},
 	message: {
 		backgroundColor: "#ededed",
@@ -323,9 +334,10 @@ const styles = {
 	},
 	inputContainer: {
 		width: '100%',
-		position: 'absolute',
-		bottom: 50,
-		left: 0,
+		position: 'relative',
+		flex: .1,
+		//bottom: 20,
+		//left: 0,
 		justifyContent: 'flex-end',
 		flexDirection: 'row'
 	}
