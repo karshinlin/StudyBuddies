@@ -52,7 +52,10 @@ class AskScreen extends React.Component {
 			/>
 			<Button
 			style={styles.submit}
-				onPress={() => {this.props.navigation.navigate('Home')}}
+				onPress={() => {
+					this.askQuestion();
+					this.props.navigation.navigate('Answer');
+				}}
 				title="Submit"
 			/>
 		</View>
