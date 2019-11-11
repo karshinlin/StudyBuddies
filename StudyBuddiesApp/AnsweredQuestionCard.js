@@ -18,7 +18,7 @@ export default class AnsweredQuestionCard extends Component {
         let {onPress, isRipple, rippleColor, children, style} = this.props;
         
         return (
-            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "#F4F4F4", padding: 20}]}>
+            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "white", padding: 20}]}>
                 <TouchableHighlight style={{}}
                     onPress={onPress}
                     underlayColor={cLightBlue}
@@ -47,8 +47,12 @@ const styles = StyleSheet.create({
     wrapper: {
         flexDirection: "column", 
         alignItems: 'center',
-        backgroundColor: "#F5FCFF",
+        backgroundColor: "#F2F2F2",
         padding: 30,
+        borderRadius: 25,
+        shadowColor: "grey",
+        shadowRadius: 10,
+        shadowOpacity: 1,
         justifyContent: "center",
         ...Platform.select({
             ios: {
