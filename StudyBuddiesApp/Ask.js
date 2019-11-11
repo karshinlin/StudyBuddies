@@ -52,10 +52,7 @@ class AskScreen extends React.Component {
 			/>
 			<Button
 			style={styles.submit}
-				onPress={() => {
-					Alert.alert('You just asked a question!');
-					this.askQuestion();
-				}}
+				onPress={() => {this.props.navigation.navigate('Home')}}
 				title="Submit"
 			/>
 		</View>
