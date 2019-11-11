@@ -4,6 +4,7 @@ import {
 import { cDarkBlue, cLightBlue, cWhite } from "./App";
 import { Button } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
+import CustomButton from './CustomButton'
 
 const wrapperWidth = 405;
 
@@ -39,26 +40,16 @@ export default class QuestionCard extends Component {
         })
         .then((response) => response.json())
         .then((response) => {
-            this.setState({answer:''})
-            // this.setState({
-            // questions: response['questions'], 
-            // isLoading: false,
-            // error: false
-            // }, function () {
-            // console.log("questions: " + JSON.stringify(this.state['questions']));
-            // });
-            console.log(JSON.stringify(response))
+            this.setState({answer:''});
+            console.log(JSON.stringify(response));
+            this.props.removeSelfFunction(this.props.id);
         })
         .catch((error) => {
-            // this.setState({
-            //     questions: "",
-            //     isLoading: true,
-            //     error: true
-            // })
+            console.log(error);
         });
 	}
     render () {
-        let {onPress, isRipple, rippleColor, children, style} = this.props;
+        let {onPress} = this.props;
         
         return (
             <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "#F4F4F4", padding: 20}]}>
@@ -74,15 +65,18 @@ export default class QuestionCard extends Component {
                                 </View>
                             </View> 
                             <View style={{width: '100%', flexDirection: 'column'}}>
-								<TextInput style={styles.questionAnswer} placeholder="Can you answer this question?" 
+								<TextInput style={styles.questionAnswer} placeholder="Type your answer here" 
                                     multiline={true}
+                                    numberOfLines={3}
                                     value={this.state.answer}
 									onChangeText={(text) => this.setState({answer: text})}>
 								</TextInput>
-                                <Button 
-                                style={styles.submit}
-                                onPress={() => this.submitAnswer()} title='Submit'>
-								</Button>
+                                <CustomButton 
+                                color="lightgreen"
+                                borderColor="black"
+                                text="Submit"
+                                onPress={() => this.submitAnswer()}>
+								</CustomButton>
                             </View>                       
                         </View>
                     </View>
