@@ -19,6 +19,9 @@ export default class QuestionCard extends Component {
 	}
 
 	submitAnswer() {
+        if (!this.state.answer) {
+            return;
+        }
         console.log(this.state.id + " id; answer: " + this.state.answer);
         console.log(JSON.stringify({
             "userId": Auth.user.attributes.sub.toString(),
@@ -73,7 +76,7 @@ export default class QuestionCard extends Component {
 								</TextInput>
                                 <CustomButton 
                                 color="lightgreen"
-                                borderColor="black"
+                                borderColor="transparent"
                                 text="Submit"
                                 onPress={() => this.submitAnswer()}>
 								</CustomButton>

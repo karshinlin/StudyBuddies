@@ -1,21 +1,22 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, StyleSheet, ActivityIndicator, Button, AsyncStorage } from "react-native";
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
 import AnsweredQuestionCard from './AnsweredQuestionCard';
+import stylesheet from './styles.js';
 
 
 class QuestionHistoryScreen extends Component {
 	constructor(props) {
-	  super(props);
-	  this.state = {
-		  isLoading: true,
-		  error: false,
-		  refreshing: false,
-		  time: 30,
-	  };
-	  this.params = this.props.params;
-	  this.fetchQuestions = this.fetchQuestions.bind(this);
+		super(props);
+		this.state = {
+			isLoading: true,
+			error: false,
+			refreshing: false,
+			time: 30,
+		};
+		this.params = this.props.params;
+		this.fetchQuestions = this.fetchQuestions.bind(this);
 	}
 
 	componentDidMount() {
@@ -23,28 +24,34 @@ class QuestionHistoryScreen extends Component {
 	}
 
 	fetchQuestions() {
-		this.setState({refreshing: true})
+		this.setState({ refreshing: true })
 		this.props
 		var url = global.url + "answeredQuestions?userId=" + Auth.user.attributes.sub;
 		console.log("url:" + url);
 		return fetch(url)
 			.then((response) => response.json())
 			.then((response) => {
-			  this.setState({
+				this.setState({
+					questions: response['questions'],
 				questions: response['questions'], 
-				isLoading: false,
-				refreshing: false,
-				error: false
-			  }, function () {
-				console.log("questions: " + JSON.stringify(this.state['questions']));
-			  });
+					questions: response['questions'],
+				questions: response['questions'], 
+					questions: response['questions'],
+				questions: response['questions'], 
+					questions: response['questions'],
+					isLoading: false,
+					refreshing: false,
+					error: false
+				}, function () {
+					console.log("questions: " + JSON.stringify(this.state['questions']));
+				});
 			})
 			.catch((error) => {
 				this.setState({
-				  questions: "",
-				  isLoading: true,
-				  refreshing: false,
-				  error: true
+					questions: "",
+					isLoading: true,
+					refreshing: false,
+					error: true
 				})
 			});
 	}
@@ -56,7 +63,7 @@ class QuestionHistoryScreen extends Component {
 					<Icon name="error" size={75} color="#F00" />
 					<Text style={{ alignSelf: "center", color: "#F00" }}>Error</Text>
 				</View>
-				);
+			);
 		}
 		if (this.state.isLoading) {
 			return (
@@ -70,7 +77,6 @@ class QuestionHistoryScreen extends Component {
 			<View style={styles.container}>
 				<Text style={styles.title}>Question History</Text>
 				<FlatList
-					contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 					data={this.state.questions}
 					renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
 						<AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
@@ -83,24 +89,24 @@ class QuestionHistoryScreen extends Component {
 				/>
 		  </View>
 		);
-	  }
+	}
 }
 export default QuestionHistoryScreen;
 
 const styles = StyleSheet.create({
 	container: {
-	  flex: 1,
-	  justifyContent: "center",
-	  alignContent: "center",
+		flex: 1,
+		justifyContent: "center",
+		alignContent: "center",
 	},
 	title: {
-	  flex: 3,
-	  justifyContent: 'center',
-	  fontSize: 45,
-	  margin: 10,
-	  color: '#60A147',
-	  fontFamily: 'Arial Rounded MT Bold',
-	  textAlign: 'center',
+		flex: 3,
+		justifyContent: 'center',
+		fontSize: 45,
+		margin: 10,
+		color: '#60A147',
+		fontFamily: 'Arial Rounded MT Bold',
+		textAlign: 'center',
 	},
 });
 
