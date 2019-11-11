@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
         margin: 15,
         justifyContent: "center",
         borderRadius: 25,
+        shadowColor: "#c9cdd4",
+        shadowRadius: 10,
+        shadowOpacity: 1,
     },
     hotelName: {
         fontFamily: "Arial",
