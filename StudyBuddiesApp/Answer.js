@@ -3,6 +3,7 @@ import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, StyleSheet,
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
 import QuestionCard from './QuestionCard';
+import stylesheet from './styles.js';
 
 class AnswerScreen extends Component {
 	constructor(props) {
@@ -15,7 +16,17 @@ class AnswerScreen extends Component {
 	  };
 	  this.params = this.props.params;
 	  this.fetchQuestions = this.fetchQuestions.bind(this);
-	  this.fetchQuestions();
+	  this.removeQuestion = this.removeQuestion.bind(this);
+	}
+
+	componentDidMount() {
+		this.fetchQuestions();
+	}
+
+	removeQuestion = (idToRemove) => {
+		console.log("REMOVING QUESTION " + idToRemove);
+		let questions = [...this.state.questions];
+		this.setState({questions: questions.filter(q => q.questionId != idToRemove)})
 	}
 
 	fetchQuestions() {
@@ -63,13 +74,19 @@ class AnswerScreen extends Component {
 		}
 		return (
 		  
-		  <View style={styles.container}>
-			<Text style={styles.title}>Answer</Text>
+		  <View style={stylesheet.container}>
+			<Text style={stylesheet.title}>Answer</Text>
 			<FlatList
 			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
 			data={this.state.questions}
 			renderItem={({ item: { questionId, questionText, askedDate } }) => (
-			  <QuestionCard questionText={questionText} askedDate={askedDate} id={questionId} clear={true} />
+			  <QuestionCard 
+				  questionText={questionText} 
+				  askedDate={askedDate} 
+				  id={questionId} 
+				  clear={true} 
+				  removeSelfFunction={this.removeQuestion}
+				  />
 			)}
 			onRefresh={() => this.fetchQuestions()}
 			keyboardShouldPersistTaps="always"

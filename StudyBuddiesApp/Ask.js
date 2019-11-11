@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, TextInput, Button, Alert, View} from 'react-native';
+import stylesheet from './styles.js';
 
 import { Auth } from 'aws-amplify';
 
@@ -39,8 +40,8 @@ class AskScreen extends React.Component {
 	
   	render() {
 		return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Ask</Text>
+		<View style={stylesheet.container}>
+			<Text style={stylesheet.title}>Ask</Text>
 			<Text style={styles.normal}>What's your question?</Text>
 			<TextInput
 			style={styles.textbox}
@@ -52,8 +53,8 @@ class AskScreen extends React.Component {
 			<Button
 			style={styles.submit}
 				onPress={() => {
-					Alert.alert('You just asked a question!');
 					this.askQuestion();
+					this.props.navigation.navigate('Home');
 				}}
 				title="Submit"
 			/>
@@ -65,26 +66,12 @@ class AskScreen extends React.Component {
 export default AskScreen;
 
 const styles = StyleSheet.create({
-  title: {
-	flex: 0.15,
-	justifyContent: 'center',
-	fontSize: 50,
-	margin: 10,
-	color: '#60A147',
-	fontFamily: 'Arial Rounded MT Bold'
-  },
   normal: {
 	flex: 0.1,
 	fontSize: 25,
 	margin: 10,
 	alignItems: 'center',
 	fontFamily: 'ArialMT'
-  },
-  container: {
-    flex: 1,
-	alignItems: 'center',
-	justifyContent: 'flex-start',
-   // backgroundColor: '#F5FCFF',
   },
   textbox: {
 	height: 200, 
