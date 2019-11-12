@@ -228,6 +228,22 @@ def get_group_members():
     response = dict()
     for i in range(len(members['userID'])):
         response[members['userID'][i]] = members['name'][i]
+
+    info = db.get_group_info(user_id)
+    if len(info['groupName']) > 0: 
+        response['groupName'] = info['groupName'][0]
+        response['groupId'] = info['groupID'][0]
+    else:
+        response['groupName'] = None
+        response['groupId'] = None
+    return json.dumps(response)
+
+@application.route('/changeGroupName', methods=["POST"])
+def change_group_name():
+    user_id = request.json['userId']
+    new_group_name = request.json['groupName']
+    print(db.change_group_name(user_id, new_group_name))
+    response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
 # run the app.

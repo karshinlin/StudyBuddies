@@ -1,9 +1,10 @@
 import React from 'react'
 
 import uuid from 'uuid/v4'
-import { TextInput, View, Text, SafeAreaView, Button, ScrollView, ActivityIndicator, KeyboardAvoidingView, Keyboard } from 'react-native'
+import { TextInput, View, Text, SafeAreaView, Button, ScrollView, ActivityIndicator, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback} from 'react-native'
 import { Auth, API, graphqlOperation} from 'aws-amplify'
 import { meQuery as Me, getMessages as GetMessages, createUserStatement as CreateUser, subscribeToNewMessages, createMessage, createUserConversation } from './graphql/usedStatements.js'
+import DialogInput from 'react-native-dialog-input';
 
 export default class Conversation extends React.Component {
 	constructor(props) {
@@ -16,18 +17,12 @@ export default class Conversation extends React.Component {
 			"conversationId": "myNewId",
 			"authorId": "d628469a-6679-40d8-b69f-c13f8394b05e"
 		}
-		const message2 = {
-			"id": uuid(),
-			"createdAt": Date.now(),
-			"content": "Second Message",
-			"conversationId": "myNewId",
-			"authorId": "d628469a-6679-40d8-b69f-c13f8394b05e"
-		}
 		this.state = {
 			isLoading: true,
 			message: '',
 			messages: [],
-			changer: false
+			changer: false,
+			isDialogVisible: false
 		};
 		this.params = this.props.params;
 		this.createMessage = this.createMessage.bind(this);
@@ -36,16 +31,13 @@ export default class Conversation extends React.Component {
 		this.getMessages = this.getMessages.bind(this);
 		this.getConversationId = this.getConversationId.bind(this);
 		this.getGroupMembers = this.getGroupMembers.bind(this);
+		this.changeGroupName = this.changeGroupName.bind(this);
 		this.checkUserExists();
 		this.getGroupMembers();
 	}
 	componentDidMount() {
 		//this.scrollToBottom()
 		//this.props.subscribeToNewMessages()
-	}
-
-	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value })
 	}
 
 	async checkUserExists() {
@@ -190,6 +182,29 @@ export default class Conversation extends React.Component {
 		this.setState({ message: '' })
 	}
 
+	changeGroupName(newName) {
+		console.log(newName)
+		var url = global.url + "changeGroupName";
+		fetch(url, {
+			method: 'POST',
+			headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+			body: JSON.stringify({
+				userId: Auth.user.attributes.sub,
+				groupName: newName,
+			}),		
+		})
+		.then((response) => response.json())
+        .then((response) => {
+            console.log(JSON.stringify(response))
+        })
+        .catch((error) => {
+
+        });
+	}
+
 	render() {
 		if (this.state.isLoading) {
 			return (
@@ -201,16 +216,24 @@ export default class Conversation extends React.Component {
 		// const { conversationName } = this.props.match.params
 		// const { username } = UserStore
 		// let { messages } = this.props
-		const conversationName = "Study Buddies Group";
+		const conversationName = this.state.groupMembers["groupName"] ? this.state.groupMembers["groupName"] : "Study Buddies Group";
 		const username = this.username;
 		messages = this.state.messages;
 		messages = messages.sort((a, b) => a.createdAt - b.createdAt)
 		lastSender = "";
 		return (
 		  <SafeAreaView style={styles.conversationPage} >
-			<View style={styles.conversationNameContainer}>
-			  <Text style={styles.conversationName}>{conversationName}</Text>
-			</View>
+			<TouchableWithoutFeedback onLongPress={() => this.setState({isDialogVisible: true})}>
+				<View style={styles.conversationNameContainer}>
+					<Text style={styles.conversationName}>{conversationName}</Text>
+				</View>
+			</TouchableWithoutFeedback>
+			<DialogInput isDialogVisible={this.state.isDialogVisible}
+				message={"Change your group name here!"}
+				hintInput ={"NEW GROUP NAME"}
+				submitInput={ (inputText) => {this.changeGroupName(inputText); this.setState({isDialogVisible: false}); this.state.groupMembers["groupName"] = inputText} }
+				closeDialog={ () => {this.setState({isDialogVisible: false})} }>
+			</DialogInput>
 			<KeyboardAvoidingView style={{flex: 1, flexDirection: 'column'}} enabled behavior='padding'>
 				<View style={styles.messagesContainer} >
 					<ScrollView 
@@ -228,7 +251,7 @@ export default class Conversation extends React.Component {
 							}
 							lastSender = m.sender;
 							return (
-								<View style={{ margin: marginTopToUse}}>
+								<View key={i} style={{ margin: marginTopToUse}}>
 									{sameSender ? null : <Text style={styles.messageText, [{ paddingTop: 0, fontSize: 12 }, checkSenderForAlignment(username, m)]}>{this.state.groupMembers[m.sender]}</Text>}
 									<View key={i} style={[styles.message, checkSenderForMessageStyle(username, m)]}>
 										<Text style={[styles.messageText, checkSenderForTextStyle(username, m)]}>{m.content}</Text>

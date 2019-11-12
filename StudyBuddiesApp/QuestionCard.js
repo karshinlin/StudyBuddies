@@ -55,7 +55,7 @@ export default class QuestionCard extends Component {
         let {onPress} = this.props;
         
         return (
-            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "transparent", padding: 20, flexWrap: "wrap"}]}>
+            <View key={this.props.id} style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "transparent", padding: 20, flexWrap: "wrap"}]}>
                 <TouchableHighlight style={{}}
                     onPress={onPress}
                     underlayColor={cLightBlue}
