@@ -24,6 +24,7 @@ export default class ChallengeScreen extends React.Component {
     this.decrementCounter = this.decrementCounter.bind(this);
     this.resetStates = this.resetStates.bind(this);
     this.markChallengeResult = this.markChallengeResult.bind(this);
+    this.updateUserAnswer = this.updateUserAnswer.bind(this);
   }
 
   async fetchQuestions() {
@@ -101,6 +102,10 @@ export default class ChallengeScreen extends React.Component {
     });
   }
 
+  updateUserAnswer(newAnswer) {
+    this.setState({userAnswer: newAnswer});
+  }
+
   componentDidMount() {
     this.fetchQuestions();
   }
@@ -134,6 +139,8 @@ export default class ChallengeScreen extends React.Component {
             }}
             question={this.state.questions[this.state.counter]}
             answer={this.state.answers[this.state.counter]}
+            userAnswer={this.state.userAnswer}
+            updateUserAnswer={this.updateUserAnswer}
             numCorrect={this.state.numCorrect[this.state.counter]}
             totalAttempts={this.state.totalAttempts[this.state.counter]}
             showAnswer={this.state.showAnswer}

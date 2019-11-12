@@ -37,8 +37,8 @@ export default class ChallengeCard extends Component {
                             <View style={styles.content}>
                                 <TextInput style={styles.questionAnswer} placeholder="Can you answer this question?"
                                     multiline={true}
-                                    value={this.state.answer}
-                                    onChangeText={(text) => this.setState({ answer: text })}>
+                                    value={this.props.userAnswer}
+                                    onChangeText={val => this.props.updateUserAnswer(val)}>
                                 </TextInput>
                             </View>
                         </View>

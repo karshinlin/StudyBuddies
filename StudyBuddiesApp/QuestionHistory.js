@@ -10,17 +10,21 @@ class QuestionHistoryScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoading: true,
-			error: false,
 			refreshing: false,
+			error: false,
 			time: 30,
+			groupMembers: null,
+			questions: null
 		};
 		this.params = this.props.params;
 		this.fetchQuestions = this.fetchQuestions.bind(this);
+		this.getGroupMembers = this.getGroupMembers.bind(this);
+		this.onRefresh = this.onRefresh.bind(this);
 	}
 
 	componentDidMount() {
 		this.fetchQuestions();
+		this.getGroupMembers();
 	}
 
 	fetchQuestions() {
@@ -33,15 +37,8 @@ class QuestionHistoryScreen extends Component {
 			.then((response) => {
 				this.setState({
 					questions: response['questions'],
-				questions: response['questions'], 
-					questions: response['questions'],
-				questions: response['questions'], 
-					questions: response['questions'],
-				questions: response['questions'], 
-					questions: response['questions'],
-					isLoading: false,
-					refreshing: false,
-					error: false
+					error: false,
+					refreshing: false
 				}, function () {
 					console.log("questions: " + JSON.stringify(this.state['questions']));
 				});
@@ -49,12 +46,29 @@ class QuestionHistoryScreen extends Component {
 			.catch((error) => {
 				this.setState({
 					questions: "",
-					isLoading: true,
-					refreshing: false,
 					error: true
 				})
 			});
 	}
+
+	async getGroupMembers() {
+		var url = global.url + "getGroupMemberNames?userId=" + Auth.user.attributes.sub;
+		console.log("url:" + url);
+		return await fetch(url)
+			.then(response => response.json())
+			.then(response => {
+				this.setState({groupMembers: response})
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	onRefresh() {
+		this.setState({ refreshing: true }, 
+			function() { this.fetchQuestions() }
+			);
+	 }
 
 	render() {
 		if (this.state.error) {
@@ -65,7 +79,7 @@ class QuestionHistoryScreen extends Component {
 				</View>
 			);
 		}
-		if (this.state.isLoading) {
+		if (!this.state.questions || !this.state.groupMembers) {
 			return (
 				<View style={{ flex: 1, paddingTop: 25 }}>
 					<ActivityIndicator size="large" color="#0000ff" />
@@ -81,7 +95,7 @@ class QuestionHistoryScreen extends Component {
 					renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
 						<AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
 					)}
-					onRefresh={() => this.fetchQuestions()}
+					onRefresh={() => this.onRefresh()}
 					keyboardShouldPersistTaps="always"
 					refreshing={this.state.refreshing}
 					keyExtractor={({item: questionId}) => questionId}

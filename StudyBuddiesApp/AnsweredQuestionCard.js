@@ -15,7 +15,7 @@ export default class AnsweredQuestionCard extends Component {
     }
     
     render () {
-        let {onPress, isRipple, rippleColor, children, style} = this.props;
+        let {onPress} = this.props;
         
         return (
             <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "#F4F4F4", padding: 20}]}>
