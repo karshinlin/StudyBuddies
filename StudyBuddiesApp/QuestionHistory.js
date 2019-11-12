@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignContent: "center",
+		flexDirection: 'column'
 	},
 	title: {
-		flex: 3,
 		justifyContent: 'center',
 		fontSize: 43,
 		margin: 10,
