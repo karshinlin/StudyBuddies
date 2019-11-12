@@ -77,7 +77,7 @@ class AnswerScreen extends Component {
 		  <View style={stylesheet.container}>
 			<Text style={stylesheet.title}>Answer</Text>
 			<FlatList
-			contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-start'}}
+			//contentContainerStyle={{flexGrow: 3, justifyContent: 'flex-start'}}
 			data={this.state.questions}
 			renderItem={({ item: { questionId, questionText, askedDate } }) => (
 			  <QuestionCard 
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 	  alignContent: "center",
 	},
 	title: {
-	  flex: 0.15,
+	  flex: 3,
 	  justifyContent: 'center',
 	  fontSize: 50,
 	  margin: 10,

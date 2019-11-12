@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 	title: {
 		flex: 3,
 		justifyContent: 'center',
-		fontSize: 45,
+		fontSize: 43,
 		margin: 10,
 		color: '#60A147',
 		fontFamily: 'Arial Rounded MT Bold',

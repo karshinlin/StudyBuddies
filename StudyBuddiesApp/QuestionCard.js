@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-    View, Platform, TouchableHighlight, Image, TextInput, Text, StyleSheet } from 'react-native';
+    View, Button, Platform, TouchableHighlight, Image, TextInput, Text, StyleSheet } from 'react-native';
 import { cDarkBlue, cLightBlue, cWhite } from "./App";
-import { Button } from 'react-native-elements';
+import stylesheet from './styles.js';
 import { Auth } from 'aws-amplify';
 import CustomButton from './CustomButton'
 
@@ -55,31 +55,30 @@ export default class QuestionCard extends Component {
         let {onPress} = this.props;
         
         return (
-            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "#F4F4F4", padding: 20}]}>
+            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "transparent", padding: 20, flexWrap: "wrap"}]}>
                 <TouchableHighlight style={{}}
                     onPress={onPress}
                     underlayColor={cLightBlue}
                     >
-                    <View style={{width: "100%"}}>
+                    <View style={stylesheet.container}>
                         <View style={styles.wrapper}>
                             <View style={styles.infoArea}>
-                                <View style={styles.name_stars}>
+                                <View>
                                     <Text style={styles.hotelName}>{this.props.questionText}</Text>
                                 </View>
                             </View> 
-                            <View style={{width: '100%', flexDirection: 'column'}}>
+                            <View style={styles.textbox}>
 								<TextInput style={styles.questionAnswer} placeholder="Type your answer here" 
                                     multiline={true}
                                     numberOfLines={3}
                                     value={this.state.answer}
 									onChangeText={(text) => this.setState({answer: text})}>
 								</TextInput>
-                                <CustomButton 
-                                color="lightgreen"
-                                borderColor="transparent"
-                                text="Submit"
-                                onPress={() => this.submitAnswer()}>
-								</CustomButton>
+                                <Button 
+                                style={styles.submit}
+                                onPress={() => this.submitAnswer()}
+                                title="Submit"
+								/>
                             </View>                       
                         </View>
                     </View>
@@ -91,12 +90,16 @@ export default class QuestionCard extends Component {
 
 const styles = StyleSheet.create({
     wrapper: {
-        flexDirection: "column", 
         alignItems: 'center',
         backgroundColor: '#F2F2F2', 
         padding: 30,
         justifyContent: "center",
         borderRadius: 25,
+        flex: 1,
+        shadowColor: "#c9cdd4",
+        shadowRadius: 10,
+        shadowOpacity: 1,
+        width: "100%",
         ...Platform.select({
             ios: {
               
@@ -109,14 +112,10 @@ const styles = StyleSheet.create({
           }),
     },
     infoArea: {
-        flexDirection: "row",
-        width: Platform.OS === 'ios' ? '100%' : wrapperWidth,
+        width: "100%",
         justifyContent: "space-between",
         marginTop: 10,
         padding: 5
-    },
-    name_stars: {
-        flexDirection: "column"
     },
     hotelName: {
         fontFamily: "Arial",
@@ -134,12 +133,20 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 5,
     },
+    textbox: {
+        height: 100, 
+        width: 250,
+        padding: 5,
+        borderRadius: 25,
+        backgroundColor: '#F2F2F2', 
+        textAlign: 'center',
+        flex: 1 
+    },
     submit: {
         width: '50%', 
-        flexDirection: 'column',
         justifyContent: 'center',
         textAlign: "center",
         borderRadius: 13,
         color: '#275DA7', 
-    }
+    },
 });
