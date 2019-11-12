@@ -92,8 +92,15 @@ class QuestionHistoryScreen extends Component {
 				<Text style={styles.title}>Question History</Text>
 				<FlatList
 					data={this.state.questions}
-					renderItem={({ item: { questionId, questionText, askedDate, answerText } }) => (
-						<AnsweredQuestionCard questionText={questionText} askedDate={askedDate} id={questionId} answerText={answerText} clear={true} />
+					renderItem={({ item: { questionId, questionText, askDate, askedBy, answers } }) => (
+						<AnsweredQuestionCard 
+							questionText={questionText} 
+							askDate={askDate} 
+							askedBy={askedBy}
+							id={questionId} 
+							answers={answers}
+							groupMembers={this.state.groupMembers}
+							clear={true} />
 					)}
 					onRefresh={() => this.onRefresh()}
 					keyboardShouldPersistTaps="always"
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
 		alignContent: "center",
 	},
 	title: {
-		flex: 3,
+		flex: 1,
 		justifyContent: 'center',
 		fontSize: 43,
 		margin: 10,

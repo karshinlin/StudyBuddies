@@ -160,18 +160,37 @@ def get_answered_questions():
     user_id = request.args.get('userId', default = "", type = str)
     questions = db.get_answered_questions(user_id)
     print(questions)
-    response = []
-    for i in range(0, len(questions["questionID"])):
-        a_question = dict()
-        a_question["questionId"] = int(questions["questionID"][i])
-        a_question["askedBy"] = questions["askedBy"][i]
-        a_question["questionText"] = questions["questionText"][i]
-        a_question["askDate"] = str(questions["askDate"][i])
-        a_question["answerText"] = str(questions["answerText"][i])
-        response.append(a_question)
+    response = {}
     
-    response = {"questions": response, "success": 0, "userId": user_id}
+    for i in range(questions.shape[0]):
+        question_id = int(questions["questionID"][i])
+
+        if question_id not in response:
+            q_dict = {}
+            q_dict["questionId"] = question_id
+            q_dict["askedBy"] = questions["askedBy"][i]
+            q_dict["questionText"] = questions["questionText"][i]
+            q_dict["askDate"] = mysql_datetime_to_date_string(str(questions["askDate"][i]))
+            q_dict["answers"] = []
+            response[question_id] = q_dict
+        
+        if questions["answerText"][i] is not None:
+            answer = {}
+            answer["answerText"] = str(questions["answerText"][i])
+            answer["answeredBy"] = str(questions["answeredBy"][i])
+            answer["answerDate"] = mysql_datetime_to_date_string(str(questions["answerDateTime"][i]))
+            answers = response[question_id]["answers"]
+            answers.append(answer)
+    
+    question_list = [response[q_id] for q_id in response]
+
+    response = {"questions": question_list, "success": 0, "userId": user_id}
     return json.dumps(response)
+
+def mysql_datetime_to_date_string(mysql_date):
+    mysql_dt_format = '%Y-%m-%d %H:%M:%S'
+    date = datetime.strptime(mysql_date, mysql_dt_format)
+    return "{}/{}/{}".format(date.month, date.day, date.year)
 
 @application.route('/answerQuestion', methods=["POST"])
 def answer_question():

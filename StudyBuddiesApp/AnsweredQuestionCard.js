@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
     View, Platform, TouchableHighlight, Text, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-elements';
 import {  cLightBlue } from "./App";
-
-const wrapperWidth = 405;
+import stylesheet from './styles.js';
 
 export default class AnsweredQuestionCard extends Component {
 	constructor(props) {
@@ -25,15 +25,27 @@ export default class AnsweredQuestionCard extends Component {
                     >
                     <View style={{width: "100%"}}>
                         <View style={styles.wrapper}>
-                            <View style={styles.infoArea}>
-                                <View style={styles.name_stars}>
-                                    <Text style={styles.hotelName}>{this.props.questionText}</Text>
-                                </View>
-                            </View> 
-                            <View style={{width: '100%', flexDirection: 'column'}}>
-                                <View style={styles.name_stars}>
-                                    <Text style={styles.questionAnswer}>{this.props.answerText}</Text>
-                                </View>
+                            <View style={{width: '100%'}}>
+                                <Text style={styles.question}>
+                                    {this.props.questionText}
+                                </Text>
+                                <Text style={styles.author}>
+                                    {this.props.groupMembers[this.props.askedBy]} on {this.props.askDate}
+                                </Text>
+                                <Divider style={{ backgroundColor: 'black' }} />
+                                {this.props.answers.map(answer => {
+                                    return (
+                                        <View>
+                                            <Text style={styles.answer}>
+                                                {answer.answerText}
+                                            </Text>
+                                            <Text style={styles.author}>
+                                                {this.props.groupMembers[answer.answeredBy]} on {answer.answerDate}
+                                            </Text>
+                                        </View>
+                                    )
+                                })}
+                                
                             </View>                   
                         </View>
                     </View>
@@ -48,72 +60,34 @@ const styles = StyleSheet.create({
         flexDirection: "column", 
         alignItems: 'center',
         backgroundColor: "#F2F2F2",
-        padding: 30,
+        padding: 10,
         borderRadius: 25,
         shadowColor: "#c9cdd4",
         shadowRadius: 10,
         shadowOpacity: 1,
         justifyContent: "center",
-        ...Platform.select({
-            ios: {
-              
-              
-              
-            },
-            android: {
-              
-            },
-          }),
     },
-    heroImg: {
-        width: Platform.OS === 'ios' ? '100%' : "100%",
-        height: 195,
-        borderRadius: 13,
+    question: {
+        textAlign: "left",
+        fontSize: 20,
+        width: '100%',
+        margin: 4,
+        fontWeight: 'bold'
     },
-    infoArea: {
-        flexDirection: "row",
-        width: Platform.OS === 'ios' ? '100%' : wrapperWidth,
-        justifyContent: "space-between",
-        marginTop: 10,
-        padding: 5
+    author: {
+        textAlign: "left",
+        fontSize: 11,
+        width: '100%',
+        opacity: 0.6,
+        fontStyle: 'italic',
+        margin:2,
+        marginLeft: 4
     },
-    name_stars: {
-        flexDirection: "column"
-    },
-    price_area: {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignSelf: "flex-start",
-        marginTop: 5
-    },
-    hotelName: {
-        fontFamily: "Arial",
-        fontSize: 21,
-        color: "#363636",
-        maxWidth: 230,
-        marginTop: 4
-    },
-    hotelStars: {
-
-    },
-    price: {
-        fontSize: 27,
-        fontFamily: "Arial",
-        color: "#3EAAFA"
-    },
-    nightText: {
-        alignSelf: "flex-end",
-        marginTop: Platform.OS === 'ios' ? -2 : -6,
-        fontSize: 13,
-        opacity: 0.8
-    },
-    questionAnswer: {
+    answer: {
         textAlign: "left",
         fontSize: 16,
-        marginTop: -1,
         width: '100%',
         opacity: 0.7,
-        marginBottom: 5,
-        marginLeft: 5,
+        margin: 4,
     }
 });
