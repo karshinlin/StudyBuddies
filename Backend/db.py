@@ -194,3 +194,19 @@ class DB:
 	                ( SELECT groupID FROM User where userID = '{}');
             '''.format(user_id)
         )
+
+    def get_group_info(self, user_id):
+        return self.retrieve(
+            '''
+                SELECT groupName, groupID FROM StudyGroup where groupID in 
+	                ( SELECT groupID FROM User where userID = '{}');
+            '''.format(user_id)
+        )
+
+    def change_group_name(self, user_id, new_group_name):
+        return self.write(
+            '''
+                UPDATE StudyGroup SET groupName = '{}' where groupID in 
+	                ( SELECT groupID FROM User where userID = '{}');
+            '''.format(new_group_name, user_id)
+        )

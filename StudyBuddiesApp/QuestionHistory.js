@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignContent: "center",
+		flexDirection: 'column'
 	},
 	title: {
 		flex: 1,

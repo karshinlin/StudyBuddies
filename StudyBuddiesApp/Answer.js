@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, StyleSheet, ActivityIndicator, Button, AsyncStorage } from "react-native";
+import { View, Text, TextInput, FlatList, TouchableOpacity, Linking, KeyboardAvoidingView, StyleSheet, ActivityIndicator, Button, AsyncStorage } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
 import QuestionCard from './QuestionCard';
@@ -74,27 +74,30 @@ class AnswerScreen extends Component {
 		}
 		return (
 		  
-		  <View style={stylesheet.container}>
-			<Text style={stylesheet.title}>Answer</Text>
-			<FlatList
-			//contentContainerStyle={{flexGrow: 3, justifyContent: 'flex-start'}}
-			data={this.state.questions}
-			renderItem={({ item: { questionId, questionText, askedDate } }) => (
-			  <QuestionCard 
-				  questionText={questionText} 
-				  askedDate={askedDate} 
-				  id={questionId} 
-				  clear={true} 
-				  removeSelfFunction={this.removeQuestion}
-				  />
-			)}
-			onRefresh={() => this.fetchQuestions()}
-			keyboardShouldPersistTaps="always"
-			refreshing={this.state.refreshing}
-			keyExtractor={({item: questionId}) => questionId}
-			ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
-		  />
-		  </View>
+		<View style={styles.container}>
+			<KeyboardAvoidingView enabled behavior='position'>
+
+				<Text style={styles.title}>Answer</Text>
+				<FlatList
+				//contentContainerStyle={{flexGrow: 3, justifyContent: 'flex-start'}}
+				data={this.state.questions}
+				renderItem={({ item: { questionId, questionText, askedDate } }) => (
+				<QuestionCard 
+					questionText={questionText} 
+					askedDate={askedDate} 
+					id={questionId} 
+					clear={true} 
+					removeSelfFunction={this.removeQuestion}
+					/>
+				)}
+				onRefresh={() => this.fetchQuestions()}
+				keyboardShouldPersistTaps="always"
+				refreshing={this.state.refreshing}
+				keyExtractor={({item: questionId}) => questionId}
+				ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
+				/>
+			</KeyboardAvoidingView>
+		</View>
 		);
 	  }
 
@@ -105,11 +108,11 @@ export default AnswerScreen;
 const styles = StyleSheet.create({
 	container: {
 	  flex: 1,
-	  justifyContent: "center",
+	  justifyContent: 'center',
 	  alignContent: "center",
+	  flexDirection: 'column',
 	},
 	title: {
-	  flex: 3,
 	  justifyContent: 'center',
 	  fontSize: 50,
 	  margin: 10,
