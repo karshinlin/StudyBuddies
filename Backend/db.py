@@ -89,7 +89,7 @@ class DB:
                     (select userId from User where groupId in 
                         (select groupId from User where userId = '{}'))
                 ) as questions where questionId not in 
-            (select distinct questionId from Answer) order by askDate desc;
+            (select distinct questionId from Answer where answeredBy = '{}') order by askDate desc;
             '''
                              .format(user_id))
 
