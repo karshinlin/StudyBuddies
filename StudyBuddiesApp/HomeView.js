@@ -81,12 +81,12 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}> 
-      {/* <NavigationEvents
+      <NavigationEvents
         onDidFocus={() => {
           this.fetchMatchingStatus();
           this.fetchPoints();
         }}
-      /> */}
+      />
         {this.state.groupId ? (
           <View style={{justifyContent: "flex-start", flexDirection: 'column', alignContent: 'flex-start'}}>
             <View style={{ flexDirection: 'row', height: 200, justifyContent: 'center', alignItems: 'top', paddingBottom: 50, paddingTop: 0, marginTop: 0 }}>
