@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	title: {
-		flex: 1,
+		//flex: 1,
 		justifyContent: 'center',
 		fontSize: 43,
 		margin: 10,
