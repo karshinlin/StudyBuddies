@@ -64,7 +64,6 @@ Deployment to AWS Elastic Beanstalk:
 	- You may need to initialize your eb environment with `eb init`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory
 
-<<<<<<< HEAD
 ## Release Notes
 - Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
 - Created a backend flask server template
@@ -93,7 +92,7 @@ UI Improvements:
 - Chat Page
 	- Added a working sender label to chatting instead of having a static sender
 	- Created functionality to allow the group name to be changed in the chat module
-=======
+	
 ### Run Instructions
 - From the StudyBuddiesApp/ directory, you should run `yarn run ios` from terminal
   - In the global.js file, there are two urls, one is for the localhost backend (which must be running)
@@ -105,4 +104,3 @@ UI Improvements:
   - For the backend, this means running `pip install -r requirements.txt` 
   - For the StudyBuddiesApp, this means running `npm install`
 - If the expo localhost connection is acting up, close all terminals and rerun `yarn run ios`. Sometimes, expo has trouble starting up and needs a manual quit. 
->>>>>>> 58ba01db5828d18048f485dfb19a9d14f13e67b8
