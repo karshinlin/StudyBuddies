@@ -5,7 +5,7 @@
 - Created a backend flask server template
 - Updated node packages to fix vulnerabilities
 
-UI Improvements:
+### UI Improvements:
 - General
 	- Added a new confirmation screen within the sign-in process
 - Ask/Answer Page
@@ -31,7 +31,7 @@ UI Improvements:
 
 ## Version 0.4
 
-## Installation Guide 
+### Installation Guide 
 *The codebase is organized into 3 directories: Backend, StudyBuddiesApp, and ManagementPortal*
 - The Backend/ directory contains all Python code for the Flask server and database connection. This can be deployed locally or to AWS
 - The StudyBuddiesApp/ directory contains the React Native app. This talks to the backend and AWS directly
