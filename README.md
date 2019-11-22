@@ -52,3 +52,32 @@ Deployment to AWS Elastic Beanstalk:
 	- Now you should be able to see options when running `eb status`
 	- You may need to initialize your eb environment with `eb init`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory
+
+## Release Notes
+- Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
+- Created a backend flask server template
+- Updated node packages to fix vulnerabilities
+
+UI Improvements:
+- General
+	- Added a new confirmation screen within the sign-in process
+- Ask/Answer Page
+	- Updated colors, designs, and centered question/answer cards to implement material deisgn
+	- Fixed an incorrectly formatted button
+	- Fixed a bug causing a user to be stuck on the ask page after asking or answering a question
+	- Fixed a bug causing answers to disappear
+	- Added shadows to the question and answer cards
+- Leaderboard Page
+	- Fixed the title
+	- Updated styling to match material design elements exhibited prior
+- Question History Page
+	- Added and formatted answered question cards mirroring the material design elements of the Ask/Answer Page
+	- Added shadows to the answered question cards
+	- Added author, date, and time to answered question cards
+- Challenge Page
+	- Updated the styling to match the prior material design elements
+	- Removed superfluous code on intialization of the Challenge react component
+	- Updated the Challenge mechanisms in incrementing question and answer counts, user feedback to submitting answers, and scoring
+- Chat Page
+	- Added a working sender label to chatting instead of having a static sender
+	- Created functionality to allow the group name to be changed in the chat module
