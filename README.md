@@ -1,6 +1,7 @@
 # StudyBuddies
  
-## Release Notes
+## Release Notes (v0.4)
+Bug Fixes: 
 - Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
 - Created a backend flask server template
 - Updated node packages to fix vulnerabilities
@@ -29,9 +30,7 @@
 	- Added a working sender label to chatting instead of having a static sender
 	- Created functionality to allow the group name to be changed in the chat module
 
-## Version 0.4
-
-### Installation Guide 
+## Installation Guide 
 *The codebase is organized into 3 directories: Backend, StudyBuddiesApp, and ManagementPortal*
 - The Backend/ directory contains all Python code for the Flask server and database connection. This can be deployed locally or to AWS
 - The StudyBuddiesApp/ directory contains the React Native app. This talks to the backend and AWS directly
