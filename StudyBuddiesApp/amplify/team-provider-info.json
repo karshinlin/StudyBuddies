@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "studybuddiesapp-dev-20190908124421-authRole",
+            "UnauthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::743690469842:role/studybuddiesapp-dev-20190908124421-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "studybuddiesapp-dev-20190908124421-deployment",
+            "UnauthRoleName": "studybuddiesapp-dev-20190908124421-unauthRole",
+            "StackName": "studybuddiesapp-dev-20190908124421",
+            "StackId": "arn:aws:cloudformation:us-east-1:743690469842:stack/studybuddiesapp-dev-20190908124421/e8b16b80-d257-11e9-b819-0e94a1882570"
+        },
+        "categories": {
+            "auth": {
+                "studybuddiesapp3d4f0df8": {}
+            }
+        }
+    }
+}

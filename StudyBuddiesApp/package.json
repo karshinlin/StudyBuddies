@@ -1,31 +1,39 @@
 {
-  "name": "StudyBuddiesApp",
-  "version": "0.0.1",
-  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
   "dependencies": {
-    "braces": "^2.3.1",
-    "handlebars": "^4.1.2",
-    "lodash": "^4.17.13",
-    "mem": "^4.0.0",
+    "aws-amplify": "^1.2.4",
+    "aws-amplify-react": "^2.5.4",
+    "aws-amplify-react-native": "^2.2.3",
+    "aws-appsync": "^1.7.0",
+    "aws-appsync-react": "^1.2.5",
+    "email-validator": "^2.0.4",
+    "expo": "^34.0.1",
+    "graphql-tag": "^2.10.0",
     "react": "16.8.3",
-    "react-native": "0.59.4",
-    "react-native-gesture-handler": "^1.1.0",
-    "react-navigation": "^3.8.1",
-    "ws": "^3.3.1"
+    "react-dom": "^16.6.3",
+    "react-icons": "^3.2.2",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-dialog-input": "^1.0.7",
+    "react-native-elements": "^1.2.7",
+    "react-native-gesture-handler": "^1.5.0",
+    "react-native-scripts": "^2.0.1",
+    "react-native-table-component": "^1.2.1",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^4.0.10",
+    "react-navigation-stack": "^1.10.3",
+    "react-phone-number-input": "^2.4.1",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
-    "@babel/core": "7.4.3",
-    "@babel/runtime": "7.4.3",
-    "babel-jest": "24.7.1",
-    "jest": "24.7.1",
-    "metro-react-native-babel-preset": "0.53.1",
-    "react-test-renderer": "16.8.3"
+    "babel-preset-expo": "^6.0.0"
   },
-  "jest": {
-    "preset": "react-native"
-  }
+  "private": true
 }

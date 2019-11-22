@@ -1,0 +1,17 @@
+{
+    "projectName": "StudyBuddiesApp",
+    "version": "2.0",
+    "frontend": "javascript",
+    "javascript": {
+        "framework": "react-native",
+        "config": {
+            "SourceDir": "/Users/karshinlin/StudyBuddies/StudyBuddiesApp",
+            "DistributionDir": "/",
+            "BuildCommand": "npm run-script build",
+            "StartCommand": "npm run-script start"
+        }
+    },
+    "providers": [
+        "awscloudformation"
+    ]
+}
