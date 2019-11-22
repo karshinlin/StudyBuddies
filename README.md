@@ -1,10 +1,42 @@
 # StudyBuddies
+ 
+## Release Notes
+- Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
+- Created a backend flask server template
+- Updated node packages to fix vulnerabilities
 
-## Install Guide 
+UI Improvements:
+- General
+	- Added a new confirmation screen within the sign-in process
+- Ask/Answer Page
+	- Updated colors, designs, and centered question/answer cards to implement material deisgn
+	- Fixed an incorrectly formatted button
+	- Fixed a bug causing a user to be stuck on the ask page after asking or answering a question
+	- Fixed a bug causing answers to disappear
+	- Added shadows to the question and answer cards
+- Leaderboard Page
+	- Fixed the title
+	- Updated styling to match material design elements exhibited prior
+- Question History Page
+	- Added and formatted answered question cards mirroring the material design elements of the Ask/Answer Page
+	- Added shadows to the answered question cards
+	- Added author, date, and time to answered question cards
+- Challenge Page
+	- Updated the styling to match the prior material design elements
+	- Removed superfluous code on intialization of the Challenge react component
+	- Updated the Challenge mechanisms in incrementing question and answer counts, user feedback to submitting answers, and scoring
+- Chat Page
+	- Added a working sender label to chatting instead of having a static sender
+	- Created functionality to allow the group name to be changed in the chat module
+
+## Version 0.4
+
+## Installation Guide 
 *The codebase is organized into 3 directories: Backend, StudyBuddiesApp, and ManagementPortal*
 - The Backend/ directory contains all Python code for the Flask server and database connection. This can be deployed locally or to AWS
 - The StudyBuddiesApp/ directory contains the React Native app. This talks to the backend and AWS directly
 - The ManagementPortal/ directory contains the code for the portal allowing administrators to manage study groups and see content 
+
 ### Pre-requisites
 - Must have Python 2.7 installed on the computer to run the backend
 - Must have react-native tools installed (installation instructions for expo are described here)
@@ -64,35 +96,6 @@ Deployment to AWS Elastic Beanstalk:
 	- You may need to initialize your eb environment with `eb init`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory
 
-## Release Notes
-- Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
-- Created a backend flask server template
-- Updated node packages to fix vulnerabilities
-
-UI Improvements:
-- General
-	- Added a new confirmation screen within the sign-in process
-- Ask/Answer Page
-	- Updated colors, designs, and centered question/answer cards to implement material deisgn
-	- Fixed an incorrectly formatted button
-	- Fixed a bug causing a user to be stuck on the ask page after asking or answering a question
-	- Fixed a bug causing answers to disappear
-	- Added shadows to the question and answer cards
-- Leaderboard Page
-	- Fixed the title
-	- Updated styling to match material design elements exhibited prior
-- Question History Page
-	- Added and formatted answered question cards mirroring the material design elements of the Ask/Answer Page
-	- Added shadows to the answered question cards
-	- Added author, date, and time to answered question cards
-- Challenge Page
-	- Updated the styling to match the prior material design elements
-	- Removed superfluous code on intialization of the Challenge react component
-	- Updated the Challenge mechanisms in incrementing question and answer counts, user feedback to submitting answers, and scoring
-- Chat Page
-	- Added a working sender label to chatting instead of having a static sender
-	- Created functionality to allow the group name to be changed in the chat module
-	
 ### Run Instructions
 - From the StudyBuddiesApp/ directory, you should run `yarn run ios` from terminal
   - In the global.js file, there are two urls, one is for the localhost backend (which must be running)
