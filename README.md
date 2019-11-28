@@ -1,6 +1,53 @@
 # StudyBuddies
+ 
+## Release Notes (v0.4)
+Bug Fixes: 
+- Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
+- Created a backend flask server template
+- Updated node packages to fix vulnerabilities
 
-Setup:
+### UI Improvements:
+- General
+	- Added a new confirmation screen within the sign-in process
+- Ask/Answer Page
+	- Updated colors, designs, and centered question/answer cards to implement material deisgn
+	- Fixed an incorrectly formatted button
+	- Fixed a bug causing a user to be stuck on the ask page after asking or answering a question
+	- Fixed a bug causing answers to disappear
+	- Added shadows to the question and answer cards
+- Leaderboard Page
+	- Fixed the title
+	- Updated styling to match material design elements exhibited prior
+- Question History Page
+	- Added and formatted answered question cards mirroring the material design elements of the Ask/Answer Page
+	- Added shadows to the answered question cards
+	- Added author, date, and time to answered question cards
+- Challenge Page
+	- Updated the styling to match the prior material design elements
+	- Removed superfluous code on intialization of the Challenge react component
+	- Updated the Challenge mechanisms in incrementing question and answer counts, user feedback to submitting answers, and scoring
+- Chat Page
+	- Added a working sender label to chatting instead of having a static sender
+	- Created functionality to allow the group name to be changed in the chat module
+
+## Installation Guide 
+*The codebase is organized into 3 directories: Backend, StudyBuddiesApp, and ManagementPortal*
+- The Backend/ directory contains all Python code for the Flask server and database connection. This can be deployed locally or to AWS
+- The StudyBuddiesApp/ directory contains the React Native app. This talks to the backend and AWS directly
+- The ManagementPortal/ directory contains the code for the portal allowing administrators to manage study groups and see content 
+
+### Pre-requisites
+- Must have Python 2.7 installed on the computer to run the backend
+- Must have react-native tools installed (installation instructions for expo are described here)
+
+### Dependencies
+- All dependencies are managed and do not need to be manually tracked. They are described as follows: 
+  - Dependencies for the Backend are managed by a Python2.7 virtualenv
+    - All dependencies are tracked in the requirements.txt file (see the file for a complete list). Any addition/removal of a dependency must be changed in this file. 
+  - Dependencies for the StudyBuddiesApp is managed through npm and is seen in the package.json file (see the file for a complete list)
+    - Any addition/removal of a dependency must be through `npm install new-dependency --save` or `npm uninstall old-dependency --save`
+
+### Installing Code:
 - `git clone https://github.com/karshinlin/StudyBuddies.git` to clone the repo
 - `git checkout dev` to work on the dev branch
 - `npm install` to install all the dependencies that the branch has that you don't have locally
@@ -21,11 +68,6 @@ Setup:
 - close out of all terminals and emulators relating to this app
 - open up a terminal again and navigate to the app folder (`/StuddyBuddiesApp`)
 - `yarn run ios` 
-
-
-Dependencies and node modules are not pushed to Git. 
-- To install the required dependencies from package.json, run `npm install`
-- When adding new dependencies, add them with `npm install ______ --save`
 
 Backend Setup: 
 - [One Time] Within StudyBuddies/Backend directory, create a virtualenv: 
@@ -52,3 +94,15 @@ Deployment to AWS Elastic Beanstalk:
 	- Now you should be able to see options when running `eb status`
 	- You may need to initialize your eb environment with `eb init`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory
+
+### Run Instructions
+- From the StudyBuddiesApp/ directory, you should run `yarn run ios` from terminal
+  - In the global.js file, there are two urls, one is for the localhost backend (which must be running)
+    - To run the localhost backend, run `python application.py` after you have activated your virtualenv
+	- If you are using the AWS EB endpoint, the updated code must be deployed to AWS (`eb deploy`)
+
+## Troubleshooting
+- If there is an error loading modules, make sure you have installed all required dependencies
+  - For the backend, this means running `pip install -r requirements.txt` 
+  - For the StudyBuddiesApp, this means running `npm install`
+- If the expo localhost connection is acting up, close all terminals and rerun `yarn run ios`. Sometimes, expo has trouble starting up and needs a manual quit. 
