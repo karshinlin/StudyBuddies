@@ -210,3 +210,6 @@ class DB:
 	                ( SELECT groupID FROM User where userID = '{}');
             '''.format(new_group_name, user_id)
         )
+
+    def retrieve_group_data(self):
+        return self.retrieve("SELECT * FROM GroupCountView;")

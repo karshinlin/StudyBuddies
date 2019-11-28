@@ -265,6 +265,13 @@ def change_group_name():
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
+@application.route('/getGroupData', methods=["GET"])
+def get_group_data(): 
+    groups_df = db.retrieve_group_data()
+    response = groups_df.to_json(orient='records')
+    print(response)
+    return response
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
