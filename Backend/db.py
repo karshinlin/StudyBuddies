@@ -21,20 +21,6 @@ class DB:
         conn.close()
         return results_df
 
-    def call_proc(self, proc_name, args=None):
-        conn = self.db_conn()
-        try:
-            with conn.cursor() as cursor:
-                if args is None:
-                    results_df = cursor.callproc(proc_name)
-                else:
-                    results_df = cursor.callproc(proc_name, args)
-            conn.commit()
-        finally:
-            conn.close()
-
-        return results_df
-
     def write(self, sql):
         conn = self.db_conn()
         try:
@@ -213,3 +199,9 @@ class DB:
 
     def retrieve_group_data(self):
         return self.retrieve("SELECT * FROM GroupCountView;")
+
+    def ungroup_user(self, user_id):
+        self.write('call ungroup_user({})'.format(user_id))
+
+    def get_users_in_group(self, group_id):
+        return self.retrieve("SELECT * FROM User WHERE groupID = {}".format(group_id))

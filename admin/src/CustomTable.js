@@ -10,7 +10,7 @@ import Title from './Title';
 export default function CustomTable(props) {
   return (
     <React.Fragment>
-      <Title>{props.title}</Title>
+      {props.title ? <Title>{props.title}</Title> : null}
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -21,7 +21,7 @@ export default function CustomTable(props) {
           {props.data.map(row => (
             <TableRow 
               hover={true} 
-              key={row[0]} 
+              key={props.key ? row[props.cols.indexOf(props.key)] : row[0]} 
               onClick={() => {props.onClick(row[0])}}
               style={{cursor:'pointer'}}>
               {row.map(cell => <TableCell>{cell}</TableCell>)}

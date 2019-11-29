@@ -90,7 +90,11 @@ def tryToAddToGroup(user_id):
             now = datetime.now()
             dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
             convo_id = str(uuid.uuid4())
-            print(execute_gql(graphql.createConversation, {"id": convo_id, "createdAt": dt_string, "name": "StudyBuddies Group"}).json())
+            execute_gql(graphql.createConversation, 
+                {"id": convo_id, 
+                "createdAt": dt_string, 
+                "name": "StudyBuddies Group"}
+                ).json()
             db.update_conversation_id(group_to_add_to, convo_id)
         db.put_user_in_group(user_id, group_to_add_to)
         return group_to_add_to
@@ -111,9 +115,6 @@ def tryToAddToGroup(user_id):
     
     # cannot match
     return None
-    group = db.retrieve_group(user_id)['groupID'][0]
-    response = {"getGroup": str(group)}
-    return json.dumps(response)
 
 def execute_gql(query, variables):
     headers = {
@@ -128,6 +129,26 @@ def execute_gql(query, variables):
     payload = json.dumps(payload_obj)
     response = botocore.vendored.requests.request("POST", application.config["APPSYNC_API_ENDPOINT_URL"], data=payload, headers=headers)
     return response
+
+@application.route('/moveUser', methods=["POST"])
+def move_user():
+    user = request.json['userId']
+    dest_group_id = request.json['destGroupId']
+    db.ungroup_user(user)
+    db.put_user_in_group(user, dest_group_id)
+
+@application.route('/ungroupUser', methods=["POST"])
+def ungroup_user():
+    user = request.json['userId']
+    db.ungroup_user(user)
+
+
+@application.route('/getUsersInGroup', methods=["GET"])
+def get_users_in_group():
+    group_id = request.args.get('groupId', default = "", type = str)
+    user_df = db.get_users_in_group(group_id)
+    user_df = user_df[['userID','name','examMonth','examYear', 'points']]
+    return user_df.to_json(orient='records')
 
 @application.route('/setQuestion', methods=["POST"])
 def set_question():

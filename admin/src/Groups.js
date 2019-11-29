@@ -4,9 +4,8 @@ import CustomTable from './CustomTable';
 import React from 'react';
 import { Text } from "react-native";
 import { url } from "./global";
-import Title from './Title';
-
-
+import GroupManager from './GroupManager';
+import GroupUser from './GroupUser';
 
 
 export default class Groups extends React.Component {
@@ -15,10 +14,12 @@ export default class Groups extends React.Component {
         super(props);
         this.state = {
             groups: {},
-            selectedGroup: null
+            selectedGroupId: null,
+            selectedUser: null
         }
 
         this.changeSelectedGroup = this.changeSelectedGroup.bind(this);
+        this.changeSelectedUser = this.changeSelectedUser.bind(this);
     }
 
     componentDidMount() {
@@ -40,13 +41,22 @@ export default class Groups extends React.Component {
     }
 
     changeSelectedGroup(groupNum) {
+        if (this.state.selectedGroupId != groupNum) {
+            this.setState({
+                selectedGroupId: groupNum,
+                selectedUser: null
+            })
+        }
+    }
+
+    changeSelectedUser(userObj) {
         this.setState({
-            selectedGroup: groupNum
+            selectedUser: userObj
         })
     }
 
     getSelectedGroupMetadata(field) {
-        return this.state.groups[this.state.selectedGroup][field]
+        return this.state.groups[this.state.selectedGroupId][field]
     }
 
     render() {
@@ -67,15 +77,25 @@ export default class Groups extends React.Component {
                         }
                     </Paper>
                 </Grid>
-                {this.state.selectedGroup == null ? null :
+                {this.state.selectedGroupId ?
                     <Grid item xs={12}>
-                        <Paper className={this.props.classes.paper}>
-                            <React.Fragment>
-                                <Title>[#{this.state.selectedGroup}] {this.getSelectedGroupMetadata('groupName')}</Title>
-                                <Text>Exam: {this.getSelectedGroupMetadata('exam')}</Text>
-                            </React.Fragment>
-                        </Paper>
+                        <GroupManager 
+                            group={this.state.groups[this.state.selectedGroupId]}
+                            classes={this.props.classes}
+                            selectUser={this.changeSelectedUser}
+                        />
                     </Grid>
+                    : null
+                }
+                {this.state.selectedUser ?
+                    <Grid item xs={12}>
+                        <GroupUser 
+                            classes={this.props.classes} 
+                            user={this.state.selectedUser} 
+                            exam={this.state.groups[this.state.selectedGroupId]['exam']}
+                        />
+                    </Grid>
+                    : null
                 }
 
 
