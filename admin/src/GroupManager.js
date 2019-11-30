@@ -25,6 +25,8 @@ export default class GroupManager extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.group['groupID'] !== prevProps.group['groupID']) {
             this.getUsersInGroup();
+        } else if (this.props.updateSwitch !== prevProps.updateSwitch) {
+            this.getUsersInGroup();
         }
     }
 
@@ -38,9 +40,12 @@ export default class GroupManager extends React.Component {
                     return map;
                 }, {});
             }).then(users => {
-                this.setState({
-                    users: users
-                });
+                if (Object.keys(users).length == 0) {
+                    return this.setState({users: null});
+                } else {
+                    return this.setState({users});
+                }
+                
             });
     }
 

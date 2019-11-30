@@ -140,14 +140,18 @@ def move_user():
 @application.route('/ungroupUser', methods=["POST"])
 def ungroup_user():
     user = request.json['userId']
-    db.ungroup_user(user)
+    try:
+        db.ungroup_user(user)
+    except:
+        return "Ungroup failed", 500
+    return "", 204
 
 
 @application.route('/getUsersInGroup', methods=["GET"])
 def get_users_in_group():
     group_id = request.args.get('groupId', default = "", type = str)
     user_df = db.get_users_in_group(group_id)
-    user_df = user_df[['userID','name','examMonth','examYear', 'points']]
+    user_df = user_df[['userID','name','examMonth','examYear', 'points', 'groupID']]
     return user_df.to_json(orient='records')
 
 @application.route('/setQuestion', methods=["POST"])

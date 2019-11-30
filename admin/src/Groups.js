@@ -15,11 +15,13 @@ export default class Groups extends React.Component {
         this.state = {
             groups: {},
             selectedGroupId: null,
-            selectedUser: null
+            selectedUser: null,
+            groupManagerUpdateSwitch: false
         }
 
         this.changeSelectedGroup = this.changeSelectedGroup.bind(this);
         this.changeSelectedUser = this.changeSelectedUser.bind(this);
+        this.getGroupData = this.getGroupData.bind(this);
     }
 
     componentDidMount() {
@@ -34,8 +36,16 @@ export default class Groups extends React.Component {
                     map[obj['groupID']] = obj;
                     return map;
                 }, {});
-                this.setState({
-                    groups: newGroups
+
+                let newSelectedGroup = null;
+                if (this.state.selectedGroupId in newGroups) {
+                    newSelectedGroup = this.state.selectedGroupId;
+                }
+                return this.setState({
+                    groups: newGroups,
+                    selectedUser: null,
+                    selectedGroupId: newSelectedGroup,
+                    groupManagerUpdateSwitch: !this.state.groupManagerUpdateSwitch
                 })
             })
     }
@@ -57,6 +67,10 @@ export default class Groups extends React.Component {
 
     getSelectedGroupMetadata(field) {
         return this.state.groups[this.state.selectedGroupId][field]
+    }
+
+    getExamOfSelectedGroup() {
+        return this.state.groups[this.state.selectedGroupId]['exam'];
     }
 
     render() {
@@ -83,6 +97,7 @@ export default class Groups extends React.Component {
                             group={this.state.groups[this.state.selectedGroupId]}
                             classes={this.props.classes}
                             selectUser={this.changeSelectedUser}
+                            updateSwitch={this.state.groupManagerUpdateSwitch}
                         />
                     </Grid>
                     : null
@@ -92,14 +107,18 @@ export default class Groups extends React.Component {
                         <GroupUser 
                             classes={this.props.classes} 
                             user={this.state.selectedUser} 
-                            exam={this.state.groups[this.state.selectedGroupId]['exam']}
+                            exam={this.getExamOfSelectedGroup()}
+                            potentialGroups={
+                                Object.values(this.state.groups)
+                                .filter(group => {
+                                    return group['exam'] === this.getExamOfSelectedGroup()
+                                        && group['groupID'] != this.state.selectedUser['groupID'];
+                                })}
+                            onUpdate={this.getGroupData}
                         />
                     </Grid>
                     : null
                 }
-
-
-
             </Grid>
         );
     }

@@ -201,7 +201,7 @@ class DB:
         return self.retrieve("SELECT * FROM GroupCountView;")
 
     def ungroup_user(self, user_id):
-        self.write('call ungroup_user({})'.format(user_id))
+        self.write("call ungroup_user('{}');".format(user_id))
 
     def get_users_in_group(self, group_id):
         return self.retrieve("SELECT * FROM User WHERE groupID = {}".format(group_id))
