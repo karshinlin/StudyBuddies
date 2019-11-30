@@ -134,8 +134,13 @@ def execute_gql(query, variables):
 def move_user():
     user = request.json['userId']
     dest_group_id = request.json['destGroupId']
-    db.ungroup_user(user)
-    db.put_user_in_group(user, dest_group_id)
+    try:
+        db.ungroup_user(user)
+        db.put_user_in_group(user, dest_group_id)
+    except:
+        return "Move group failed", 500
+        
+    return "", 204
 
 @application.route('/ungroupUser', methods=["POST"])
 def ungroup_user():

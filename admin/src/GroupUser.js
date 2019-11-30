@@ -14,13 +14,8 @@ export default class GroupUser extends React.Component {
         }
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
-    }
-
-    handleNewGroupChange(newGroupId) {
-        this.setState({
-            selectedNewGroup: newGroupId
-        });
     }
 
     handleOnSubmit() {
@@ -33,10 +28,10 @@ export default class GroupUser extends React.Component {
             req_url = url + 'moveUser';
             body = {
                 userId: this.props.user['userID'],
-                destGroupId: this.props.selectedNewGroup,
+                destGroupId: this.state.selectedNewGroup,
             }
         }
-
+        console.log(body);
         fetch(req_url, {
             method: 'POST',
             headers: {
@@ -47,6 +42,10 @@ export default class GroupUser extends React.Component {
         })
         .then(() => this.props.onUpdate())
     }
+
+    handleChange(event) {
+        this.setState({selectedNewGroup: event.target.value});
+    };
 
     render() {
         return (
@@ -66,11 +65,14 @@ export default class GroupUser extends React.Component {
                                     <Grid item xs align-items-xs-center justify-xs-flex-end>
                                         <Select
                                             value={this.state.selectedNewGroup}
-                                            onChange={e => this.handleNewGroupChange(e.target.value)}>
+                                            onChange={this.handleChange}>
                                         <MenuItem value={'ungrouped'}>Ungrouped</MenuItem>
                                     {this.props.potentialGroups ? 
                                         this.props.potentialGroups.map(group => {
-                                            return (<MenuItem value={group['groupID']}>[{group['groupID']}] {group['groupName']}</MenuItem>);
+                                            return (
+                                                <MenuItem value={group['groupID']}>
+                                                    [{group['groupID']}] {group['groupName']}
+                                                </MenuItem>);
                                         })
                                         : null}
                                 </Select>
