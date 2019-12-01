@@ -77,7 +77,7 @@ class DB:
                 ) as questions where questionId not in 
             (select distinct questionId from Answer where answeredBy = '{}') order by askDate desc;
             '''
-                             .format(user_id))
+                             .format(user_id, user_id))
 
     def get_answered_questions(self, user_id):
         return self.retrieve("call get_questions_for_my_group('{}')".format(user_id))
@@ -211,3 +211,15 @@ class DB:
 
     def get_all_members(self):
         return self.retrieve("SELECT * FROM User;")
+
+    def delete_question(self, question_id):
+        return self.write("DELETE FROM Question WHERE questionID={};".format(question_id))
+
+    def edit_question(self, question_id, question_text):
+        return self.write("UPDATE Question SET questionText='{}' WHERE questionID={};".format(question_text, question_id))
+
+    def delete_answer(self, answer_id):
+        return self.write("DELETE FROM Answer WHERE answerID={};".format(answer_id))
+
+    def edit_answer(self, answer_id, answer_text):
+        return self.write("UPDATE Answer SET answerText='{}' WHERE answerID={};".format(answer_text, answer_id))

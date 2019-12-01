@@ -329,12 +329,46 @@ def get_all_questions():
             response[questionData['questionID'][i]] = questionDict
         if questionData['answerID'][i] == questionData['answerID'][i]: # check if answerID is not nan returned from sql
             answerDict = {}
-            answerDict['answerId'] = questionData['answerID'][i]
+            answerDict['answerId'] = int(questionData['answerID'][i])
             answerDict['answerText'] = questionData['answerText'][i]
             answerDict['answerDate'] = mysql_datetime_to_date_string(str(questionData['answerDateTime'][i]))
             answerDict['answeredBy'] = questionData['answeredBy'][i]
             response[questionData['questionID'][i]]['answers'].append(answerDict)
     print(response)
+    return json.dumps(response)
+
+# ADMIN METHOD
+@application.route('/deleteQuestion', methods=["GET"])
+def delete_question():
+    question_id = request.args.get('questionId', type=str)
+    print(db.delete_question(question_id))
+    response = {"success": 0, "questionId": question_id}
+    return json.dumps(response)
+    
+# ADMIN METHOD
+@application.route('/editQuestion', methods=["POST"])
+def edit_question():
+    question_id = request.json['questionId']
+    question_text = request.json['questionText']
+    print(db.edit_question(question_id, question_text))
+    response = {"success": 0, "questionId": question_id}
+    return json.dumps(response)
+
+# ADMIN METHOD
+@application.route('/deleteAnswer', methods=["GET"])
+def delete_answer():
+    answer_id = request.args.get('answerId', type=str)
+    print(db.delete_answer(answer_id))
+    response = {"success": 0, "answerId": answer_id}
+    return json.dumps(response)
+    
+# ADMIN METHOD
+@application.route('/editAnswer', methods=["POST"])
+def edit_answer():
+    answer_id = request.json['answerId']
+    answer_text = request.json['answerText']
+    print(db.edit_answer(answer_id, answer_text))
+    response = {"success": 0, "answerId": answer_id}
     return json.dumps(response)
 
 # run the app.

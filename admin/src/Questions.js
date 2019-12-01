@@ -42,68 +42,149 @@ const tableIcons = {
       };
 
 export default class Questions extends React.Component {
-    
     constructor(props) {
         super(props);
         this.state = {
-            columns: [
-                { title: 'Name', field: 'name' },
-                { title: 'Surname', field: 'surname' },
-                { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-                {
-                title: 'Birth Place',
-                field: 'birthCity',
-                lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-                },
+            questionColumns: [
+                { title: 'QuestionID', field: 'questionId', editable: 'never', type: 'numeric'},
+                { title: 'Question', field: 'questionText', editable: 'onUpdate' },
+                { title: 'Author', field: 'author', editable: 'never' },
+                { title: 'Asked Date', field: 'askedDate', editable: 'never' },
             ],
-            data: [
-                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                {
-                    name: 'Zerya Betül',
-                    surname: 'Baran',
-                    birthYear: 2017,
-                    birthCity: 34,
-                },
+            answerColumns: [
+                { title: 'answerID', field: 'answerId', editable: 'never', type: 'numeric'},
+                { title: 'Answer', field: 'answerText', editable: 'onUpdate' },
+                { title: 'Author', field: 'author', editable: 'never' },
+                { title: 'Answer Date', field: 'answerDate', editable: 'never' },
             ],
+            selectedQuestion: null,
         }
-        console.log("hello")
+        this.getAllQuestions = this.getAllQuestions.bind(this);
+        this.editQuestion = this.editQuestion.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
+        this.editAnswer = this.editAnswer.bind(this);
+        this.deleteAnswer = this.deleteAnswer.bind(this);
+        this.changeSelectedQuestion = this.changeSelectedQuestion.bind(this);
+        this.changeSelectedAnswer = this.changeSelectedAnswer.bind(this);
+        
     }
 
-    getGroupData() {
-        return fetch(url + 'getGroupData')
+    componentDidMount() {
+        this.getAllQuestions();
+    }
+
+    getAllQuestions() {
+        return fetch(url + 'getAllQuestions')
             .then(response => response.json())
-            .then(groups => {
-                const newGroups = groups.reduce(function (map, obj) {
-                    map[obj['groupID']] = obj;
-                    return map;
-                }, {});
+            .then(allQuestions => {
+                let questionData = [];
+                let answers = {}
+                Object.keys(allQuestions).forEach(function(key) {
+                    let newRow = {};
+                    newRow.questionId = key;
+                    newRow.questionText = allQuestions[key].questionText;
+                    newRow.author = allQuestions[key].askedBy;
+                    newRow.askedDate = allQuestions[key].askedDate;
+                    questionData.push(newRow);
+                    allQuestions[key].answers.forEach(answer => {
+                        let newAnswer = {};
+                        newAnswer.answerId = answer["answerId"];
+                        newAnswer.answerText = answer["answerText"];
+                        newAnswer.answerDate = answer["answerDate"];
+                        newAnswer.author = answer["answeredBy"];
+                        if (key in answers) {
+                            answers[key].push(newAnswer);
+                        } else {
+                            answers[key] = [];
+                            answers[key].push(newAnswer);
+                        }
+                    });
+                });
                 this.setState({
-                    groups: newGroups
-                })
-            })
+                    questionData: questionData,
+                    questions: allQuestions,
+                    answerData: answers
+                });
+            });
     }
 
-    changeSelectedGroup(groupNum) {
+    deleteQuestion(questionId) {
+        let deleteUrl = url + 'deleteQuestion?questionId=' + questionId 
+        return fetch(deleteUrl)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                delete this.state.questions[questionId]
+                this.setState({
+                    selectedQuestion: null,
+                });
+            });
+    }
+
+    editQuestion(questionId, questionText) {
+        let body = {questionId: questionId, questionText: questionText}
+        fetch(url + 'editQuestion', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)		
+        }).then(response => {
+            this.state.questions[questionId].questionText = questionText;
+        });
+    }
+
+    deleteAnswer(answerId) {
+        let deleteUrl = url + 'deleteAnswer?answerId=' + answerId 
+        return fetch(deleteUrl)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+            });
+    }
+
+    editAnswer(answerId, answerText) {
+        let body = {answerId: answerId, answerText: answerText}
+        fetch(url + 'editAnswer', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)		
+        }).then(response => {
+        });
+    }
+
+    changeSelectedQuestion(rowData) {
         this.setState({
-            selectedGroup: groupNum
+            selectedQuestion: rowData.questionId,
+        });
+    }
+
+    changeSelectedAnswer(rowData) {
+        this.setState({
+            selectedAnswer: rowData.answerId
         })
     }
-
     
     render() {
         return (
+            <div>
             <MaterialTable
+                onRowClick={(event, rowData) => this.changeSelectedQuestion(rowData)}
                 icons={tableIcons}
-                title="Editable Example"
-                columns={this.state.columns}
-                data={this.state.data}
+                title="All Questions"
+                columns={this.state.questionColumns}
+                data={this.state.questionData}
                 editable={{
                     onRowAdd: newData =>
                     new Promise(resolve => {
                         setTimeout(() => {
                         resolve();
                         this.setState(prevState => {
-                            const data = [...prevState.data];
+                            const data = [...prevState.questionData];
                             data.push(newData);
                             return { ...prevState, data };
                         });
@@ -115,10 +196,11 @@ export default class Questions extends React.Component {
                         resolve();
                         if (oldData) {
                             this.setState(prevState => {
-                            const data = [...prevState.data];
-                            data[data.indexOf(oldData)] = newData;
-                            return { ...prevState, data };
+                            var questionData = [...prevState.questionData];
+                            questionData[questionData.indexOf(oldData)] = newData;
+                            return { ...prevState, questionData };
                             });
+                            this.editQuestion(newData.questionId, newData.questionText);
                         }
                         }, 600);
                     }),
@@ -127,14 +209,64 @@ export default class Questions extends React.Component {
                         setTimeout(() => {
                         resolve();
                         this.setState(prevState => {
-                            const data = [...prevState.data];
-                            data.splice(data.indexOf(oldData), 1);
-                            return { ...prevState, data };
+                            var questionData = [...prevState.questionData];
+                            questionData.splice(questionData.indexOf(oldData), 1);
+                            return { ...prevState, questionData };
                         });
+                        this.deleteQuestion(oldData.questionId);
                         }, 600);
                     }),
                 }}
             />
+            {this.state.selectedQuestion ? 
+                <MaterialTable
+                    icons={tableIcons}
+                    title={"Answers for Question " + this.state.selectedQuestion}
+                    columns={this.state.answerColumns}
+                    data={this.state.answerData[this.state.selectedQuestion]}
+                    editable={{
+                        onRowAdd: newData =>
+                        new Promise(resolve => {
+                            setTimeout(() => {
+                            resolve();
+                            this.setState(prevState => {
+                                const data = [...prevState.answerData];
+                                data.push(newData);
+                                return { ...prevState, data };
+                            });
+                            }, 600);
+                        }),
+                        onRowUpdate: (newData, oldData) =>
+                        new Promise(resolve => {
+                            setTimeout(() => {
+                            if (oldData) {
+                                this.setState(prevState => {
+                                    var answerData = [...prevState.answerData[this.state.selectedQuestion]];
+                                    answerData[answerData.indexOf(oldData)] = newData;
+                                    return { answerData: {...prevState.answerData, [this.state.selectedQuestion]: answerData }};
+                                });
+                                resolve();
+                                this.editAnswer(newData.answerId, newData.answerText);
+                            }
+                            }, 600);
+                        }),
+                        onRowDelete: oldData =>
+                        new Promise(resolve => {
+                            setTimeout(() => {
+                            resolve();
+                            this.setState(prevState => {
+                                var answerData = [...prevState.answerData[this.state.selectedQuestion]];
+                                answerData.splice(answerData.indexOf(oldData), 1);
+                                return { answerData: {...prevState.answerData, [this.state.selectedQuestion]: answerData }};
+                            });
+                            this.deleteAnswer(oldData.answerId);
+                            }, 600);
+                        }),
+                    }}
+                />
+                
+            : null}
+            </div>
         );
     }
 }
