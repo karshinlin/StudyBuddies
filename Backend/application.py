@@ -295,12 +295,47 @@ def change_group_name():
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
 
+# ADMIN METHOD
 @application.route('/getGroupData', methods=["GET"])
 def get_group_data(): 
     groups_df = db.retrieve_group_data()
     response = groups_df.to_json(orient='records')
     print(response)
     return response
+
+# ADMIN METHOD
+@application.route('/getAllMembers', methods=["GET"])
+def get_all_members():
+    members = db.get_all_members()
+    response = dict()
+    for i in range(len(members['userID'])):
+        response[members['userID'][i]] = members['name'][i]
+    return json.dumps(response)
+
+# ADMIN METHOD
+@application.route('/getAllQuestions', methods=["GET"])
+def get_all_questions():
+    questionData = db.retrieve_all_questions_answers()
+    response = {}
+    for i in range(len(questionData['questionID'])):
+        if questionData['questionID'][i] not in response:
+            questionDict = {}
+            questionDict['questionId'] = questionData['questionID'][i]
+            questionDict['askedBy'] = questionData['askedBy'][i]
+            questionDict['questionText'] = questionData['questionText'][i]
+            questionDict['askedDate'] = mysql_datetime_to_date_string(str(questionData['askDate'][i]))
+            questionDict['groupId'] = questionData['groupID'][i]
+            questionDict['answers'] = []
+            response[questionData['questionID'][i]] = questionDict
+        if questionData['answerID'][i] == questionData['answerID'][i]: # check if answerID is not nan returned from sql
+            answerDict = {}
+            answerDict['answerId'] = questionData['answerID'][i]
+            answerDict['answerText'] = questionData['answerText'][i]
+            answerDict['answerDate'] = mysql_datetime_to_date_string(str(questionData['answerDateTime'][i]))
+            answerDict['answeredBy'] = questionData['answeredBy'][i]
+            response[questionData['questionID'][i]]['answers'].append(answerDict)
+    print(response)
+    return json.dumps(response)
 
 # run the app.
 if __name__ == "__main__":

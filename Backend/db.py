@@ -205,3 +205,9 @@ class DB:
 
     def get_users_in_group(self, group_id):
         return self.retrieve("SELECT * FROM User WHERE groupID = {}".format(group_id))
+    
+    def retrieve_all_questions_answers(self):
+        return self.retrieve("SELECT * FROM Question LEFT JOIN User ON askedBy = userID NATURAL LEFT JOIN Answer ORDER BY askDate DESC;")
+
+    def get_all_members(self):
+        return self.retrieve("SELECT * FROM User;")
