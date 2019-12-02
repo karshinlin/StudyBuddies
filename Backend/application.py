@@ -319,23 +319,23 @@ def get_all_questions():
     for i in range(len(questionData['questionID'])):
         if questionData['questionID'][i] not in response:
             questionDict = {}
-            questionDict['questionId'] = questionData['questionID'][i]
+            questionDict['questionId'] = str(questionData['questionID'][i])
             questionDict['askedBy'] = questionData['askedBy'][i]
             questionDict['askedByName'] = questionData['askerName'][i]
             questionDict['questionText'] = questionData['questionText'][i]
             questionDict['askedDate'] = mysql_datetime_to_date_string(str(questionData['askDate'][i]))
-            questionDict['groupId'] = questionData['groupID'][i]
+            questionDict['groupId'] = str(questionData['groupID'][i])
             questionDict['answers'] = []
-            response[questionData['questionID'][i]] = questionDict
+            response[str(questionData['questionID'][i])] = questionDict
         if questionData['answerID'][i] == questionData['answerID'][i]: # check if answerID is not nan returned from sql
             answerDict = {}
-            answerDict['answerId'] = int(questionData['answerID'][i])
+            answerDict['answerId'] = str(questionData['answerID'][i])
             answerDict['answerText'] = questionData['answerText'][i]
             answerDict['answerDate'] = mysql_datetime_to_date_string(str(questionData['answerDateTime'][i]))
             answerDict['answeredBy'] = questionData['answeredBy'][i]
             answerDict['answeredByName'] = questionData['answererName'][i]
 
-            response[questionData['questionID'][i]]['answers'].append(answerDict)
+            response[str(questionData['questionID'][i])]['answers'].append(answerDict)
     print(response)
     return json.dumps(response)
 

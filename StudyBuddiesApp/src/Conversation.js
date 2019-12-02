@@ -234,7 +234,7 @@ export default class Conversation extends React.Component {
 				submitInput={ (inputText) => {this.changeGroupName(inputText); this.setState({isDialogVisible: false}); this.state.groupMembers["groupName"] = inputText} }
 				closeDialog={ () => {this.setState({isDialogVisible: false})} }>
 			</DialogInput>
-			<KeyboardAvoidingView style={{flex: 1, flexDirection: 'column'}} enabled behavior='padding'>
+			<KeyboardAvoidingView style={{flex: 1, flexDirection: 'column'}} enabled behavior='height' keyboardVerticalOffset={64}>
 				<View style={styles.messagesContainer} >
 					<ScrollView 
 					ref={(scroll) => {this.scroll = scroll;}}

@@ -89,7 +89,7 @@ export default class Questions extends React.Component {
                     questionData.push(newRow);
                     allQuestions[key].answers.forEach(answer => {
                         let newAnswer = {};
-                        newAnswer.answerId = answer["answerId"];
+                        newAnswer.answerId = parseInt(answer["answerId"]);
                         newAnswer.answerText = answer["answerText"];
                         newAnswer.answerDate = answer["answerDate"];
                         newAnswer.author = answer["answeredByName"];
