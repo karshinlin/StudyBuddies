@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     View, Platform, TouchableHighlight, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
-import {  cLightBlue } from "./App";
 import stylesheet from './styles.js';
 
 export default class AnsweredQuestionCard extends Component {
@@ -15,14 +14,9 @@ export default class AnsweredQuestionCard extends Component {
     }
     
     render () {
-        let {onPress} = this.props;
         
         return (
-            <View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "white", padding: 20}]}>
-                <TouchableHighlight style={{}}
-                    onPress={onPress}
-                    underlayColor={cLightBlue}
-                    >
+            
                     <View style={{width: "100%"}}>
                         <View style={styles.wrapper}>
                             <View style={{width: '100%'}}>
@@ -49,8 +43,6 @@ export default class AnsweredQuestionCard extends Component {
                             </View>                   
                         </View>
                     </View>
-                </TouchableHighlight>
-            </View>
         )
     }
 }

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableHighlight } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Auth } from 'aws-amplify';
 import AnsweredQuestionCard from './AnsweredQuestionCard';
 import stylesheet from './styles.js';
+import {  cLightBlue } from "./App";
+
 
 
 class QuestionHistoryScreen extends Component {
@@ -87,12 +89,21 @@ class QuestionHistoryScreen extends Component {
 			);
 		}
 
+		let {onPress} = this.props;
+
 		return (
+			
 			<View style={styles.container}>
 				<Text style={styles.title}>Question History</Text>
 				<FlatList
 					data={this.state.questions}
 					renderItem={({ item: { questionId, questionText, askDate, askedBy, answers } }) => (
+
+						<View style={[this.props.style, {borderBottomWidth: 10, borderBottomColor: "white", padding: 20}]}>
+                <TouchableHighlight style={{}}
+                    onPress={onPress}
+                    underlayColor={cLightBlue}
+                    >
 						<AnsweredQuestionCard 
 							questionText={questionText} 
 							askDate={askDate} 
@@ -101,6 +112,10 @@ class QuestionHistoryScreen extends Component {
 							answers={answers}
 							groupMembers={this.state.groupMembers}
 							clear={true} />
+
+					</TouchableHighlight>
+					</View>
+						
 					)}
 					onRefresh={() => this.onRefresh()}
 					keyboardShouldPersistTaps="always"
