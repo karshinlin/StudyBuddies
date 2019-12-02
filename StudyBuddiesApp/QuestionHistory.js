@@ -111,7 +111,7 @@ class QuestionHistoryScreen extends Component {
 							id={questionId} 
 							answers={answers}
 							groupMembers={this.state.groupMembers}
-							clear={true} />
+						 />
 
 					</TouchableHighlight>
 					</View>
