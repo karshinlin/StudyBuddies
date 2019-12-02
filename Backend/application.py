@@ -6,6 +6,7 @@ import graphql
 import uuid
 from datetime import datetime
 import numpy as np
+import pandas as pd
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -202,8 +203,9 @@ def question_df_to_question_list(question_df):
             q_dict["askDate"] = mysql_datetime_to_date_string(str(question_df["askDate"][i]))
             q_dict["answers"] = []
             question_dict[question_id] = q_dict
+
         
-        if not np.isnan(question_df["answerID"][i]):
+        if not pd.isna(question_df["answerID"][i]):
             answer = {}
             answer["answerId"] = str(question_df["answerID"][i])
             answer["answerText"] = str(question_df["answerText"][i])
