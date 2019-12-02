@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TouchableHighlight, Dimensions, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableHighlight, Dimensions, Image, Label} from 'react-native';
 
 export const cMint = "#98FB98";
 const width = Dimensions.get('window').width
@@ -10,21 +10,25 @@ export default class HomeTile extends Component {
 
 		}
 		return (
-			<View style={styles.tile}>
-				<TouchableHighlight style={{}} 
-					onPress={onPress}
-					underlayColor={cMint}>
-					<View style={{width: "100%", alignItems: "center"}}>
-						{
-							tilePic != null && tilePic != "" ? 
-							<Image source={tilePic} style={{height: 100, width: 100}}></Image>
-							: 
-							<Text style={[styles.tileText, {fontSize: parseInt(desiredFontSize)}]}
-							adjustsFontSizeToFit numberOfLines={2}>{tileName}</Text> 
-						}
-					</View>
-				</TouchableHighlight>
-			</View>
+			<View>
+				<View style={styles.tile}>
+					<TouchableHighlight style={{}} 
+						onPress={onPress}
+						underlayColor={cMint}>
+						<View style={{width: "100%", alignItems: "center"}}>
+							{
+								tilePic != null && tilePic != "" ? 
+								<Image source={tilePic} style={{height: 100, width: 100}}></Image>
+								: 
+								<Text style={[styles.tileText, {fontSize: parseInt(desiredFontSize)}]}
+								adjustsFontSizeToFit numberOfLines={2}>{tileName}</Text> 
+							}
+						</View>
+					</TouchableHighlight>
+					
+				</View>
+				<Text style={{marginTop: 2, textAlign: 'center'}}>{this.props.tileName}</Text>
+			</View>			
 		)
 	}
 }

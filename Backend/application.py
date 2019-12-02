@@ -322,6 +322,7 @@ def get_all_questions():
             questionDict = {}
             questionDict['questionId'] = questionData['questionID'][i]
             questionDict['askedBy'] = questionData['askedBy'][i]
+            questionDict['askedByName'] = questionData['askerName'][i]
             questionDict['questionText'] = questionData['questionText'][i]
             questionDict['askedDate'] = mysql_datetime_to_date_string(str(questionData['askDate'][i]))
             questionDict['groupId'] = questionData['groupID'][i]
@@ -333,6 +334,8 @@ def get_all_questions():
             answerDict['answerText'] = questionData['answerText'][i]
             answerDict['answerDate'] = mysql_datetime_to_date_string(str(questionData['answerDateTime'][i]))
             answerDict['answeredBy'] = questionData['answeredBy'][i]
+            answerDict['answeredByName'] = questionData['answererName'][i]
+
             response[questionData['questionID'][i]]['answers'].append(answerDict)
     print(response)
     return json.dumps(response)
