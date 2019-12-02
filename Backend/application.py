@@ -5,6 +5,7 @@ import botocore.vendored.requests
 import graphql
 import uuid
 from datetime import datetime
+import numpy as np
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -171,51 +172,49 @@ def set_question():
 @application.route('/unansweredQuestions', methods=["GET"])
 def get_unanswered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
-    questions = db.get_unanswered_questions(user_id)
-    print(questions)
-    response = []
-    for i in range(0, len(questions["questionID"])):
-        a_question = dict()
-        a_question["questionId"] = int(questions["questionID"][i])
-        a_question["askedBy"] = questions["askedBy"][i]
-        a_question["questionText"] = questions["questionText"][i]
-        a_question["askDate"] = str(questions["askDate"][i])
-        response.append(a_question)
-    
-    response = {"questions": response, "success": 0, "userId": user_id}
+    questions_df = db.get_unanswered_questions(user_id)
+    question_list = question_df_to_question_list(questions_df)
+
+    response = {"questions": question_list}
     return json.dumps(response)
 
 @application.route('/answeredQuestions', methods=["GET"])
 def get_answered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
-    questions = db.get_answered_questions(user_id)
-    print(questions)
-    response = {}
+    question_df = db.get_answered_questions(user_id)
     
-    for i in range(questions.shape[0]):
-        question_id = int(questions["questionID"][i])
+    question_list = question_df_to_question_list(question_df)
 
-        if question_id not in response:
+    response = {"questions": question_list}
+    return json.dumps(response)
+
+def question_df_to_question_list(question_df):
+    question_dict = {}
+    
+    for i in range(question_df.shape[0]):
+        question_id = int(question_df["questionID"][i])
+
+        if question_id not in question_dict:
             q_dict = {}
             q_dict["questionId"] = question_id
-            q_dict["askedBy"] = questions["askedBy"][i]
-            q_dict["questionText"] = questions["questionText"][i]
-            q_dict["askDate"] = mysql_datetime_to_date_string(str(questions["askDate"][i]))
+            q_dict["askedBy"] = question_df["askedBy"][i]
+            q_dict["questionText"] = question_df["questionText"][i]
+            q_dict["askDate"] = mysql_datetime_to_date_string(str(question_df["askDate"][i]))
             q_dict["answers"] = []
-            response[question_id] = q_dict
+            question_dict[question_id] = q_dict
         
-        if questions["answerText"][i] is not None:
+        if not np.isnan(question_df["answerID"][i]):
             answer = {}
-            answer["answerText"] = str(questions["answerText"][i])
-            answer["answeredBy"] = str(questions["answeredBy"][i])
-            answer["answerDate"] = mysql_datetime_to_date_string(str(questions["answerDateTime"][i]))
-            answers = response[question_id]["answers"]
+            answer["answerId"] = str(question_df["answerID"][i])
+            answer["answerText"] = str(question_df["answerText"][i])
+            answer["answeredBy"] = str(question_df["answeredBy"][i])
+            answer["answerDate"] = mysql_datetime_to_date_string(str(question_df["answerDateTime"][i]))
+            answers = question_dict[question_id]["answers"]
             answers.append(answer)
     
-    question_list = [response[q_id] for q_id in response]
+    question_list = [question_dict[q_id] for q_id in question_dict]
+    return question_list
 
-    response = {"questions": question_list, "success": 0, "userId": user_id}
-    return json.dumps(response)
 
 def mysql_datetime_to_date_string(mysql_date):
     mysql_dt_format = '%Y-%m-%d %H:%M:%S'
@@ -320,23 +319,23 @@ def get_all_questions():
     for i in range(len(questionData['questionID'])):
         if questionData['questionID'][i] not in response:
             questionDict = {}
-            questionDict['questionId'] = questionData['questionID'][i]
+            questionDict['questionId'] = str(questionData['questionID'][i])
             questionDict['askedBy'] = questionData['askedBy'][i]
             questionDict['askedByName'] = questionData['askerName'][i]
             questionDict['questionText'] = questionData['questionText'][i]
             questionDict['askedDate'] = mysql_datetime_to_date_string(str(questionData['askDate'][i]))
-            questionDict['groupId'] = questionData['groupID'][i]
+            questionDict['groupId'] = str(questionData['groupID'][i])
             questionDict['answers'] = []
-            response[questionData['questionID'][i]] = questionDict
+            response[str(questionData['questionID'][i])] = questionDict
         if questionData['answerID'][i] == questionData['answerID'][i]: # check if answerID is not nan returned from sql
             answerDict = {}
-            answerDict['answerId'] = int(questionData['answerID'][i])
+            answerDict['answerId'] = str(questionData['answerID'][i])
             answerDict['answerText'] = questionData['answerText'][i]
             answerDict['answerDate'] = mysql_datetime_to_date_string(str(questionData['answerDateTime'][i]))
             answerDict['answeredBy'] = questionData['answeredBy'][i]
             answerDict['answeredByName'] = questionData['answererName'][i]
 
-            response[questionData['questionID'][i]]['answers'].append(answerDict)
+            response[str(questionData['questionID'][i])]['answers'].append(answerDict)
     print(response)
     return json.dumps(response)
 

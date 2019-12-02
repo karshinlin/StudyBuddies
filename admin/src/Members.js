@@ -34,13 +34,13 @@ export default class Members extends React.Component {
             })
     }
 
-    // changeSelectedUser(userId) {
-    //     if (this.state.selectedUser != userId) {
-    //         this.setState({
-    //             selectedUser: userId
-    //         })
-    //     }
-    // }
+    changeSelectedUser(userId) {
+        if (this.state.selectedUser !== userId) {
+            this.setState({
+                selectedUser: userId
+            })
+        }
+    }
 
     // deleteUser(userId) {
     //     let deleteUrl = url + 'deleteUser?userId=' + userId 
