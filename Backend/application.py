@@ -374,6 +374,23 @@ def edit_answer():
     response = {"success": 0, "answerId": answer_id}
     return json.dumps(response)
 
+# ADMIN METHOD
+@application.route('/deleteUser', methods=["GET"])
+def delete_user():
+    user_id = request.json['userId']
+    print(db.delete_user(user_id))
+    response = {"success": 0, "userId": user_id}
+    return json.dumps(response)
+
+# ADMIN METHOD
+@application.route('/editUserExam', methods=["POST"])
+def edit_user_exam():
+    user_id = request.json['userId']
+    exam = request.json['exam']
+    print(db.edit_user_exam(user_id, exam))
+    response = {"success" : 0, "exam" : exam}
+    return json.dumps(response)
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
