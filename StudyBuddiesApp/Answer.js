@@ -82,7 +82,7 @@ class AnswerScreen extends Component {
 				<Text style={styles.title}>Answer</Text>
 				{
 					this.state.questions && this.state.groupMembers ?
-						<KeyboardAvoidingView enabled behavior='position'>
+						
 							
 							<FlatList
 								data={this.state.questions}
@@ -112,7 +112,6 @@ class AnswerScreen extends Component {
 								keyExtractor={({ item: questionId }) => questionId}
 								ListEmptyComponent={<View><Text>There are no questions in this group yet.</Text></View>}
 							/>
-						</KeyboardAvoidingView>
 						:
 						<ActivityIndicator size="large" color="#0000ff" />
 				}

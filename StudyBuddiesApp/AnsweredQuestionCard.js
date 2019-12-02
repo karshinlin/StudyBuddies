@@ -39,6 +39,7 @@ export default class AnsweredQuestionCard extends Component {
             if (this.props.removeSelfFunction) {
                 this.props.removeSelfFunction(this.props.id);
             }
+            this.setState({answer: ''})
         })
         .catch((error) => {
             console.log(error);

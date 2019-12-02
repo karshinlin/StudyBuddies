@@ -68,7 +68,7 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}> 
-      <NavigationEvents
+      <NavigationEvents 
         onDidFocus={() => {
           this.fetchMatchingStatus();
         }}
