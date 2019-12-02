@@ -281,7 +281,7 @@ def get_group_members():
     info = db.get_group_info(user_id)
     if len(info['groupName']) > 0: 
         response['groupName'] = info['groupName'][0]
-        response['groupId'] = info['groupID'][0]
+        response['groupId'] = str(info['groupID'][0])
     else:
         response['groupName'] = None
         response['groupId'] = None
