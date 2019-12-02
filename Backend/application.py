@@ -377,7 +377,7 @@ def edit_answer():
 # ADMIN METHOD
 @application.route('/deleteUser', methods=["GET"])
 def delete_user():
-    user_id = request.json['userId']
+    user_id = request.args.get('userId', type=str)
     print(db.delete_user(user_id))
     response = {"success": 0, "userId": user_id}
     return json.dumps(response)
@@ -385,8 +385,8 @@ def delete_user():
 # ADMIN METHOD
 @application.route('/editUserExam', methods=["POST"])
 def edit_user_exam():
-    user_id = request.json['userId']
-    exam = request.json['exam']
+    user_id = request.args.get('userId', type=str)
+    exam = request.args.get('exam', type=str)
     print(db.edit_user_exam(user_id, exam))
     response = {"success" : 0, "exam" : exam}
     return json.dumps(response)
