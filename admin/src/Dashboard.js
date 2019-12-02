@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Groups from './Groups'
-//import Members from './Members'
+import Members from './Members'
 import Questions from './Questions'
 import Container from '@material-ui/core/Container';
 import Sidebar from './Sidebar'
@@ -159,7 +159,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           {activeSection === 'groups' ? <Groups classes={classes}/> : null}
-          {/* {activeSection === 'members' ? <Members classes={classes}/> : null} */}
+          {activeSection === 'members' ? <Members classes={classes}/> : null}
           {activeSection === 'questions' ? <Questions classes={classes}/> : null}
         </Container>
       </main>
