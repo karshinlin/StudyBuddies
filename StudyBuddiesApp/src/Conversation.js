@@ -271,6 +271,7 @@ export default class Conversation extends React.Component {
 						name='message'
 						multiline = {true}
 						numberOfLines = {4}
+						blurOnSubmit={true}
 						onChangeText={(text) => this.setState({message : text})}
 						value={this.state.message}
 					/>
