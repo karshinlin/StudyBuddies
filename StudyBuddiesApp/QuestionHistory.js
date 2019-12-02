@@ -6,8 +6,6 @@ import AnsweredQuestionCard from './AnsweredQuestionCard';
 import stylesheet from './styles.js';
 import {  cLightBlue } from "./App";
 
-
-
 class QuestionHistoryScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -41,8 +39,6 @@ class QuestionHistoryScreen extends Component {
 					questions: response['questions'],
 					error: false,
 					refreshing: false
-				}, function () {
-					console.log("questions: " + JSON.stringify(this.state['questions']));
 				});
 			})
 			.catch((error) => {

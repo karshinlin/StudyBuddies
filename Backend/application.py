@@ -171,51 +171,49 @@ def set_question():
 @application.route('/unansweredQuestions', methods=["GET"])
 def get_unanswered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
-    questions = db.get_unanswered_questions(user_id)
-    print(questions)
-    response = []
-    for i in range(0, len(questions["questionID"])):
-        a_question = dict()
-        a_question["questionId"] = int(questions["questionID"][i])
-        a_question["askedBy"] = questions["askedBy"][i]
-        a_question["questionText"] = questions["questionText"][i]
-        a_question["askDate"] = str(questions["askDate"][i])
-        response.append(a_question)
-    
-    response = {"questions": response, "success": 0, "userId": user_id}
+    questions_df = db.get_unanswered_questions(user_id)
+    question_list = question_df_to_question_list(questions_df)
+
+    response = {"questions": question_list}
     return json.dumps(response)
 
 @application.route('/answeredQuestions', methods=["GET"])
 def get_answered_questions(): 
     user_id = request.args.get('userId', default = "", type = str)
-    questions = db.get_answered_questions(user_id)
-    print(questions)
-    response = {}
+    question_df = db.get_answered_questions(user_id)
     
-    for i in range(questions.shape[0]):
-        question_id = int(questions["questionID"][i])
+    question_list = question_df_to_question_list(question_df)
 
-        if question_id not in response:
+    response = {"questions": question_list}
+    return json.dumps(response)
+
+def question_df_to_question_list(question_df):
+    question_dict = {}
+    
+    for i in range(question_df.shape[0]):
+        question_id = int(question_df["questionID"][i])
+
+        if question_id not in question_dict:
             q_dict = {}
             q_dict["questionId"] = question_id
-            q_dict["askedBy"] = questions["askedBy"][i]
-            q_dict["questionText"] = questions["questionText"][i]
-            q_dict["askDate"] = mysql_datetime_to_date_string(str(questions["askDate"][i]))
+            q_dict["askedBy"] = question_df["askedBy"][i]
+            q_dict["questionText"] = question_df["questionText"][i]
+            q_dict["askDate"] = mysql_datetime_to_date_string(str(question_df["askDate"][i]))
             q_dict["answers"] = []
-            response[question_id] = q_dict
+            question_dict[question_id] = q_dict
         
-        if questions["answerText"][i] is not None:
+        if question_df["answerID"][i] is not None:
             answer = {}
-            answer["answerText"] = str(questions["answerText"][i])
-            answer["answeredBy"] = str(questions["answeredBy"][i])
-            answer["answerDate"] = mysql_datetime_to_date_string(str(questions["answerDateTime"][i]))
-            answers = response[question_id]["answers"]
+            answer["answerId"] = str(question_df["answerID"][i])
+            answer["answerText"] = str(question_df["answerText"][i])
+            answer["answeredBy"] = str(question_df["answeredBy"][i])
+            answer["answerDate"] = mysql_datetime_to_date_string(str(question_df["answerDateTime"][i]))
+            answers = question_dict[question_id]["answers"]
             answers.append(answer)
     
-    question_list = [response[q_id] for q_id in response]
+    question_list = [question_dict[q_id] for q_id in question_dict]
+    return question_list
 
-    response = {"questions": question_list, "success": 0, "userId": user_id}
-    return json.dumps(response)
 
 def mysql_datetime_to_date_string(mysql_date):
     mysql_dt_format = '%Y-%m-%d %H:%M:%S'
