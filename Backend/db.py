@@ -207,7 +207,7 @@ class DB:
         return self.retrieve("SELECT * FROM User WHERE groupID = {}".format(group_id))
     
     def retrieve_all_questions_answers(self):
-        return self.retrieve("SELECT * FROM Question LEFT JOIN User ON askedBy = userID NATURAL LEFT JOIN Answer ORDER BY askDate DESC;")
+        return self.retrieve("SELECT questionID, A.askedBy, A.questionText, A.askDate, A.name as askerName, A.groupID, B.answerID, B.answerText, B.answeredBy, B.answerDateTime, B.name as answererName FROM (SELECT * FROM Question LEFT JOIN User ON askedBy = userID) as A NATURAL LEFT JOIN (SELECT * FROM Answer LEFT JOIN User ON answeredBy = userID) as B ORDER BY askDate DESC;")
 
     def get_all_members(self):
         return self.retrieve("SELECT * FROM User;")

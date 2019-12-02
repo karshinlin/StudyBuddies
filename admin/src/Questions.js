@@ -52,12 +52,13 @@ export default class Questions extends React.Component {
                 { title: 'Asked Date', field: 'askedDate', editable: 'never' },
             ],
             answerColumns: [
-                { title: 'answerID', field: 'answerId', editable: 'never', type: 'numeric'},
+                { title: 'AnswerID', field: 'answerId', editable: 'never', type: 'numeric'},
                 { title: 'Answer', field: 'answerText', editable: 'onUpdate' },
                 { title: 'Author', field: 'author', editable: 'never' },
                 { title: 'Answer Date', field: 'answerDate', editable: 'never' },
             ],
             selectedQuestion: null,
+            members: {},
         }
         this.getAllQuestions = this.getAllQuestions.bind(this);
         this.editQuestion = this.editQuestion.bind(this);
@@ -66,7 +67,6 @@ export default class Questions extends React.Component {
         this.deleteAnswer = this.deleteAnswer.bind(this);
         this.changeSelectedQuestion = this.changeSelectedQuestion.bind(this);
         this.changeSelectedAnswer = this.changeSelectedAnswer.bind(this);
-        
     }
 
     componentDidMount() {
@@ -79,11 +79,12 @@ export default class Questions extends React.Component {
             .then(allQuestions => {
                 let questionData = [];
                 let answers = {}
-                Object.keys(allQuestions).forEach(function(key) {
+                console.log(this);
+                Object.keys(allQuestions).forEach((key) => {
                     let newRow = {};
                     newRow.questionId = key;
                     newRow.questionText = allQuestions[key].questionText;
-                    newRow.author = allQuestions[key].askedBy;
+                    newRow.author = allQuestions[key].askedByName;
                     newRow.askedDate = allQuestions[key].askedDate;
                     questionData.push(newRow);
                     allQuestions[key].answers.forEach(answer => {
@@ -91,7 +92,7 @@ export default class Questions extends React.Component {
                         newAnswer.answerId = answer["answerId"];
                         newAnswer.answerText = answer["answerText"];
                         newAnswer.answerDate = answer["answerDate"];
-                        newAnswer.author = answer["answeredBy"];
+                        newAnswer.author = answer["answeredByName"];
                         if (key in answers) {
                             answers[key].push(newAnswer);
                         } else {

@@ -5,7 +5,8 @@ const images = {
   point_icon: require('./assets/point_icon.png'),
   person_icon: require('./assets/person_icon.png'),
   book_icon: require('./assets/book_icon.png'),
-  studybuddies_icon: require('./assets/studybuddies_icon.png')
+  studybuddies_icon: require('./assets/studybuddies_icon.png'),
+  answer_icon: require('./assets/answer_icon.png')
 }
 
 export { images }; 

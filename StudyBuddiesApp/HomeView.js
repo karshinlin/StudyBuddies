@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator, Image} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator, Image, Linking} from 'react-native';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws-exports';
 import { Auth } from 'aws-amplify';
@@ -102,10 +102,10 @@ export default class HomeScreen extends React.Component {
             </View>
             <View style={styles.tileRow}>
               <HomeTile
-                tileName="Answer" tilePic={images.point_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
+                tileName="Answer" tilePic={images.answer_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Answer')}}>
               </HomeTile>
               <HomeTile
-                tileName="Challenge" desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Challenge')}}>
+                tileName="Challenge" tilePic={images.point_icon} desiredFontSize="30" onPress={() => {this.props.navigation.navigate('Challenge')}}>
               </HomeTile>
             </View>
             <View style={styles.tileRow}>
@@ -116,7 +116,7 @@ export default class HomeScreen extends React.Component {
                 tileName="Leaderboard" tilePic={images.leaderboard_icon} desiredFontSize="25" onPress={() => {this.props.navigation.navigate('Leaderboard')}}>
               </HomeTile>
             </View>
-            <Text>Points: {this.state.points} </Text>
+            <Text style={[styles.linkStyle, {marginTop: 10, textAlign:'center'}]} accessibilityRole='link' onPress={() => Linking.openURL('https://www.gbes.com/')}>Need help? Visit our website.</Text>
             <View style={styles.banner}>
             </View>
           </View>
@@ -158,4 +158,8 @@ const styles = StyleSheet.create({
     fontFamily: "Arial",
     color: "black"
   },
+  linkStyle: {
+    color: '#E91E63',
+    textDecorationLine: 'underline'
+  }
 });
