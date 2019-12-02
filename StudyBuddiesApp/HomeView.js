@@ -27,7 +27,6 @@ export default class HomeScreen extends React.Component {
   
   componentDidMount() {
     this.fetchMatchingStatus();
-    this.fetchPoints();
     console.log('on component mount');
     // check the current user when the App component is loaded
     Auth.currentAuthenticatedUser().then(user => {
@@ -54,18 +53,6 @@ export default class HomeScreen extends React.Component {
       })
   }
 
-  fetchPoints() {
-    var url = global.url + "getPoints?userId=" + Auth.user.attributes.sub;
-    console.log("url:" + url);
-    return fetch(url)
-      .then(response => response.json())
-      .then(response => {
-        console.log("points:" + response['points']);
-        this.setState({
-          points: response['points']
-        });
-      })
-  }
 
   render() {
     console.log("loading:" + this.state.isLoading);
@@ -81,10 +68,9 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}> 
-      <NavigationEvents
+      <NavigationEvents 
         onDidFocus={() => {
           this.fetchMatchingStatus();
-          this.fetchPoints();
         }}
       />
         {this.state.groupId ? (

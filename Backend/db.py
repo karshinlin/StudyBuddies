@@ -69,18 +69,10 @@ class DB:
             .format(asked_by, question_text, dt_string))
            
     def get_unanswered_questions(self, user_id):
-        return self.retrieve('''
-            select * from 
-                (select * from Question where askedBy in 
-                    (select userId from User where groupId in 
-                        (select groupId from User where userId = '{}'))
-                ) as questions where questionId not in 
-            (select distinct questionId from Answer where answeredBy = '{}') order by askDate desc;
-            '''
-                             .format(user_id, user_id))
+        return self.retrieve("call get_my_unanswered_questions('{}')".format(user_id))
 
     def get_answered_questions(self, user_id):
-        return self.retrieve("call get_questions_for_my_group('{}')".format(user_id))
+        return self.retrieve("call get_answered_questions_for_my_group('{}')".format(user_id))
 
     def answer_question(self, user_id, question_id, answer_text):
         now = datetime.now()
