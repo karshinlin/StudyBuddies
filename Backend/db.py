@@ -225,8 +225,8 @@ class DB:
         return self.write("UPDATE Answer SET answerText='{}' WHERE answerID={};".format(answer_text, answer_id))
     
     def delete_user(self, userId):
-        return self.write("DELETE FROM User WHERE userID={};".format(userId))
+        return self.write("DELETE FROM User WHERE userID='{}';".format(userId))
 
     def edit_user_exam(self, user_id, exam):
-        return self.write("UPDATE User SET exam='{}' WHERE userID={};".format(exam, user_id))
+        return self.write("UPDATE User SET exam='{}' WHERE userID='{}';".format(exam, user_id))
     
