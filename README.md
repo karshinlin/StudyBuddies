@@ -4,6 +4,7 @@
 - The React Native frontend talks to the Backend as well as AWS Services (these can be found )
 	- Login and registration is done directly through AWS Cognito (region us-east 1)
 	- Chatting is done directly through AWS AppSync (region us-east 1)
+		- <b>*Note* The AppSync API Key in config.py is set to expire December 30th, 2019. Please get a new API key from the AWS console and edit the config.py file with a new key when it is time.</b>
 - The Backend manages all CRUD database operations as well as talking to AWS
 	- Environment deployed on AWS Elastic Beanstalk (region us-east 2)
 	- Database is hosted Amazon RDS (region us-east 2)
