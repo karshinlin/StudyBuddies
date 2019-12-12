@@ -1,34 +1,15 @@
 # StudyBuddies
  
-## Release Notes (v0.4)
-Bug Fixes: 
-- Fixed a bug causing questions not answered by a specific user to appear in the answer tab, as opposed to all unanswered questions
-- Created a backend flask server template
-- Updated node packages to fix vulnerabilities
-
-### UI Improvements:
-- General
-	- Added a new confirmation screen within the sign-in process
-- Ask/Answer Page
-	- Updated colors, designs, and centered question/answer cards to implement material deisgn
-	- Fixed an incorrectly formatted button
-	- Fixed a bug causing a user to be stuck on the ask page after asking or answering a question
-	- Fixed a bug causing answers to disappear
-	- Added shadows to the question and answer cards
-- Leaderboard Page
-	- Fixed the title
-	- Updated styling to match material design elements exhibited prior
-- Question History Page
-	- Added and formatted answered question cards mirroring the material design elements of the Ask/Answer Page
-	- Added shadows to the answered question cards
-	- Added author, date, and time to answered question cards
-- Challenge Page
-	- Updated the styling to match the prior material design elements
-	- Removed superfluous code on intialization of the Challenge react component
-	- Updated the Challenge mechanisms in incrementing question and answer counts, user feedback to submitting answers, and scoring
-- Chat Page
-	- Added a working sender label to chatting instead of having a static sender
-	- Created functionality to allow the group name to be changed in the chat module
+## Architecture
+- The React Native frontend talks to the Backend as well as AWS Services (these can be found )
+	- Login and registration is done directly through AWS Cognito (region us-east 1)
+	- Chatting is done directly through AWS AppSync (region us-east 1)
+- The Backend manages all CRUD database operations as well as talking to AWS
+	- Environment deployed on AWS Elastic Beanstalk (region us-east 2)
+	- Database is hosted Amazon RDS (region us-east 2)
+	- Talks to AWS AppSync to create new conversations (upon new group creation)
+- The React frontend admin portal allows basic StudyBuddies CRUD db operations
+	- Talks directly to the Backend 
 
 ## Installation Guide 
 *The codebase is organized into 3 directories: Backend, StudyBuddiesApp, and ManagementPortal*
@@ -50,6 +31,7 @@ Bug Fixes:
 ### Installing Code:
 - `git clone https://github.com/karshinlin/StudyBuddies.git` to clone the repo
 - `git checkout dev` to work on the dev branch
+- Create a new directory called instance/ within the Backend/ directory. Place the config.py file (not stored on Git) inside this directory so that Backend/instance/config.py exists. 
 - `npm install` to install all the dependencies that the branch has that you don't have locally
 - `npm audit fix` to fix all the vulnerabilities (if it tells you to)
 - `npm install -g @aws-amplify/cli` to install the amplify CLI (https://aws-amplify.github.io/docs/)
@@ -62,12 +44,13 @@ Bug Fixes:
 			- Name this user `amplify` when prompted (it shoes `default` by default)
 - `amplify init` to boot up the amplify configurations from the `/amplify` folder
 	- use an existing environment when prompted (it's name is `dev`)
-- `npm install -g yarn`
-- `npm install -g expo-cli` (not sure if this is needed but that's what we did)
-- `yarn add expo`
-- close out of all terminals and emulators relating to this app
-- open up a terminal again and navigate to the app folder (`/StuddyBuddiesApp`)
-- `yarn run ios` 
+- Run the React Native part (full instructions: https://facebook.github.io/react-native/docs/getting-started):
+	- `npm install -g yarn`
+	- `npm install -g expo-cli` (not sure if this is needed but that's what we did)
+	- `yarn add expo`
+	- close out of all terminals and emulators relating to this app
+	- open up a terminal again and navigate to the app folder (`/StuddyBuddiesApp`)
+	- `yarn run ios` 
 
 Backend Setup: 
 - [One Time] Within StudyBuddies/Backend directory, create a virtualenv: 
@@ -92,7 +75,7 @@ Deployment to AWS Elastic Beanstalk:
     2. Zsh:
        echo 'export PATH="/Users/karshinlin/.ebcli-virtual-env/executables:$PATH"' >> ~/.zshenv && source ~/.zshenv
 	- Now you should be able to see options when running `eb status`
-	- You may need to initialize your eb environment with `eb init`
+	- You may need to initialize your eb environment with `eb init -p python-2.7`
 - Using Elastic Beanstalk CLI, run `eb deploy` to deploy a new version of this application. Otherwise you can just run the Flask server locally with `python application.py` in your virtualenv in the /Backend directory
 
 ### Run Instructions
@@ -100,7 +83,8 @@ Deployment to AWS Elastic Beanstalk:
   - In the global.js file, there are two urls, one is for the localhost backend (which must be running)
     - To run the localhost backend, run `python application.py` after you have activated your virtualenv
 	- If you are using the AWS EB endpoint, the updated code must be deployed to AWS (`eb deploy`)
-
+- From the admin/ directory, you should run `npm start` after `npm install` to run the admin portal
+	- You must have the backend running (check global.js to see which endpoint you are trying to access - local versus beanstalk)
 ## Troubleshooting
 - If there is an error loading modules, make sure you have installed all required dependencies
   - For the backend, this means running `pip install -r requirements.txt` 
